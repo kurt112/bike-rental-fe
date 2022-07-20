@@ -1,6 +1,7 @@
 import {useEffect, useRef} from "react";
 import {sidebarList} from "../../../types/sidebar";
 import Navbar from "../navbar/navbar";
+import Image from "next/image";
 const Sidebar = ({
                     sidebars,
                     children
@@ -54,7 +55,7 @@ const Sidebar = ({
                                             className="flex w-full justify-between text-gray-300 cursor-pointer items-center mb-6">
                                             <a href={sidebar.link}
                                                className="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
-                                                <img src={sidebar.icon.src} width={'100%'} height={18} style={{filter: 'invert(0.8  )'}}/>
+                                                <Image src={sidebar.icon.src} width={'100%'} height={18} style={{filter: 'invert(0.8  )'}} alt={sidebar.name}/>
                                                 <span className="text-sm ml-2">{sidebar.name}</span>
                                             </a>
                                             <div
@@ -414,9 +415,9 @@ const Sidebar = ({
                                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                                     <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                          fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
+                                        <path fillRule="evenodd"
                                               d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                              clip-rule="evenodd"></path>
+                                              clipRule="evenodd"></path>
                                     </svg>
                                 </div>
                                 <input type="text" id="table-search"
@@ -464,7 +465,7 @@ const Sidebar = ({
                                 </td>
                                 <th scope="row"
                                     className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Apple MacBook Pro 17"
+                                    {`Apple MacBook Pro 17"`}
                                 </th>
                                 <td className="py-4 px-6">
                                     Sliver
@@ -494,9 +495,9 @@ const Sidebar = ({
                                         <span className="sr-only">Previous</span>
                                         <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
                                              viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd"
+                                            <path fillRule="evenodd"
                                                   d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                                  clip-rule="evenodd"></path>
+                                                  clipRule="evenodd"></path>
                                         </svg>
                                     </a>
                                 </li>
@@ -526,9 +527,9 @@ const Sidebar = ({
                                         <span className="sr-only">Next</span>
                                         <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
                                              viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd"
+                                            <path fillRule="evenodd"
                                                   d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                  clip-rule="evenodd"></path>
+                                                  clipRule="evenodd"></path>
                                         </svg>
                                     </a>
                                 </li>
