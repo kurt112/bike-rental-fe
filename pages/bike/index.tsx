@@ -1,10 +1,11 @@
 import {NextPage} from "next";
 import {Fragment, useState} from "react";
 import { bikeColumns} from "../../types/bike";
-import {graphQl} from "../../.config/host";
+import {graphQl} from "../../.config/api";
 import {pagination} from "../../types/pagination";
 import {useRouter} from 'next/router'
 import Link from "next/link";
+import Head from "next/head";
 
 const Bike: NextPage = ({bikes}: any) => {
 
@@ -22,7 +23,10 @@ const Bike: NextPage = ({bikes}: any) => {
     }
 
     return <Fragment>
-
+        <Head>
+            <title>Bikes</title>
+            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        </Head>
         <div className="overflow-x-auto relative shadow-md sm:rounded-lg mr-2 ml-2 mt-5">
             <div className="pb-4 bg-white dark:bg-gray-900 pt-2 pl-2 flex justify-between p-4">
                 <div id="left">
@@ -96,7 +100,7 @@ const Bike: NextPage = ({bikes}: any) => {
                                     {bike.quantity}
                                 </td>
                                 <td className="py-4 px-6">
-                                    <a href="#"
+                                    <a href="/bike/profile"
                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                 </td>
                             </tr>

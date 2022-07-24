@@ -5,3 +5,7 @@ export const host_url_graphQl = `${host_url}/data`
 export const graphQl = axios.create({
     baseURL: host_url_graphQl
 })
+
+export const axiosSubmit = axios.create({
+    baseURL:`${host_url}/`
+})
