@@ -1,9 +1,9 @@
 import {NextPage} from "next";
-import Link from "next/link";
-import {Fragment, SyntheticEvent, useState} from "react";
+import {Fragment, useState} from "react";
 import Head from "next/head";
 import {BikeObject} from "../../../types/bike";
-import {axiosSubmit} from "../../../.config/api";
+import {handleSubmit} from "../api";
+import Back from "../../../components/layout/back";
 
 const createBike: NextPage = () => {
 
@@ -25,16 +25,6 @@ const createBike: NextPage = () => {
         setBike(currentBike);
     }
 
-    const handleSubmit = async (e:SyntheticEvent) => {
-        // e.preventDefault();
-
-        await axiosSubmit.post('bike',bike).then(e => {
-            console.log(e);
-        }).catch(error => {
-            console.log(error)
-        });
-    }
-
     return (
         <Fragment>
             <Head>
@@ -42,21 +32,7 @@ const createBike: NextPage = () => {
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
             <div className="h-full font-sans antialiased bg-white w-full overflow-y-auto">
-                <div className="w-full bg-green shadow z-1">
-                    <Link href="javascript:history.back()">
-                        <button type="button"
-                                className="m-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-
-                            <svg className=" h-6 mr-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                      d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"></path>
-                            </svg>
-                            Back
-                        </button>
-
-                    </Link>
-                </div>
+                <Back/>
                 <br/>
                 <div className="bg-grey-lightest">
                     <div className="mx-auto">
@@ -92,7 +68,7 @@ const createBike: NextPage = () => {
                                 </div>
 
                                 <div className="flex mb-4">
-                                    <div className="w-1/4 mr-1">
+                                    <div className="w-1/3 mr-1">
                                         <label className="block text-grey-darker text-sm font-bold mb-2"
                                                htmlFor="first_name">Quantity</label>
                                         <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
@@ -103,7 +79,7 @@ const createBike: NextPage = () => {
                                                onChange={(e) => changeBike(e.target.value,'quantity')}
                                         />
                                     </div>
-                                    <div className="w-1/4 ml-1">
+                                    <div className="w-1/3 ml-1">
                                         <label className="block text-grey-darker text-sm font-bold mb-2"
                                                htmlFor="last_name">Price/Hr</label>
                                         <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
@@ -114,7 +90,7 @@ const createBike: NextPage = () => {
                                                onChange={(e) => changeBike(e.target.value,'price')}
                                         />
                                     </div>
-                                    <div className="w-1/4 ml-1">
+                                    <div className="w-1/3 ml-1">
                                         <label className="block text-grey-darker text-sm font-bold mb-2"
                                                htmlFor="last_name">Size</label>
                                         <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
@@ -125,15 +101,15 @@ const createBike: NextPage = () => {
                                                onChange={(e) => changeBike(e.target.value,'size')}
                                         />
                                     </div>
-                                    <div className="w-1/4 ml-1">
-                                        <label className="block text-grey-darker text-sm font-bold mb-2"
-                                               htmlFor="last_name">Current Store</label>
-                                        <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                               id="last_name"
-                                               type="text"
-                                               placeholder="Current Store"
-                                        />
-                                    </div>
+                                    {/*<div className="w-1/4 ml-1">*/}
+                                    {/*    <label className="block text-grey-darker text-sm font-bold mb-2"*/}
+                                    {/*           htmlFor="last_name">Current Store</label>*/}
+                                    {/*    <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"*/}
+                                    {/*           id="last_name"*/}
+                                    {/*           type="text"*/}
+                                    {/*           placeholder="Current Store"*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
                                 </div>
 
                                 <div className="mb-4">
@@ -187,7 +163,7 @@ const createBike: NextPage = () => {
                                     </div>
 
 
-                                    <button onClick={(e) => handleSubmit(e)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                                    <button onClick={(e) => handleSubmit(e,bike)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                         Submit
                                     </button>
                                 </div>

@@ -1,11 +1,11 @@
 import {NextPage} from "next";
 import {Fragment, useState} from "react";
 import { bikeColumns} from "../../types/bike";
-import {graphQl} from "../../.config/api";
 import {pagination} from "../../types/pagination";
 import {useRouter} from 'next/router'
 import Link from "next/link";
 import Head from "next/head";
+import {getBikes} from "./api";
 
 const Bike: NextPage = ({bikes}: any) => {
 
@@ -100,7 +100,7 @@ const Bike: NextPage = ({bikes}: any) => {
                                     {bike.quantity}
                                 </td>
                                 <td className="py-4 px-6">
-                                    <a href="/bike/profile"
+                                    <a href={`/bike/edit?id=${bike.id}`}
                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                 </td>
                             </tr>
@@ -168,26 +168,13 @@ const Bike: NextPage = ({bikes}: any) => {
 export default Bike;
 
 export const getServerSideProps = async (context: any) => {
+
     const {search, page, size, status} = context.query;
-    const query = () => {
-        return {
-            query: `query{
-                        bikes(search:"${search}",page:${page}, size: ${size}, status:${status}) {  
-                                brand,
-                                price,
-                                name,
-                                quantity,
-                                id,
-                                description
-                             }
-                        }`
-        }
-    };
-    const {data} = await graphQl.post('', query());
 
-    const bikes = data.data.bikes;
+    const bikes = await getBikes(search, page, size, status);
 
-    if (!data) {
+
+    if (!bikes) {
         return {
             notFound: true,
         };

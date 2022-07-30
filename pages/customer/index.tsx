@@ -2,14 +2,17 @@ import {NextPage} from "next";
 import {Fragment, useState} from "react";
 import Head from "next/head";
 import Link from "next/link";
-import {bikeColumns} from "../../types/bike";
 import {useRouter} from "next/router";
 import {pagination} from "../../types/pagination";
-import {graphQl} from "../../.config/api";
+import {getCustomers} from "./api";
+import {customerColumns} from "../../types/customer";
+import {formatDate} from "../../utils/date";
 
-const customer:NextPage = ({bikes}: any) => {
+const customer:NextPage = ({customers}: any) => {
     const router = useRouter()
     const {search, page, size, status} = router.query
+
+    console.log(customers);
 
     const [pagination, setPagination] = useState<pagination>({search, page, size, status})
 
@@ -69,7 +72,7 @@ const customer:NextPage = ({bikes}: any) => {
                         className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         {
-                            bikeColumns?bikeColumns.map((column, key) => {
+                            customerColumns?customerColumns.map((column, key) => {
                                 return (
                                     <th scope="col" className="py-3 px-6" key={key}>
                                         {column}
@@ -83,24 +86,41 @@ const customer:NextPage = ({bikes}: any) => {
                     <tbody>
 
                     {
-                        bikes?bikes.map((bike: any) => {
+                        customers?customers.map((customer: any) => {
+                            const {user} = customer;
                             return (
-                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={bike.id}>
+                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>
                                     <th scope="row"
                                         className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {bike.name}
+                                        {user.firstName}
                                     </th>
                                     <td className="py-4 px-6">
-                                        {bike.description}
+                                        {user.lastName}
                                     </td>
                                     <td className="py-4 px-6">
-                                        {bike.price}
+                                        {user.email}
                                     </td>
                                     <td className="py-4 px-6">
-                                        {bike.quantity}
+                                        {user.cellphone}
+                                    </td>
+
+                                    <td className="py-4 px-6">
+                                        {user.birthdate? formatDate(user.birthdate): 'NA'}
                                     </td>
                                     <td className="py-4 px-6">
-                                        <a href="/bike/profile"
+                                        {user.gender}
+                                    </td>
+                                    <td className="py-4 px-6">
+                                        {customer.lastBilled?customer.lastBilled :'NA'}
+                                    </td>
+                                    <td className="py-4 px-6">
+                                        {customer.nextBilled?customer.nextBilled :'NA'}
+                                    </td>
+                                    <td className="py-4 px-6">
+                                        {customer.toPay}
+                                    </td>
+                                    <td className="py-4 px-6">
+                                        <a href={`/customer/edit?id=${customer.id}`}
                                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                     </td>
                                 </tr>
@@ -169,25 +189,12 @@ export default customer
 
 export const getServerSideProps = async (context: any) => {
     const {search, page, size, status} = context.query;
-    const query = () => {
-        return {
-            query: `query{
-                        bikes(search:"${search}",page:${page}, size: ${size}, status:${status}) {  
-                                brand,
-                                price,
-                                name,
-                                quantity,
-                                id,
-                                description
-                             }
-                        }`
-        }
-    };
-    const {data} = await graphQl.post('', query());
 
-    const bikes = data.data.bikes;
+    const customers = await getCustomers(search, page, size, status);
 
-    if (!data) {
+    console.log("wew");
+
+    if (!customers) {
         return {
             notFound: true,
         };
@@ -195,7 +202,7 @@ export const getServerSideProps = async (context: any) => {
 
     return {
         props: {
-            bikes,
+            customers,
         },
     };
 };
