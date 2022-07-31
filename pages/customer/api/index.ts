@@ -1,12 +1,45 @@
 import {SyntheticEvent} from "react";
 import {axiosSubmit, graphQl} from "../../../.config/api";
 import {CustomerCreate} from "../../../types/customer";
+import moment from "moment";
 
 export const handleSubmitCustomer = async (e:SyntheticEvent, customer:CustomerCreate) => {
-    // e.preventDefault();
+    await axiosSubmit.post('customer',customer).then(ignored => {
+        alert("Customer Create Success");
+        location.reload();
+    }).catch(error => {
+        console.log(error)
+    });
+}
 
-    await axiosSubmit.post('customer',customer).then(e => {
-        console.log(e);
+export const handlePatchCustomer = async (e:SyntheticEvent, customer:CustomerCreate) => {
+
+    if(customer.user !== undefined){
+        customer.user.birthdate = customer.user.birthdate?moment(customer.user.birthdate): moment();
+    }
+
+    await axiosSubmit.patch('customer',customer).then(ignored => {
+        alert("Customer Update Success");
+        location.reload();
+    }).catch(error => {
+        console.log(error)
+    });
+}
+
+export const handleDeleteCustomer = async (id: any) => {
+
+    const result = confirm("Are you sure you want to delete this customer?");
+
+    if(!result) return;
+
+    const params = new URLSearchParams();
+    params.append('id',id);
+
+    await axiosSubmit.delete('customer',{
+        params
+    }).then(ignored => {
+        alert("Customer Delete Success");
+        history.back();
     }).catch(error => {
         console.log(error)
     });
@@ -16,6 +49,7 @@ export const getCustomerData = async (id:any) => {
         return {
             query: `query{
                         customerById(id:${id}) {  
+                                id,
                                 user{
                                    id,
                                    email,
@@ -35,9 +69,7 @@ export const getCustomerData = async (id:any) => {
                         }`
         }
     };
-    console.log('wew')
     const {data} = await graphQl.post('', query());
-    console.log(data);
     return data.data.customerById;
 }
 export const getCustomers = async (search:any, page:any, size:any, status:any) => {
@@ -72,10 +104,7 @@ export const getCustomers = async (search:any, page:any, size:any, status:any) =
         }
     };
 
-    console.log('i am here')
-
     const {data} = await graphQl.post('', query());
 
-    console.log(data);
     return data.data.customers;
 }

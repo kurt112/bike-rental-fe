@@ -3,11 +3,9 @@ import Head from "next/head";
 import {CustomerCreate} from "../../../types/customer";
 import {useState, Fragment} from "react";
 import Back from "../../../components/layout/back";
-import {handleSubmitCustomer} from "../api";
-
 const CreateCustomer: NextPage = () => {
 
-    const [user,setUser] = useState<UserCreate>({
+    const [user, setUser] = useState<UserCreate>({
         email: "",
         firstName: "",
         lastName: "",
@@ -36,11 +34,10 @@ const CreateCustomer: NextPage = () => {
         const currentUser: any = {...user}
         currentUser[target] = data;
         setUser(currentUser);
-        const currentCustomer:CustomerCreate = {...customer};
+        const currentCustomer: CustomerCreate = {...customer};
         currentCustomer.user = currentUser;
         setCustomer(currentCustomer);
     }
-
 
 
     return (
@@ -50,7 +47,9 @@ const CreateCustomer: NextPage = () => {
                 <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
             </Head>
             <div className="h-full font-sans antialiased bg-white w-full overflow-y-auto">
-                <Back/>
+                <div className="w-full bg-green shadow z-1 flex justify-between p-2">
+                    <Back/>
+                </div>
                 <br/>
                 <div className="bg-grey-lightest">
                     <div className="mx-auto">
@@ -69,6 +68,7 @@ const CreateCustomer: NextPage = () => {
                                             placeholder="First Name"
                                             value={user.firstName}
                                             onChange={(e) => changeUser(e.target.value, 'firstName')}
+                                            required
                                         />
                                     </div>
                                     <div className="w-1/3 mr-1">
@@ -81,6 +81,7 @@ const CreateCustomer: NextPage = () => {
                                             placeholder="Middle Name"
                                             value={user.middleName}
                                             onChange={(e) => changeUser(e.target.value, 'middleName')}
+                                            required
                                         />
                                     </div>
                                     <div className="w-1/3 ml-1">
@@ -95,6 +96,7 @@ const CreateCustomer: NextPage = () => {
                                             placeholder="Last Name"
                                             value={user.lastName}
                                             onChange={(e) => changeUser(e.target.value, 'lastName')}
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -102,13 +104,14 @@ const CreateCustomer: NextPage = () => {
                                 <div className="flex mb-4">
                                     <div className="w-1/3 mr-1">
                                         <label className="block text-grey-darker text-sm font-bold mb-2"
-                                               >Email</label>
+                                        >Email</label>
                                         <input
                                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                             type="email"
                                             placeholder="Ex. Juan@email.com"
                                             value={user.email}
                                             onChange={(e) => changeUser(e.target.value, 'email')}
+                                            required
                                         />
                                     </div>
                                     <div className="w-1/3 ml-1">
@@ -120,6 +123,7 @@ const CreateCustomer: NextPage = () => {
                                             placeholder="Password"
                                             value={user.password}
                                             onChange={(e) => changeUser(e.target.value, 'password')}
+                                            required
                                         />
                                     </div>
                                     <div className="w-1/3 ml-1">
@@ -131,6 +135,7 @@ const CreateCustomer: NextPage = () => {
                                             placeholder="Retype Password"
                                             value={reTypePassword}
                                             onChange={(e) => setReTypePassword(e.target.value)}
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -139,9 +144,9 @@ const CreateCustomer: NextPage = () => {
                                     <div className="w-1/3 mr-1">
                                         <label className="block text-grey-darker text-sm font-bold mb-2"
                                                htmlFor="gender">Gender</label>
-                                        <select  id="gender"
-                                                 value={user.gender}
-                                                 onChange={(e) => changeUser(e.target.value,'gender')}
+                                        <select id="gender"
+                                                value={user.gender}
+                                                onChange={(e) => changeUser(e.target.value, 'gender')}
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
@@ -155,6 +160,7 @@ const CreateCustomer: NextPage = () => {
                                             type="date"
                                             value={user.birthdate}
                                             onChange={(e) => changeUser(e.target.value, 'birthdate')}
+                                            required
                                         />
                                     </div>
                                     <div className="w-1/3 ml-1">
@@ -169,10 +175,12 @@ const CreateCustomer: NextPage = () => {
                                             placeholder="Cellphone"
                                             value={user.cellphone}
                                             onChange={(e) => changeUser(e.target.value, 'cellphone')}
+                                            required
                                         />
                                     </div>
                                 </div>
-                                <button onClick={(e) => handleSubmitCustomer(e,customer)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                                <button type="submit"
+                                        className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                     Submit
                                 </button>
                             </div>

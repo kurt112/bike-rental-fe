@@ -1,5 +1,5 @@
 export interface CustomerCreate {
-    user: UserCreate,
+    user: UserCreate | undefined,
     toPay: number,
     isMember: boolean,
 }

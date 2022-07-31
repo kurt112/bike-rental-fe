@@ -5,7 +5,7 @@ interface UserCreate {
     middleName:string,
     gender:string,
     password: string,
-    birthdate: string,
+    birthdate: any,
     userRole: string,
     cellphone: string,
     isAccountNotExpired: boolean,

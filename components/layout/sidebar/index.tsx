@@ -2,9 +2,11 @@ import {useEffect, useRef} from "react";
 import {sidebarList} from "../../../types/sidebar";
 import Navbar from "../navbar/navbar";
 import Image from "next/image";
+import Link from "next/link";
+
 const Sidebar = ({
-                    sidebars,
-                    children
+                     sidebars,
+                     children
                  }: sidebarList) => {
     const mobileNav: any = useRef(null);
     const openSideBar: any = useRef(null);
@@ -49,22 +51,20 @@ const Sidebar = ({
                             {
                                 sidebars.map((sidebar, i) => {
                                     return sidebar.icon ?
-                                        <li key={i}
-                                            className="flex w-full justify-between text-gray-300 cursor-pointer items-center mb-6">
-                                            <a href={sidebar.link}
-                                               className="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
+                                        <Link href={sidebar.link} key={i}>
+                                            <li className="flex w-full justify-between text-gray-300 cursor-pointer items-center mb-6">
                                                 <Image
-                                                    src={sidebar.icon.src}  loading="eager"
+                                                    src={sidebar.icon.src} loading="eager"
                                                     layout={'fixed'}
                                                     height={25}
                                                     width={25}
                                                     style={{filter: 'invert(0.8  )'}} alt={sidebar.name}/>
                                                 <span className="text-sm ml-2">{sidebar.name}</span>
-                                            </a>
-                                            <div
-                                                className="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">5
-                                            </div>
-                                        </li>
+                                                <div
+                                                    className="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">5
+                                                </div>
+                                            </li>
+                                        </Link>
                                         : null
                                 })
                             }
@@ -182,29 +182,30 @@ const Sidebar = ({
                             </svg>
                         </div>
                         <ul className="mt-12">
-                            <li className="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6">
-                                <a href="#"
-                                   className="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         className="icon icon-tabler icon-tabler-grid" width="18"
-                                         height="18" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
-                                         fill="none"
-                                         strokeLinecap="round" strokeLinejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z"></path>
-                                        <rect x="4" y="4" width="6" height="6" rx="1"></rect>
-                                        <rect x="14" y="4" width="6" height="6" rx="1"></rect>
-                                        <rect x="4" y="14" width="6" height="6" rx="1"></rect>
-                                        <rect x="14" y="14" width="6" height="6" rx="1"></rect>
-                                    </svg>
-                                    <span className="text-sm ml-2">Dashboard</span>
-                                </a>
-                                <div
-                                    className="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">5
-                                </div>
-                            </li>
-                            <li className="flex w-full justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
-                                <a href="#"
-                                   className="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
+                            <Link href={'#'}>
+                                <li className="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6">
+                                    <a href="#"
+                                       className="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             className="icon icon-tabler icon-tabler-grid" width="18"
+                                             height="18" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
+                                             fill="none"
+                                             strokeLinecap="round" strokeLinejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z"></path>
+                                            <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+                                            <rect x="14" y="4" width="6" height="6" rx="1"></rect>
+                                            <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+                                            <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+                                        </svg>
+                                        <span className="text-sm ml-2">Dashboard</span>
+                                    </a>
+                                    <div
+                                        className="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">5
+                                    </div>
+                                </li>
+                            </Link>
+                            <Link href={'#'}>
+                                <li className="flex w-full justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          className="icon icon-tabler icon-tabler-puzzle" width="18"
                                          height="18" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
@@ -215,11 +216,11 @@ const Sidebar = ({
                                             d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"></path>
                                     </svg>
                                     <span className="text-sm ml-2">Products</span>
-                                </a>
-                                <div
-                                    className="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">8
-                                </div>
-                            </li>
+                                    <div
+                                        className="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">8
+                                    </div>
+                                </li>
+                            </Link>
                             <li className="flex w-full justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
                                 <a href="#"
                                    className="flex items-center focus:outline-none focus:ring-2 focus:ring-white">

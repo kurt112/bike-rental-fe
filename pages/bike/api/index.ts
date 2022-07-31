@@ -33,6 +33,25 @@ export const getBikeData = async (id:any) => {
     return data.data.bikeById;
 }
 
+export const handleDeleteBike = async (id: any) => {
+
+    const result = confirm("Are you sure you want to delete this bike?");
+
+    if(!result) return;
+
+    const params = new URLSearchParams();
+    params.append('id',id);
+
+    await axiosSubmit.delete('bike',{
+        params
+    }).then(ignored => {
+        alert("Bike Delete Success");
+        history.back();
+    }).catch(error => {
+        console.log(error)
+    });
+}
+
 export const getBikes = async (search:any, page:any, size:any, status:any) => {
     const query = () => {
         return {

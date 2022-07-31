@@ -1,10 +1,11 @@
 import {NextPage} from "next";
 import Head from "next/head";
 import Back from "../../../components/layout/back";
-import {getCustomerData, handleSubmitCustomer} from "../api";
+import {getCustomerData, handleDeleteCustomer, handlePatchCustomer, handleSubmitCustomer} from "../api";
 import {Fragment, useState} from "react";
 import {CustomerCreate} from "../../../types/customer";
 import moment from "moment";
+import Link from "next/link";
 
 const EditCustomer: NextPage = ({currentCustomer}: any) => {
 
@@ -22,15 +23,56 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
         currentCustomer.user = currentUser;
         setCustomer(currentCustomer);
     }
+    const [isEdit, setEdit] = useState(false);
 
-    console.log(user);
+    const handleEdit = () => {
+        setEdit(!isEdit);
+    }
+
     return <Fragment>
         <Head>
             <title>Edit Customer</title>
             <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
         </Head>
         <div className="h-full font-sans antialiased bg-white w-full overflow-y-auto">
-            <Back/>
+            <div className="w-full bg-green shadow z-1 flex justify-between p-2">
+                <Back/>
+                <button type="button"
+                        onClick={() => handleDeleteCustomer(currentCustomer.id)}
+                        className="text-red-700 hover:bg-red-700 hover:text-white  border-2 border-red-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    <span className="sr-only">Delete</span>
+                </button>
+
+                {
+                    isEdit ?
+                        <button onClick={handleEdit} type="button"
+                                className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg className="h-6 mr-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                            View
+                        </button> :
+                        <button type="button"
+                                onClick={handleEdit}
+                                className="rounded-full text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                            </svg>
+                            <span className="sr-only">Edit</span>
+                        </button>
+                }
+            </div>
             <br/>
             <div className="bg-grey-lightest">
                 <div className="mx-auto">
@@ -153,7 +195,7 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                     />
                                 </div>
                             </div>
-                            <button onClick={(e) => handleSubmitCustomer(e,customer)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                            <button onClick={(e) => handlePatchCustomer(e,customer)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                 Submit
                             </button>
                         </div>
