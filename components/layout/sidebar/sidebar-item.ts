@@ -8,7 +8,7 @@ const sidebarItem:Array<sidebar> = [
     {icon: performance,link:'/customer?search=&page=0&size=10&status=0',name: 'Customer'},
     {icon: dashboard,link:'/profile?search=&page=0&size=10&status=0',name: 'Receipt'},
     {icon: dashboard,link:'/employee?search=&page=0&size=10&status=0',name: 'Employee'},
-    {icon: dashboard,link:'/settings?search=&page=0&size=10&status=0',name: 'Settings'},
+    {icon: dashboard,link:'/store',name: 'Store'},
 ]
 
 export default sidebarItem;

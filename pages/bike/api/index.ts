@@ -6,7 +6,8 @@ export const handleSubmit = async (e:SyntheticEvent, bike:BikeObject) => {
     // e.preventDefault();
 
     await axiosSubmit.post('bike',bike).then(e => {
-        console.log(e);
+        alert('Create Bike Success');
+        location.reload();
     }).catch(error => {
         console.log(error)
     });

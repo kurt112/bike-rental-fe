@@ -103,11 +103,11 @@ const createBike: NextPage = () => {
                                     </div>
                                     {/*<div className="w-1/4 ml-1">*/}
                                     {/*    <label className="block text-grey-darker text-sm font-bold mb-2"*/}
-                                    {/*           htmlFor="last_name">Current Store</label>*/}
+                                    {/*           htmlFor="last_name">Current Index</label>*/}
                                     {/*    <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"*/}
                                     {/*           id="last_name"*/}
                                     {/*           type="text"*/}
-                                    {/*           placeholder="Current Store"*/}
+                                    {/*           placeholder="Current Index"*/}
                                     {/*    />*/}
                                     {/*</div>*/}
                                 </div>
