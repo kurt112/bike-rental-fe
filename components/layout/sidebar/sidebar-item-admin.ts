@@ -2,7 +2,7 @@ import {sidebar} from "../../../types/sidebar";
 import bikeIcon from './icon/test.svg'
 import dashboard from './icon/dashboard.svg'
 import performance from './icon/dashboard.svg'
-const sidebarItem:Array<sidebar> = [
+const sidebarItemAdmin:Array<sidebar> = [
     {icon: bikeIcon,link:'#',name: 'Dashboard'},
     {icon: performance,link:'/bike?search=&page=0&size=10&status=0',name: 'Bike'},
     {icon: performance,link:'/customer?search=&page=0&size=10&status=0',name: 'Customer'},
@@ -11,4 +11,6 @@ const sidebarItem:Array<sidebar> = [
     {icon: dashboard,link:'/store',name: 'Store'},
 ]
 
-export default sidebarItem;
+export default sidebarItemAdmin;
+
+

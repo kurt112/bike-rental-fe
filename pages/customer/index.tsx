@@ -12,8 +12,6 @@ const customer:NextPage = ({customers}: any) => {
     const router = useRouter()
     const {search, page, size, status} = router.query
 
-    console.log(customers);
-
     const [pagination, setPagination] = useState<pagination>({search, page, size, status})
 
     const handleSearch = (data: string) => {
@@ -191,8 +189,6 @@ export const getServerSideProps = async (context: any) => {
     const {search, page, size, status} = context.query;
 
     const customers = await getCustomers(search, page, size, status);
-
-    console.log("wew");
 
     if (!customers) {
         return {

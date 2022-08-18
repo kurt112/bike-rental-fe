@@ -19,7 +19,10 @@ export const getStoreData = async (id:any) => {
                                 id,  
                                 longitude,
                                 name,
-                                latitude
+                                latitude,
+                                radius,
+                                scopeColor,
+                                scopeEdgeColor
                              }
                         }`
         }

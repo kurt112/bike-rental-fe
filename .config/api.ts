@@ -9,3 +9,7 @@ export const graphQl = axios.create({
 export const axiosSubmit = axios.create({
     baseURL:`${host_url}/`
 })
+
+export const axiosCreate = axios.create({
+    baseURL:`${host_url}/`
+})

@@ -1,15 +1,18 @@
 import {NextPage} from "next";
-import {Fragment, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import Head from "next/head";
 import {BikeObject} from "../../../types/bike";
 import {getBikeData, handleDeleteBike, handleSubmit} from "../api";
 import Back from "../../../components/layout/back";
+import {axiosCreate} from "../../../.config/api";
 
 const EditBike: NextPage = ({bike}: any) => {
 
     const [newBike,setNewBike] = useState<BikeObject>({...bike});
 
     const [isEdit, setEdit] = useState(false);
+
+    const [pictures, setPictures] = useState<any>(null);
 
     const handleEdit = () => {
 
@@ -23,15 +26,50 @@ const EditBike: NextPage = ({bike}: any) => {
     }
 
 
+    useEffect(() => {
+
+         images().then(e => {
+             setPictures(e);
+         })
+    }, []);
+
+    const images = async () => {
+        const currentPictures:any = [];
+
+        const getImage =async () => await Promise.all(
+            await bike.bikePictures.map((pic:any) => {
+
+                const params = new URLSearchParams();
+                params.append("id", pic.id);
+
+                const getImage = async () => {
+                    return await axiosCreate.get("bike/photo", {params});
+                }
+
+                getImage().then(e => {
+                    const picture = e.data.picture;
+                    currentPictures.push(picture);
+                })
+
+            })
+        );
+
+        await getImage().then(ignored => {});
+
+        return currentPictures;
+    }
+
     return (
         <Fragment>
             <Head>
-                <title>Create Bike</title>
+                <title>Edit Bike</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
             </Head>
             <div className="h-full font-sans antialiased bg-white w-full overflow-y-auto">
                 <div className="w-full bg-green shadow z-1 flex justify-between p-2">
-                    <Back/>
+                    <div className="w-full bg-green shadow z-1 flex justify-between p-2">
+                        <Back/>
+                    </div>
                     <button type="button"
                             onClick={() => handleDeleteBike(bike.id)}
                             className="text-red-700 hover:bg-red-700 hover:text-white  border-2 border-red-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center">
@@ -190,6 +228,15 @@ const EditBike: NextPage = ({bike}: any) => {
                                         </label>
                                     </div>
                                     <br/>
+
+                                    {
+                                        pictures?.map((e:any) => {
+                                            return  <img src={`data:image/png;base64,${e.blob}`} key={e.blob}/>
+                                        })
+                                    }
+                                    {
+                                        pictures === null? <img src={pictures} width={100} height={100}/>:<p>hotdog</p>
+                                    }
                                     {
                                         isEdit? <button onClick={(e) => handleSubmit(e,newBike)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                             Submit

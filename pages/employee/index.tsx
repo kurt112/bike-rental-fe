@@ -3,14 +3,17 @@ import Head from "next/head";
 import {Fragment, useState} from "react";
 import {useRouter} from "next/router";
 import {pagination} from "../../types/pagination";
-import {graphQl} from "../../.config/api";
 import Link from "next/link";
-import {bikeColumns} from "../../types/bike";
+import {formatDate} from "../../utils/date";
+import {employeeColumns} from "../../types/employee";
+import {getEmployees} from "./api";
 
-const employee:NextPage = ({bikes}: any) => {
+const employee:NextPage = ({employees}: any) => {
 
     const router = useRouter()
     const {search, page, size, status} = router.query
+
+    console.log(employees);
 
     const [pagination, setPagination] = useState<pagination>({search, page, size, status})
 
@@ -25,7 +28,7 @@ const employee:NextPage = ({bikes}: any) => {
     return (
         <Fragment>
             <Head>
-                <title>Create Employee</title>
+                <title>Employees</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
             <div className="overflow-x-auto relative shadow-md sm:rounded-lg mr-2 ml-2 mt-5">
@@ -70,7 +73,7 @@ const employee:NextPage = ({bikes}: any) => {
                         className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         {
-                            bikeColumns?bikeColumns.map((column, key) => {
+                            employeeColumns?employeeColumns.map((column, key) => {
                                 return (
                                     <th scope="col" className="py-3 px-6" key={key}>
                                         {column}
@@ -84,24 +87,33 @@ const employee:NextPage = ({bikes}: any) => {
                     <tbody>
 
                     {
-                        bikes?bikes.map((bike: any) => {
+                        employees?employees.map((employee: any) => {
+                            const {user} = employee;
                             return (
-                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={bike.id}>
+                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>
                                     <th scope="row"
                                         className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {bike.name}
+                                        {user.firstName}
                                     </th>
                                     <td className="py-4 px-6">
-                                        {bike.description}
+                                        {user.lastName}
                                     </td>
                                     <td className="py-4 px-6">
-                                        {bike.price}
+                                        {user.email}
                                     </td>
                                     <td className="py-4 px-6">
-                                        {bike.quantity}
+                                        {user.cellphone}
+                                    </td>
+
+                                    <td className="py-4 px-6">
+                                        {user.birthdate? formatDate(user.birthdate): 'NA'}
                                     </td>
                                     <td className="py-4 px-6">
-                                        <a href="/bike/profile"
+                                        {user.gender}
+                                    </td>
+
+                                    <td className="py-4 px-6">
+                                        <a href={`/employee/edit?id=${employee.id}`}
                                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                     </td>
                                 </tr>
@@ -170,25 +182,10 @@ export default  employee
 
 export const getServerSideProps = async (context: any) => {
     const {search, page, size, status} = context.query;
-    const query = () => {
-        return {
-            query: `query{
-                        bikes(search:"${search}",page:${page}, size: ${size}, status:${status}) {  
-                                brand,
-                                price,
-                                name,
-                                quantity,
-                                id,
-                                description
-                             }
-                        }`
-        }
-    };
-    const {data} = await graphQl.post('', query());
 
-    const bikes = data.data.bikes;
+    const employees = await getEmployees(search, page, size, status);
 
-    if (!data) {
+    if (!employees) {
         return {
             notFound: true,
         };
@@ -196,7 +193,7 @@ export const getServerSideProps = async (context: any) => {
 
     return {
         props: {
-            bikes,
+            employees,
         },
     };
 };

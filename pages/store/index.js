@@ -1,28 +1,43 @@
-import {NextPage} from "next";
 import Head from "next/head";
 import Back from "../../components/layout/back";
 import {Fragment, useState} from "react";
-import {Store} from "../../types/store";
 import {getStoreData, handleSubmit} from "./api";
+import {CircleF, GoogleMap, LoadScript, MarkerF} from "@react-google-maps/api";
 
-
-
-const EditStore:NextPage = ({store}:any) => {
+const EditStore = ({store}) => {
 
     const [isEdit, setEdit] = useState(false);
-    const [newStore,setNewStore] = useState<Store>({
+    const [newStore,setNewStore] = useState ({
         ...store
     })
 
+    const containerStyle = {
+        width: '50%',
+        height: '50%'
+    };
+
+    const center = {
+        lat: 14.787962,
+        lng: 121.098702
+    };
     const handleEdit = () => {
         setEdit(!isEdit);
     }
 
-    const changeStore = (data:string, target:string) => {
-        const currentStore:any = {...newStore}
+    const changeStore = (data, target) => {
+        const currentStore = {...newStore}
         currentStore[target] = data;
         setNewStore(currentStore);
     }
+
+    // const Marker = props => {
+    //     return <div className="SuperAwesomePin">hotdogkjahsdkjfh</div>
+    // }
+
+    const _mapClick = (map) => {
+        console.log(map);
+    }
+
     return <Fragment>
         <Head>
             <title>View Store</title>
@@ -83,19 +98,6 @@ const EditStore:NextPage = ({store}:any) => {
                                 </div>
                             </div>
                             <div className="flex mb-4">
-                                <div className="w-1/2 mr-1">
-                                    <label className="block text-grey-darker text-sm font-bold mb-2"
-                                           htmlFor="first_name">Longitude</label>
-                                    <input
-                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                        id="first_name"
-                                        type="number"
-                                        placeholder="Enter Longitude"
-                                        disabled={!isEdit}
-                                        value={newStore.longitude}
-                                        onChange={(e) => changeStore(e.target.value,'longitude')}
-                                    />
-                                </div>
                                 <div className="w-1/2 ml-1">
                                     <label className="block text-grey-darker text-sm font-bold mb-2"
                                            htmlFor="last_name">Latitude</label>
@@ -109,9 +111,83 @@ const EditStore:NextPage = ({store}:any) => {
                                         onChange={(e) => changeStore(e.target.value,'latitude')}
                                     />
                                 </div>
-                            </div>
-                            <div className="flex mb-4">
 
+                                <div className="w-1/2 mr-1">
+                                    <label className="block text-grey-darker text-sm font-bold mb-2"
+                                           htmlFor="first_name">Longitude</label>
+                                    <input
+                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                        id="first_name"
+                                        type="number"
+                                        placeholder="Enter Longitude"
+                                        disabled={!isEdit}
+                                        value={newStore.longitude}
+                                        onChange={(e) => changeStore(e.target.value,'longitude')}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex mb-4">
+                                <div className="w-1/2 ml-1">
+                                    <label className="block text-grey-darker text-sm font-bold mb-2"
+                                           htmlFor="last_name">Scope Color</label>
+                                    <input
+                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                        id="last_name"
+                                        disabled={!isEdit}
+                                        type="text"
+                                        placeholder="Enter ScopeColor"
+                                        value={newStore.scopeColor}
+                                        onChange={(e) => changeStore(e.target.value,'scopeColor')}
+                                    />
+                                </div>
+
+                                <div className="w-1/2 mr-1">
+                                    <label className="block text-grey-darker text-sm font-bold mb-2"
+                                           htmlFor="first_name">Scope Edge Color</label>
+                                    <input
+                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                        id="first_name"
+                                        type="text"
+                                        placeholder="Enter ScopeEdge Color"
+                                        disabled={!isEdit}
+                                        value={newStore.scopeEdgeColor}
+                                        onChange={(e) => changeStore(e.target.value,'scopeEdgeColor')}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex mb-4">
+                                <div className="w-full mr-1">
+                                    <label className="block text-grey-darker text-sm font-bold mb-2"
+                                           htmlFor="first_name">Radius</label>
+                                    <input
+                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                        id="first_name"
+                                        type="text"
+                                        placeholder="Store Name"
+                                        disabled={!isEdit}
+                                        value={newStore.radius}
+                                        onChange={(e) => changeStore(e.target.value,'radius')}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex mb-4">
+                                <LoadScript googleMapsApiKey={"AIzaSyDemKVk7XsaxU-Vt2jmE1TcRv1rOlL_SNA"}>
+                                    <div className="w-full h-screen">
+                                        <GoogleMap
+                                            mapContainerStyle={{width: '100%', height:'100%'}}
+                                            center={{lng: +newStore.longitude, lat:+newStore.latitude }}
+                                            zoom={13.4}
+                                            onClick={(e) => _mapClick(e)}
+                                        >
+                                            <MarkerF label={newStore.name} title={'Current Store'} position={{lng: +newStore.longitude, lat:+newStore.latitude }}/>
+                                            <CircleF radius={+newStore.radius} options={{strokeColor:newStore.scopeEdgeColor,center:{lng: +newStore.longitude, lat:+newStore.latitude},fillColor:newStore.scopeColor}}/>
+
+                                        </GoogleMap>
+                                    </div>
+                                </LoadScript>
                             </div>
                             {
                                 isEdit? <button onClick={(e) => handleSubmit(e,newStore)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
@@ -128,7 +204,7 @@ const EditStore:NextPage = ({store}:any) => {
 
 export default EditStore;
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async (context) => {
 
     const store = await getStoreData(1);
 

@@ -4,7 +4,6 @@ import {BikeObject} from "../../../types/bike";
 
 export const handleSubmit = async (e:SyntheticEvent, bike:BikeObject) => {
     // e.preventDefault();
-
     await axiosSubmit.post('bike',bike).then(e => {
         alert('Create Bike Success');
         location.reload();
@@ -24,7 +23,11 @@ export const getBikeData = async (id:any) => {
                                 name,
                                 quantity,
                                 id,
-                                description
+                                description,
+                                bikePictures{
+                                    id,
+                                    image
+                                }
                              }
                         }`
         }
@@ -74,3 +77,23 @@ export const getBikes = async (search:any, page:any, size:any, status:any) => {
 
     return data.data.bikes;
 }
+
+// for photo
+export const handleUploadPhoto = async (e:SyntheticEvent, formData:any) => {
+    // e.preventDefault();
+    console.log("wew")
+    console.log(formData);
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+
+    await axiosSubmit.post('bike/photo',formData,config).then(e => {
+        alert('Create Bike Success');
+        // location.reload();
+    }).catch(error => {
+        console.log(error)
+    });
+}
+

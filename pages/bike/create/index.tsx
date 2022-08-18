@@ -2,7 +2,7 @@ import {NextPage} from "next";
 import {Fragment, useState} from "react";
 import Head from "next/head";
 import {BikeObject} from "../../../types/bike";
-import {handleSubmit} from "../api";
+import {handleSubmit, handleUploadPhoto} from "../api";
 import Back from "../../../components/layout/back";
 
 const createBike: NextPage = () => {
@@ -10,12 +10,19 @@ const createBike: NextPage = () => {
     const [images, setImages] = useState<Array<string>>();
     const [bike,setBike] = useState<BikeObject>({brand:'',size:0,name:'',description:'',price:0,quantity:0});
 
-    const uploadImage = (e: any) => {
+    const uploadImage = async (e: any) => {
         const {files} = e.target;
         const currentImages: Array<string> = [];
+        const formData = new FormData();
         Object.keys(files).forEach(i => {
+            formData.append('photo',files[i]);
+            // formData.append()
+            handleUploadPhoto(e,formData);
             currentImages.push(URL.createObjectURL(files[i]));
         });
+        console.log('before data')
+        console.log(formData);
+
         setImages(currentImages);
     }
 
@@ -32,7 +39,9 @@ const createBike: NextPage = () => {
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
             <div className="h-full font-sans antialiased bg-white w-full overflow-y-auto">
-                <Back/>
+                <div className="w-full bg-green shadow z-1 flex justify-between p-2">
+                    <Back/>
+                </div>
                 <br/>
                 <div className="bg-grey-lightest">
                     <div className="mx-auto">
@@ -154,7 +163,7 @@ const createBike: NextPage = () => {
                                         {
                                             images ? images.map((image, i) => {
                                                 return (
-                                                    <div className="w-full rounded">
+                                                    <div className="w-full rounded" key={i}>
                                                         <img alt={'bike images'} key={i} src={image} />
                                                     </div>
                                                 )

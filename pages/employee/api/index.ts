@@ -1,55 +1,56 @@
 import {SyntheticEvent} from "react";
 import {axiosSubmit, graphQl} from "../../../.config/api";
-import {CustomerCreate} from "../../../types/customer";
-import moment from "moment";
 import {path} from "../../../utils/api/endpoint";
+import moment from "moment/moment";
+import {EmployeeCreate} from "../../../types/employee";
 
-export const handleSubmitCustomer = async (e:SyntheticEvent, customer:CustomerCreate) => {
-    await axiosSubmit.post(path.customer,customer).then(ignored => {
-        alert("Customer Create Success");
+export const handleSubmitEmployee = async (e:SyntheticEvent, employee:EmployeeCreate) => {
+    await axiosSubmit.post(path.employee,employee).then(ignored => {
+        alert("Employee Create Success");
         location.reload();
     }).catch(error => {
         console.log(error)
     });
 }
 
-export const handlePatchCustomer = async (e:SyntheticEvent, customer:CustomerCreate) => {
+export const handlePatchEmployee = async (e:SyntheticEvent, employee:EmployeeCreate) => {
 
-    if(customer.user !== undefined){
-        customer.user.birthdate = customer.user.birthdate?moment(customer.user.birthdate): moment();
+    if(employee.user !== undefined){
+        employee.user.birthdate = employee.user.birthdate?moment(employee.user.birthdate): moment();
     }
 
-    await axiosSubmit.patch(path.customer,customer).then(ignored => {
-        alert("Customer Update Success");
+    await axiosSubmit.patch(path.employee,employee).then(ignored => {
+        alert("Employee Update Success");
         location.reload();
     }).catch(error => {
         console.log(error)
     });
 }
 
-export const handleDeleteCustomer = async (id: any) => {
+export const handleDeleteEmployee = async (id: any) => {
 
-    const result = confirm("Are you sure you want to delete this customer?");
+    const result = confirm("Are you sure you want to delete this employee?");
 
     if(!result) return;
 
     const params = new URLSearchParams();
     params.append('id',id);
 
-    await axiosSubmit.delete(path.customer,{
+    await axiosSubmit.delete(path.employee,{
         params
     }).then(ignored => {
-        alert("Customer Delete Success");
+        alert("Employee Delete Success");
         history.back();
     }).catch(error => {
         console.log(error)
     });
 }
-export const getCustomerData = async (id:any) => {
+
+export const getEmployeeData = async (id:any) => {
     const query = () => {
         return {
             query: `query{
-                        customerById(id:${id}) {  
+                        employeeById(id:${id}) {  
                                 id,
                                 user{
                                    id,
@@ -71,13 +72,14 @@ export const getCustomerData = async (id:any) => {
         }
     };
     const {data} = await graphQl.post('', query());
-    return data.data.customerById;
+    return data.data.employeeById;
 }
-export const getCustomers = async (search:any, page:any, size:any, status:any) => {
+
+export const getEmployees = async (search:any, page:any, size:any, status:any) => {
     const query = () => {
         return {
             query: `query{
-                        customers(search:"${search}",page:${page}, size: ${size}, status:${status}) {  
+                        employees(search:"${search}",page:${page}, size: ${size}, status:${status}) {  
                                 user{
                                    id,
                                    email,
@@ -93,13 +95,7 @@ export const getCustomers = async (search:any, page:any, size:any, status:any) =
                                    isAccountNotLocked,
                                    isCredentialNotExpired
                                 },
-                                 id,
-                                 toPay,
-                                 isMember,
-                                 lastBilled,
-                                 nextBilled,
-                                 createdAt,
-                                 updatedAt
+                                 id
                              }
                         }`
         }
@@ -107,5 +103,5 @@ export const getCustomers = async (search:any, page:any, size:any, status:any) =
 
     const {data} = await graphQl.post('', query());
 
-    return data.data.customers;
+    return data.data.employees;
 }

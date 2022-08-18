@@ -1,11 +1,11 @@
 import {NextPage} from "next";
 import Head from "next/head";
 import Back from "../../../components/layout/back";
-import {getCustomerData, handleDeleteCustomer, handlePatchCustomer, handleSubmitCustomer} from "../api";
+import {getCustomerData, handleDeleteCustomer, handlePatchCustomer} from "../api";
 import {Fragment, useState} from "react";
 import {CustomerCreate} from "../../../types/customer";
 import moment from "moment";
-import Link from "next/link";
+import {UserCreate} from "../../../types/user";
 
 const EditCustomer: NextPage = ({currentCustomer}: any) => {
 
@@ -91,6 +91,7 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                         placeholder="First Name"
                                         value={user.firstName? user.firstName:''}
                                         onChange={(e) => changeUser(e.target.value, 'firstName')}
+                                        disabled={!isEdit}
                                     />
                                 </div>
                                 <div className="w-1/3 mr-1">
@@ -100,6 +101,7 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                         id="middle-name"
                                         type="text"
+                                        disabled={!isEdit}
                                         placeholder="Middle Name"
                                         value={user.middleName?user.middleName:''}
                                         onChange={(e) => changeUser(e.target.value, 'middleName')}
@@ -114,6 +116,7 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                         id="last_name"
                                         type="text"
+                                        disabled={!isEdit}
                                         placeholder="Last Name"
                                         value={user.lastName?user.lastName:''}
                                         onChange={(e) => changeUser(e.target.value, 'lastName')}
@@ -128,6 +131,7 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                     <input
                                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                         type="email"
+                                        disabled={!isEdit}
                                         placeholder="Ex. Juan@email.com"
                                         value={user.email?user.email:''}
                                         onChange={(e) => changeUser(e.target.value, 'email')}
@@ -139,6 +143,7 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                     <input
                                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                         type="password"
+                                        disabled={!isEdit}
                                         placeholder="Password"
                                         value={user.password?user.password:''}
                                         onChange={(e) => changeUser(e.target.value, 'password')}
@@ -150,6 +155,7 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                     <input
                                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                         type="password"
+                                        disabled={!isEdit}
                                         placeholder="Retype Password"
                                         value={reTypePassword}
                                         onChange={(e) => setReTypePassword(e.target.value)}
@@ -162,6 +168,7 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                     <label className="block text-grey-darker text-sm font-bold mb-2"
                                            htmlFor="gender">Gender</label>
                                     <select  id="gender"
+                                             disabled={!isEdit}
                                              value={user.gender?user.gender:''}
                                              onChange={(e) => changeUser(e.target.value,'gender')}
                                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -173,19 +180,20 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                     <label className="block text-grey-darker text-sm font-bold mb-2"
                                            htmlFor="last_name">Birthdate</label>
                                     <input
+                                        disabled={!isEdit}
                                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                         type="date"
                                         value={user.birthdate? moment(user.birthdate).format('YYYY-MM-DD').toString():new Date().toString()}
                                         onChange={(e) => changeUser(e.target.value, 'birthdate')}
                                     />
                                 </div>
-                                <p>{}</p>
                                 <div className="w-1/3 ml-1">
                                     <label className="block text-grey-darker text-sm font-bold mb-2"
                                            htmlFor="cellphone">
                                         Cellphone
                                     </label>
                                     <input
+                                        disabled={!isEdit}
                                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                         id="cellphone"
                                         type="text"
@@ -195,9 +203,12 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                     />
                                 </div>
                             </div>
-                            <button onClick={(e) => handlePatchCustomer(e,customer)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
-                                Submit
-                            </button>
+
+                            {
+                                isEdit?<button onClick={(e) => handlePatchCustomer(e,customer)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                                    Submit
+                                </button>:null
+                            }
                         </div>
                     </div>
 
