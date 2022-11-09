@@ -1,17 +1,36 @@
-import {useState} from "react";
+import {SyntheticEvent, useState} from "react";
 import {UserLogin} from "../../types/credential";
+import {axiosSubmit} from "../../.config/api";
+import {path} from "../../utils/api/endpoint";
 
-const Login = () => {
+const Login = ({
+    setIsLogin,
+    setRole
+               }: any) => {
 
     const [cred,setCred] = useState<UserLogin>({
         username: '',
         password: ''
     });
 
-    const handlerChange = (value: string, key:any) => {
+    const handlerChange = (value: string, key:string) => {
         const newCred:any = {...cred};
         newCred[key] = value;
         setCred(newCred)
+    }
+
+    const _handleLogin = async (event: SyntheticEvent) =>{
+        event.preventDefault();
+
+        await axiosSubmit.post(`${path.auth}/login`, cred).then(result => {
+            const {data} = result;
+            const {token, user} = data;
+            delete user.password;
+            localStorage.setItem('token',token);
+            localStorage.setItem('user',JSON.stringify(user))
+            setIsLogin(true);
+            setRole(user.userRole);
+        })
     }
 
     return (
@@ -78,6 +97,7 @@ const Login = () => {
                                 className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
                                 data-mdb-ripple="true"
                                 data-mdb-ripple-color="light"
+                                onClick={_handleLogin}
                             >
                                 Sign in
                             </button>

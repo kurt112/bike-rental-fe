@@ -1,3 +1,3 @@
-interface PictureType {
+export interface PictureType {
 
 }

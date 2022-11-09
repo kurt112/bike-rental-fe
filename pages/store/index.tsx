@@ -3,8 +3,9 @@ import Back from "../../components/layout/back";
 import {Fragment, useState} from "react";
 import {getStoreData, handleSubmit} from "./api";
 import {CircleF, GoogleMap, LoadScript, MarkerF} from "@react-google-maps/api";
+import {NextPage} from "next";
 
-const EditStore = ({store}) => {
+const EditStore:NextPage = ({store}:any) => {
 
     const [isEdit, setEdit] = useState(false);
     const [newStore,setNewStore] = useState ({
@@ -24,7 +25,7 @@ const EditStore = ({store}) => {
         setEdit(!isEdit);
     }
 
-    const changeStore = (data, target) => {
+    const changeStore = (data:any, target:any) => {
         const currentStore = {...newStore}
         currentStore[target] = data;
         setNewStore(currentStore);
@@ -34,7 +35,7 @@ const EditStore = ({store}) => {
     //     return <div className="SuperAwesomePin">hotdogkjahsdkjfh</div>
     // }
 
-    const _mapClick = (map) => {
+    const _mapClick = (map:any) => {
         console.log(map);
     }
 
@@ -204,7 +205,7 @@ const EditStore = ({store}) => {
 
 export default EditStore;
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = async (context:any) => {
 
     const store = await getStoreData(1);
 
