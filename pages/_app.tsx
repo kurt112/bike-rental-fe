@@ -12,12 +12,16 @@ function MyApp({Component, pageProps}: AppProps) {
     const [isLogin, setLogin] = useState(false);
     const [role, setRole] = useState('');
     const [sidebarItem, setSidebarItem] = useState<Array<sidebar>>([])
+    const [isLoading, setIsLoading] = useState(true);
+
 
     useEffect(() => {
+        setIsLoading(true);
         const token: string | null = localStorage.getItem('token');
         let user: any | null = localStorage.getItem('user');
-        if(token == null || user == null){
+        if (token == null || user == null) {
             localStorage.clear();
+            setIsLoading(false);
             return;
         }
 
@@ -25,9 +29,11 @@ function MyApp({Component, pageProps}: AppProps) {
 
         setLogin(true);
         setRole(user.userRole);
+        setIsLoading(false);
     }, []);
 
     useEffect(() => {
+        setIsLoading(true);
         switch (role) {
             case 'customer':
                 setSidebarItem(SidebarItemClient);
@@ -38,16 +44,14 @@ function MyApp({Component, pageProps}: AppProps) {
             default:
                 break;
         }
+        setIsLoading(false);
     }, [role, isLogin])
 
     return <div className="h-screen overflow-hidden flex items-center justify-center" style={{background: '#edf2f7'}}>
         {
-            isLogin?
-
-                <Sidebar sidebars={sidebarItem}>
+            isLogin ? <Sidebar sidebars={sidebarItem}>
                     <Component {...pageProps} />
                 </Sidebar> :
-
                 <Login setIsLogin={setLogin}
                        setRole={setRole}
                 />

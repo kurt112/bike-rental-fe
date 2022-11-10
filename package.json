@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@chakra-ui/react": "^2.3.7",
     "@react-google-maps/api": "^2.12.1",
     "@types/google-map-react": "^2.1.7",
     "autoprefixer": "^10.4.7",
