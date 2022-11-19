@@ -1,37 +1,27 @@
 import {NextPage} from "next";
+import {graphQl} from "../../../.config/api";
 import Head from "next/head";
-import {Fragment, useState} from "react";
-import {graphQl} from "../../.config/api";
-import {useRouter} from "next/router";
-import {pagination} from "../../types/pagination";
-import Link from "next/link";
-import {bikeColumns} from "../../types/bike";
-import {recieptColumn} from "../../types/receipt";
+import {Fragment} from "react";
+import {requestedColumn} from "../../../types/requested";
 
-const receipt:NextPage = ({bikes}: any) => {
+const Requested: NextPage = ({bikes}:any) => {
 
-    const router = useRouter()
-    const {search, page, size, status} = router.query
+    const _handleCancel = () => {
 
-    const [pagination, setPagination] = useState<pagination>({search, page, size, status})
+    }
 
-    const handleSearch = (data: string) => {
-        const tempPagination = {...pagination};
+    const _handleApprove = () => {
 
-        tempPagination.search = data;
-
-        setPagination(tempPagination);
     }
 
     return (
         <Fragment>
             <Head>
-                <title>Receipts</title>
+                <title>Bike Requested</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
             <div className="overflow-x-auto relative shadow-md sm:rounded-lg mr-2 ml-2 mt-5">
                 <div className="pb-4 bg-white dark:bg-gray-900 pt-2 pl-2 flex justify-between p-4">
-                    
                     <div id="right">
                         <label htmlFor="table-search" className="sr-only">Search</label>
                         <div className="relative mt-1 absolute">
@@ -44,8 +34,8 @@ const receipt:NextPage = ({bikes}: any) => {
                                 </svg>
                             </div>
                             <input type="text" id="table-search"
-                                   value={pagination.search}
-                                   onChange={(e) => handleSearch(e.target.value)}
+                                // value={pagination.search}
+                                // onChange={(e) => handleSearch(e.target.value)}
                                    className="p-2 pl-10 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                    placeholder="Search Anything"/>
                             <button type="submit"
@@ -59,7 +49,7 @@ const receipt:NextPage = ({bikes}: any) => {
                         className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         {
-                            recieptColumn?recieptColumn.map((column, key) => {
+                            requestedColumn?requestedColumn.map((column, key) => {
                                 return (
                                     <th scope="col" className="py-3 px-6" key={key}>
                                         {column}
@@ -74,24 +64,40 @@ const receipt:NextPage = ({bikes}: any) => {
 
                     {
                         bikes?bikes.map((bike: any) => {
+                            const {assignedCustomer} = bike;
+                            const {user} = assignedCustomer;
+                            const {firstName, lastName,cellphone,email} = user
                             return (
-                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={bike.id}>
+                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>
                                     <th scope="row"
                                         className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {bike.name}
+                                        {firstName}
                                     </th>
                                     <td className="py-4 px-6">
-                                        {bike.description}
+                                        {lastName}
+                                    </td>
+                                    <td className="py-4 px-6">
+                                        {cellphone}
+                                    </td>
+                                    <td className="py-4 px-6">
+                                        {email}
+                                    </td>
+                                    <td className="py-4 px-6">
+                                        No value
+                                    </td>
+                                    <td className="py-4 px-6">
+                                        No Value
+                                    </td>
+
+                                    <td className="py-4 px-6">
+                                        {bike.name}
                                     </td>
                                     <td className="py-4 px-6">
                                         {bike.price}
                                     </td>
                                     <td className="py-4 px-6">
-                                        {bike.quantity}
-                                    </td>
-                                    <td className="py-4 px-6">
-                                        <a href="/bike/profile"
-                                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
+                                        <a href={`/employee/edit?id=${user.id}`}
+                                           className="font-medium text-green-600 dark:text-blue-500 hover:underline">Approve</a>
                                     </td>
                                 </tr>
                             )
@@ -156,20 +162,28 @@ const receipt:NextPage = ({bikes}: any) => {
     )
 }
 
-export default receipt
+export default Requested
 
 export const getServerSideProps = async (context: any) => {
-    const {search, page, size, status} = context.query;
+    const {search, page, size} = context.query;
     const query = () => {
         return {
             query: `query{
-                        bikes(search:"${search}",page:${page}, size: ${size}, status:${status}) {  
+                        bikes(search:"${search}", page:${page}, size: ${size}, status: ${2}) {  
                                 brand,
                                 price,
                                 name,
                                 quantity,
                                 id,
-                                description
+                                description,
+                                assignedCustomer{
+                                    user{
+                                       firstName,
+                                       lastName,
+                                       cellphone,
+                                       email
+                                    }
+                                }
                              }
                         }`
         }
@@ -190,3 +204,4 @@ export const getServerSideProps = async (context: any) => {
         },
     };
 };
+

@@ -1,31 +1,117 @@
 import {NextPage} from "next";
-import {Fragment, useState} from "react";
-import { bikeColumns} from "../../types/bike";
+import React, {Fragment, useEffect, useState} from "react";
+import {bikeColumns} from "../../types/bike";
 import {pagination} from "../../types/pagination";
 import {useRouter} from 'next/router'
 import Link from "next/link";
 import Head from "next/head";
 import {getBikes} from "./api";
+import {axiosGet} from "../../.config/api";
 
 const Bike: NextPage = ({bikes}: any) => {
 
     const router = useRouter()
-    const {search, page, size, status} = router.query
+    const {search, page, size, status}: any = router.query
 
     const [pagination, setPagination] = useState<pagination>({search, page, size, status})
+
+    const [totalPages, setTotalPages] = useState<number[]>([]);
+    // @ts-ignore
+    const [bikeItem, setBikeItem] = useState(bikes)
 
     const handleSearch = (data: string) => {
         const tempPagination = {...pagination};
 
         tempPagination.search = data;
 
+        router.query.search = data;
+
         setPagination(tempPagination);
+    }
+
+    const searchClick = async () => {
+        router.query.search = search
+
+        router.push({
+                query: {...router.query}
+            },
+            undefined,
+            {}
+        ).then(ignored => {
+
+        })
+
+        await getBikes(search, page, size, status).then(result => {
+            setBikeItem(result);
+        });
+
+    }
+
+    const __handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+
+        if (e.code === 'Enter') {
+            searchClick().then(ignored => {
+            });
+        }
+    }
+
+    useEffect(() => {
+        axiosGet.get('bike/settings').then(result => {
+            let {data} = result;
+
+            data = data.data;
+            const {totalPages, currentPage} = data;
+
+            const tempTotalPages: Array<number> = [];
+
+            for (let i = 1; i <= totalPages; i++) {
+                tempTotalPages.push(i);
+            }
+
+            setTotalPages(tempTotalPages);
+
+            router.query.page = currentPage
+
+            router.push({
+                    query: {...router.query}
+                },
+                undefined,
+                {}
+            ).then(ignored => {
+
+            })
+        })
+
+    }, [bikeItem])
+
+    const __handleIncrementPage = async () => {
+        let tempPage: any = page;
+        tempPage++;
+        if (tempPage > totalPages) return;
+        await getBikes(search, tempPage, size, status).then(result => {
+            setBikeItem(result);
+        });
+    }
+
+    const __handleDecrementPage = async () => {
+        let tempPage: any = page;
+        tempPage--;
+        if (tempPage <= 0) return;
+        await getBikes(search, tempPage, size, status).then(result => {
+            setBikeItem(result);
+        });
+    }
+
+    const __handleManualPage = async (page:number) => {
+        await getBikes(search, page, size, status).then(result => {
+            setBikeItem(result);
+        });
     }
 
     return <Fragment>
         <Head>
             <title>Bikes</title>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
         </Head>
         <div className="overflow-x-auto relative shadow-md sm:rounded-lg mr-2 ml-2 mt-5">
             <div className="pb-4 bg-white dark:bg-gray-900 pt-2 pl-2 flex justify-between p-4">
@@ -55,11 +141,14 @@ const Bike: NextPage = ({bikes}: any) => {
                         </div>
                         <input type="text" id="table-search"
                                value={pagination.search}
+                               onKeyUp={(event) => __handleEnter(event)}
                                onChange={(e) => handleSearch(e.target.value)}
                                className="p-2 pl-10 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                placeholder="Search Anything"/>
-                        <button type="submit"
-                                className="text-white ml-2.5  right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search
+                        <button onClick={searchClick}
+                                type="submit"
+                                className="text-white ml-2.5  right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Search
                         </button>
                     </div>
                 </div>
@@ -69,13 +158,13 @@ const Bike: NextPage = ({bikes}: any) => {
                     className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     {
-                        bikeColumns?bikeColumns.map((column, key) => {
+                        bikeColumns ? bikeColumns.map((column, key) => {
                             return (
                                 <th scope="col" className="py-3 px-6" key={key}>
                                     {column}
                                 </th>
                             )
-                        }): null
+                        }) : null
                     }
 
                 </tr>
@@ -83,21 +172,27 @@ const Bike: NextPage = ({bikes}: any) => {
                 <tbody>
 
                 {
-                    bikes?bikes.map((bike: any) => {
+                    bikeItem ? bikeItem.map((bike: any) => {
+                        const {name, description, price, quantity, code, id} = bike;
                         return (
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={bike.id}>
+                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                key={id}>
                                 <th scope="row"
                                     className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {bike.name}
+                                    {code}
+                                </th>
+                                <th scope="row"
+                                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {name}
                                 </th>
                                 <td className="py-4 px-6">
-                                    {bike.description}
+                                    {description}
                                 </td>
                                 <td className="py-4 px-6">
-                                    {bike.price}
+                                    {price}
                                 </td>
                                 <td className="py-4 px-6">
-                                    {bike.quantity}
+                                    {quantity}
                                 </td>
                                 <td className="py-4 px-6">
                                     <a href={`/bike/edit?id=${bike.id}`}
@@ -105,18 +200,18 @@ const Bike: NextPage = ({bikes}: any) => {
                                 </td>
                             </tr>
                         )
-                    }): null
+                    }) : null
                 }
 
                 </tbody>
             </table>
             <nav className="flex justify-between items-center pt-4 pb-4" aria-label="Table navigation">
                             <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5">Showing <span
-                                className="font-semibold text-gray-900 dark:text-white">1-10</span> of <span
-                                className="font-semibold text-gray-900 dark:text-white">1000</span></span>
+                                className="font-semibold text-gray-900 dark:text-white">{page}</span> of <span
+                                className="font-semibold text-gray-900 dark:text-white">{totalPages.length === 0? 0: totalPages[totalPages.length - 1]}</span></span>
                 <ul className="inline-flex items-center -space-x-px mr-5">
-                    <li>
-                        <a href="#"
+                    <li className='cursor-pointer'>
+                        <a onClick={__handleDecrementPage}
                            className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                             <span className="sr-only">Previous</span>
                             <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -127,28 +222,22 @@ const Bike: NextPage = ({bikes}: any) => {
                             </svg>
                         </a>
                     </li>
-                    <li>
-                        <a href="#"
-                           className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page"
-                           className="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                    </li>
-                    <li>
-                        <a href="#"
+                    {
+                        totalPages.map((page) => {
+                            return (
+                                <li key={page} className={'cursor-pointer'}>
+                                    <a
+                                        onClick={() => __handleManualPage(page)}
+                                        className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        {page}
+                                    </a>
+                                </li>
+                            )
+                        })
+                    }
+
+                    <li className='cursor-pointer'>
+                        <a onClick={__handleIncrementPage}
                            className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                             <span className="sr-only">Next</span>
                             <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"

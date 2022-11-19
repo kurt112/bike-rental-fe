@@ -8,7 +8,7 @@ import Back from "../../../components/layout/back";
 const createBike: NextPage = () => {
 
     const [images, setImages] = useState<Array<string>>();
-    const [bike,setBike] = useState<BikeObject>({brand:'',size:0,name:'',description:'',price:0,quantity:0});
+    const [bike,setBike] = useState<BikeObject>({brand:'',size:0,name:'',description:'',price:0,quantity:0, code: ''});
 
     const uploadImage = async (e: any) => {
         const {files} = e.target;
@@ -20,8 +20,6 @@ const createBike: NextPage = () => {
             handleUploadPhoto(e,formData);
             currentImages.push(URL.createObjectURL(files[i]));
         });
-        console.log('before data')
-        console.log(formData);
 
         setImages(currentImages);
     }
@@ -50,7 +48,7 @@ const createBike: NextPage = () => {
                             </div>
                             <div className="py-4 px-8 mb-10">
                                 <div className="flex mb-4">
-                                    <div className="w-1/2 mr-1">
+                                    <div className="w-1/3 mr-1">
                                         <label className="block text-grey-darker text-sm font-bold mb-2"
                                                htmlFor="first_name">Brand</label>
                                         <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
@@ -61,7 +59,7 @@ const createBike: NextPage = () => {
                                                onChange={(e) => changeBike(e.target.value,'brand')}
                                         />
                                     </div>
-                                    <div className="w-1/2 ml-1">
+                                    <div className="w-1/3 ml-1">
                                         <label className="block text-grey-darker text-sm font-bold mb-2"
                                                htmlFor="last_name">
                                             Name/Model
@@ -72,6 +70,17 @@ const createBike: NextPage = () => {
                                                placeholder="Bike Model"
                                                value={bike.name}
                                                onChange={(e) => changeBike(e.target.value,'name')}
+                                        />
+                                    </div>
+                                    <div className="w-1/3 ml-1">
+                                        <label className="block text-grey-darker text-sm font-bold mb-2"
+                                               htmlFor="code">Code</label>
+                                        <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                               id="code"
+                                               type="text"
+                                               placeholder="Bike Code"
+                                               value={bike.code}
+                                               onChange={(e) => changeBike(e.target.value,'code')}
                                         />
                                     </div>
                                 </div>
@@ -85,6 +94,8 @@ const createBike: NextPage = () => {
                                                type="number"
                                                placeholder="Enter Quantity"
                                                value={bike.quantity}
+                                               minLength={1}
+                                               maxLength={100}
                                                onChange={(e) => changeBike(e.target.value,'quantity')}
                                         />
                                     </div>
@@ -96,6 +107,8 @@ const createBike: NextPage = () => {
                                                type="number"
                                                placeholder="Bike Price/Hr"
                                                value={bike.price}
+                                               min={1}
+                                               max={1000}
                                                onChange={(e) => changeBike(e.target.value,'price')}
                                         />
                                     </div>

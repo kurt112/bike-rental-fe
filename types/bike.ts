@@ -5,7 +5,8 @@ export interface BikeObject{
     quantity: number,
     size: number,
     brand: string,
+    code: string
 
 }
 
-export const bikeColumns:string[] = ['name/model', 'description', 'price/hr', 'quantity', 'profile'];
+export const bikeColumns:string[] = ['code', 'name/model', 'description', 'price/hr', 'quantity', 'profile'];

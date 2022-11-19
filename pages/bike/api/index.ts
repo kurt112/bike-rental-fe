@@ -1,12 +1,18 @@
 import {SyntheticEvent} from "react";
 import {axiosSubmit, graphQl} from "../../../.config/api";
 import {BikeObject} from "../../../types/bike";
-
+import Swal from 'sweetalert2'
 export const handleSubmit = async (e:SyntheticEvent, bike:BikeObject) => {
     // e.preventDefault();
-    await axiosSubmit.post('bike',bike).then(e => {
-        alert('Create Bike Success');
-        location.reload();
+    await axiosSubmit.post('bike',bike).then(ignored => {
+        Swal.fire(
+            'Good Job!',
+            'Create Bike Success!',
+            'success'
+        ).then(() => {
+            location.reload();
+        })
+
     }).catch(error => {
         console.log(error)
     });
@@ -66,7 +72,8 @@ export const getBikes = async (search:any, page:any, size:any, status:any) => {
                                 name,
                                 quantity,
                                 id,
-                                description
+                                description,
+                                code
                              }
                         }`
         }

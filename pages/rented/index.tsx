@@ -1,10 +1,12 @@
 import {NextPage} from "next";
 import {Fragment} from "react";
 import Head from "next/head";
-import {rentedColumn} from "../../../types/rent";
-import {graphQl} from "../../../.config/api";
+import {rentedColumn} from "../../types/rent";
+import {graphQl} from "../../.config/api";
 
 const Rented:NextPage = ({bikes}: any) =>{
+    console.log('hotdog');
+    console.log(bikes);
     return <Fragment>
         <Head>
             <title>Bike Rented</title>
@@ -24,8 +26,8 @@ const Rented:NextPage = ({bikes}: any) =>{
                             </svg>
                         </div>
                         <input type="text" id="table-search"
-                            // value={pagination.search}
-                            // onChange={(e) => handleSearch(e.target.value)}
+                               // value={pagination.search}
+                               // onChange={(e) => handleSearch(e.target.value)}
                                className="p-2 pl-10 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                placeholder="Search Anything"/>
                         <button type="submit"
@@ -52,41 +54,40 @@ const Rented:NextPage = ({bikes}: any) =>{
                 </thead>
                 <tbody>
 
-                {
-                    bikes?bikes.map((bike: any) => {
-                        const {assignedCustomer} = bike;
-                        const {user} = assignedCustomer;
-                        const {firstName, lastName} = user
-                        return (
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>
-                                <th scope="row"
-                                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {firstName}
-                                </th>
-                                <td className="py-4 px-6">
-                                    {lastName}
-                                </td>
-                                <td className="py-4 px-6">
-                                    No value
-                                </td>
-                                <td className="py-4 px-6">
-                                    No Value
-                                </td>
+                {/*{*/}
+                {/*    employees?employees.map((employee: any) => {*/}
+                {/*        const {user} = employee;*/}
+                {/*        return (*/}
+                {/*            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>*/}
+                {/*                <th scope="row"*/}
+                {/*                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">*/}
+                {/*                    {user.firstName}*/}
+                {/*                </th>*/}
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    {user.lastName}*/}
+                {/*                </td>*/}
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    {user.email}*/}
+                {/*                </td>*/}
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    {user.cellphone}*/}
+                {/*                </td>*/}
 
-                                <td className="py-4 px-6">
-                                    {bike.name}
-                                </td>
-                                <td className="py-4 px-6">
-                                    {bike.price}
-                                </td>
-                                <td className="py-4 px-6">
-                                    <a href={`/employee/edit?id=${user.id}`}
-                                       className="font-medium text-red-600 dark:text-blue-500 hover:underline">Terminate</a>
-                                </td>
-                            </tr>
-                        )
-                    }): null
-                }
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    {user.birthdate? formatDate(user.birthdate): 'NA'}*/}
+                {/*                </td>*/}
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    {user.gender}*/}
+                {/*                </td>*/}
+
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    <a href={`/employee/edit?id=${employee.id}`}*/}
+                {/*                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>*/}
+                {/*                </td>*/}
+                {/*            </tr>*/}
+                {/*        )*/}
+                {/*    }): null*/}
+                {/*}*/}
 
                 </tbody>
             </table>
@@ -152,26 +153,18 @@ export const getServerSideProps = async (context: any) => {
     const query = () => {
         return {
             query: `query{
-                        bikes(search:"${search}", page:${page}, size: ${size}, status: ${3}) {  
+                        bikes(search:"${search}",page:${page}, size: ${size}, status: ${2}) {  
                                 brand,
                                 price,
                                 name,
                                 quantity,
                                 id,
-                                description,
-                                assignedCustomer{
-                                    user{
-                                       firstName,
-                                       lastName
-                                    }
-                                }
+                                description
                              }
                         }`
         }
     };
     const {data} = await graphQl.post('', query());
-
-    console.log(data);
 
     const bikes = data.data.bikes;
 

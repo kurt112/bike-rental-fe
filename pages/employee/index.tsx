@@ -13,8 +13,6 @@ const employee:NextPage = ({employees}: any) => {
     const router = useRouter()
     const {search, page, size, status} = router.query
 
-    console.log(employees);
-
     const [pagination, setPagination] = useState<pagination>({search, page, size, status})
 
     const handleSearch = (data: string) => {

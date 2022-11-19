@@ -13,3 +13,9 @@ export const axiosSubmit = axios.create({
 export const axiosCreate = axios.create({
     baseURL:`${host_url}/`
 })
+
+// this method will use get from axios
+export const axiosGet = axios.create({
+    baseURL:`${host_url}/`
+})
+

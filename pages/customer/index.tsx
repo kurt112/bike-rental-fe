@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import Head from "next/head";
 import Link from "next/link";
 import {useRouter} from "next/router";
@@ -7,12 +7,15 @@ import {pagination} from "../../types/pagination";
 import {getCustomers} from "./api";
 import {customerColumns} from "../../types/customer";
 import {formatDate} from "../../utils/date";
+import {axiosGet} from "../../.config/api";
 
 const customer:NextPage = ({customers}: any) => {
     const router = useRouter()
     const {search, page, size, status} = router.query
 
     const [pagination, setPagination] = useState<pagination>({search, page, size, status})
+    const [totalPages, setTotalPages] = useState<number[]>([]);
+    const [customerItem, setCustomerItem] = useState(customers)
 
     const handleSearch = (data: string) => {
         const tempPagination = {...pagination};
@@ -21,6 +24,85 @@ const customer:NextPage = ({customers}: any) => {
 
         setPagination(tempPagination);
     }
+
+    const __handleIncrementPage = async () => {
+        let tempPage: any = page;
+        tempPage++;
+        if (tempPage > totalPages) return;
+        await getCustomers(search, tempPage, size, status).then(result => {
+            setCustomerItem(result);
+        });
+    }
+
+    const __handleDecrementPage = async () => {
+        let tempPage: any = page;
+        tempPage--;
+        if (tempPage <= 0) return;
+        await getCustomers(search, tempPage, size, status).then(result => {
+            setCustomerItem(result);
+        });
+    }
+
+    const __handleManualPage = async (page:number) => {
+        await getCustomers(search, page, size, status).then(result => {
+            setCustomerItem(result);
+        });
+    }
+
+    const __handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+
+        if (e.code === 'Enter') {
+            searchClick().then(ignored => {
+            });
+        }
+    }
+
+    const searchClick = async () => {
+        router.query.search = search
+
+        router.push({
+                query: {...router.query}
+            },
+            undefined,
+            {}
+        ).then(ignored => {
+
+        })
+
+        await getCustomers(search, page, size, status).then(result => {
+            setCustomerItem(result);
+        });
+
+    }
+
+    useEffect(() => {
+        axiosGet.get('customer/settings').then(result => {
+            let {data} = result;
+
+            data = data.data;
+            const {totalPages, currentPage} = data;
+
+            const tempTotalPages: Array<number> = [];
+
+            for (let i = 1; i <= totalPages; i++) {
+                tempTotalPages.push(i);
+            }
+
+            setTotalPages(tempTotalPages);
+
+            router.query.page = currentPage
+
+            router.push({
+                    query: {...router.query}
+                },
+                undefined,
+                {}
+            ).then(ignored => {
+
+            })
+        })
+
+    }, [customerItem])
 
     return (
         <Fragment>
@@ -55,11 +137,12 @@ const customer:NextPage = ({customers}: any) => {
                                 </svg>
                             </div>
                             <input type="text" id="table-search"
+                                   onKeyUp={(event) => __handleEnter(event)}
                                    value={pagination.search}
                                    onChange={(e) => handleSearch(e.target.value)}
                                    className="p-2 pl-10 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                    placeholder="Search Anything"/>
-                            <button type="submit"
+                            <button onClick={searchClick}
                                     className="text-white ml-2.5  right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search
                             </button>
                         </div>
@@ -84,7 +167,7 @@ const customer:NextPage = ({customers}: any) => {
                     <tbody>
 
                     {
-                        customers?customers.map((customer: any) => {
+                        customerItem?customerItem.map((customer: any) => {
                             const {user} = customer;
                             return (
                                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>
@@ -130,11 +213,11 @@ const customer:NextPage = ({customers}: any) => {
                 </table>
                 <nav className="flex justify-between items-center pt-4 pb-4" aria-label="Table navigation">
                             <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5">Showing <span
-                                className="font-semibold text-gray-900 dark:text-white">1-10</span> of <span
-                                className="font-semibold text-gray-900 dark:text-white">1000</span></span>
+                                className="font-semibold text-gray-900 dark:text-white">{page}</span> of <span
+                                className="font-semibold text-gray-900 dark:text-white">{totalPages.length === 0? 0: totalPages[totalPages.length - 1]}</span></span>
                     <ul className="inline-flex items-center -space-x-px mr-5">
-                        <li>
-                            <a href="#"
+                        <li className='cursor-pointer'>
+                            <a onClick={__handleDecrementPage}
                                className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                 <span className="sr-only">Previous</span>
                                 <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -145,28 +228,22 @@ const customer:NextPage = ({customers}: any) => {
                                 </svg>
                             </a>
                         </li>
-                        <li>
-                            <a href="#"
-                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                        </li>
-                        <li>
-                            <a href="#" aria-current="page"
-                               className="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                        </li>
-                        <li>
-                            <a href="#"
+                        {
+                            totalPages.map((page) => {
+                                return (
+                                    <li key={page} className={'cursor-pointer'}>
+                                        <a
+                                            onClick={() => __handleManualPage(page)}
+                                            className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                            {page}
+                                        </a>
+                                    </li>
+                                )
+                            })
+                        }
+
+                        <li className='cursor-pointer'>
+                            <a onClick={__handleIncrementPage}
                                className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                 <span className="sr-only">Next</span>
                                 <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"

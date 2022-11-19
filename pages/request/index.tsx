@@ -1,13 +1,13 @@
 import {NextPage} from "next";
 import {Fragment} from "react";
 import Head from "next/head";
-import {rentedColumn} from "../../../types/rent";
-import {graphQl} from "../../../.config/api";
+import {rentedColumn} from "../../types/rent";
+import {requestedColumn} from "../../types/requested";
 
-const Rented:NextPage = ({bikes}: any) =>{
+const BikeRequest: NextPage = () => {
     return <Fragment>
         <Head>
-            <title>Bike Rented</title>
+            <title>Bike Requests</title>
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         </Head>
         <div className="overflow-x-auto relative shadow-md sm:rounded-lg mr-2 ml-2 mt-5">
@@ -39,7 +39,7 @@ const Rented:NextPage = ({bikes}: any) =>{
                     className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     {
-                        rentedColumn?rentedColumn.map((column, key) => {
+                        requestedColumn?requestedColumn.map((column, key) => {
                             return (
                                 <th scope="col" className="py-3 px-6" key={key}>
                                     {column}
@@ -52,41 +52,40 @@ const Rented:NextPage = ({bikes}: any) =>{
                 </thead>
                 <tbody>
 
-                {
-                    bikes?bikes.map((bike: any) => {
-                        const {assignedCustomer} = bike;
-                        const {user} = assignedCustomer;
-                        const {firstName, lastName} = user
-                        return (
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>
-                                <th scope="row"
-                                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {firstName}
-                                </th>
-                                <td className="py-4 px-6">
-                                    {lastName}
-                                </td>
-                                <td className="py-4 px-6">
-                                    No value
-                                </td>
-                                <td className="py-4 px-6">
-                                    No Value
-                                </td>
+                {/*{*/}
+                {/*    employees?employees.map((employee: any) => {*/}
+                {/*        const {user} = employee;*/}
+                {/*        return (*/}
+                {/*            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>*/}
+                {/*                <th scope="row"*/}
+                {/*                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">*/}
+                {/*                    {user.firstName}*/}
+                {/*                </th>*/}
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    {user.lastName}*/}
+                {/*                </td>*/}
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    {user.email}*/}
+                {/*                </td>*/}
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    {user.cellphone}*/}
+                {/*                </td>*/}
 
-                                <td className="py-4 px-6">
-                                    {bike.name}
-                                </td>
-                                <td className="py-4 px-6">
-                                    {bike.price}
-                                </td>
-                                <td className="py-4 px-6">
-                                    <a href={`/employee/edit?id=${user.id}`}
-                                       className="font-medium text-red-600 dark:text-blue-500 hover:underline">Terminate</a>
-                                </td>
-                            </tr>
-                        )
-                    }): null
-                }
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    {user.birthdate? formatDate(user.birthdate): 'NA'}*/}
+                {/*                </td>*/}
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    {user.gender}*/}
+                {/*                </td>*/}
+
+                {/*                <td className="py-4 px-6">*/}
+                {/*                    <a href={`/employee/edit?id=${employee.id}`}*/}
+                {/*                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>*/}
+                {/*                </td>*/}
+                {/*            </tr>*/}
+                {/*        )*/}
+                {/*    }): null*/}
+                {/*}*/}
 
                 </tbody>
             </table>
@@ -145,46 +144,4 @@ const Rented:NextPage = ({bikes}: any) =>{
     </Fragment>
 }
 
-export default Rented;
-
-export const getServerSideProps = async (context: any) => {
-    const {search, page, size, status} = context.query;
-    const query = () => {
-        return {
-            query: `query{
-                        bikes(search:"${search}", page:${page}, size: ${size}, status: ${3}) {  
-                                brand,
-                                price,
-                                name,
-                                quantity,
-                                id,
-                                description,
-                                assignedCustomer{
-                                    user{
-                                       firstName,
-                                       lastName
-                                    }
-                                }
-                             }
-                        }`
-        }
-    };
-    const {data} = await graphQl.post('', query());
-
-    console.log(data);
-
-    const bikes = data.data.bikes;
-
-    if (!data) {
-        return {
-            notFound: true,
-        };
-    }
-
-    return {
-        props: {
-            bikes,
-        },
-    };
-};
-
+export default BikeRequest;
