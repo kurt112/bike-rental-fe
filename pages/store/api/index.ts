@@ -1,11 +1,17 @@
 import {axiosSubmit, graphQl} from "../../../.config/api";
 import {SyntheticEvent} from "react";
 import {Store} from "../../../types/store";
+import Swal from "sweetalert2";
 
 export const handleSubmit = async (e:SyntheticEvent, store:Store) => {
     await axiosSubmit.post('store',store).then(ignored => {
-        alert('Store Data Save');
-        location.reload();
+        Swal.fire(
+            'Store Data Save!',
+            'New Data for Store is successfully save!',
+            'success'
+        ).then(() => {
+            location.reload();
+        })
     }).catch(error => {
         console.log(error)
     });

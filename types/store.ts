@@ -3,4 +3,7 @@ export interface Store {
     name: string,
     longitude: string,
     latitude: string,
+    radius: string,
+    scopeEdgeColor: string,
+    scopeColor: string
 }

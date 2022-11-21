@@ -178,6 +178,7 @@ export const getServerSideProps = async (context: any) => {
                                 description,
                                 assignedCustomer{
                                     user{
+                                       id, 
                                        firstName,
                                        lastName,
                                        cellphone,

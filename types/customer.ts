@@ -7,4 +7,4 @@ export interface CustomerCreate {
 }
 
 
-export const customerColumns:string[] = ['First Name', 'Last Name', 'Email', 'Cellphone','Birthdate', 'Gender', 'Last Billed', 'Next Billed', 'Balance', 'Profile'];
+export const customerColumns:string[] = ['First Name', 'Last Name', 'Email', 'Cellphone','Birthdate', 'Gender', 'Last Billed', 'Next Billed', 'To Pay', 'Profile'];

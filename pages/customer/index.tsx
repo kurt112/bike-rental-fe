@@ -6,8 +6,9 @@ import {useRouter} from "next/router";
 import {pagination} from "../../types/pagination";
 import {getCustomers} from "./api";
 import {customerColumns} from "../../types/customer";
-import {formatDate} from "../../utils/date";
+import {formatDate, formatDateWithTime} from "../../utils/date";
 import {axiosGet} from "../../.config/api";
+import moment from "moment";
 
 const customer:NextPage = ({customers}: any) => {
     const router = useRouter()
@@ -192,10 +193,10 @@ const customer:NextPage = ({customers}: any) => {
                                         {user.gender}
                                     </td>
                                     <td className="py-4 px-6">
-                                        {customer.lastBilled?customer.lastBilled :'NA'}
+                                        {customer.lastBilled?formatDateWithTime(customer.lastBilled) : 'NA'}
                                     </td>
                                     <td className="py-4 px-6">
-                                        {customer.nextBilled?customer.nextBilled :'NA'}
+                                        {customer.nextBilled?formatDateWithTime(customer.nextBilled) : 'NA'}
                                     </td>
                                     <td className="py-4 px-6">
                                         {customer.toPay}
