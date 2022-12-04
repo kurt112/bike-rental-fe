@@ -5,8 +5,13 @@ export interface BikeObject{
     quantity: number,
     size: number,
     brand: string,
-    code: string
+    code: string,
+    bikePictures: bikePictures[]
+}
 
+interface bikePictures{
+    id: number,
+    image: string | null
 }
 
 export const bikeColumns:string[] = ['code', 'name/model', 'description', 'price/hr', 'quantity', 'profile'];

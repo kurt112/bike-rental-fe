@@ -1,5 +1,5 @@
 import {SyntheticEvent} from "react";
-import {axiosSubmit, graphQl} from "../../../.config/api";
+import {axiosGet, axiosSubmit, graphQl} from "../../../.config/api";
 import {path} from "../../../utils/api/endpoint";
 import moment from "moment/moment";
 import {EmployeeCreate} from "../../../types/employee";
@@ -104,4 +104,8 @@ export const getEmployees = async (search:any, page:any, size:any, status:any) =
     const {data} = await graphQl.post('', query());
 
     return data.data.employees;
+}
+
+export const customerSettings = async  () => {
+    return await axiosGet('employee/settings').then(result => result.data.data);
 }

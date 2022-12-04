@@ -8,19 +8,22 @@ import {axiosCreate} from "../../../.config/api";
 
 const EditBike: NextPage = ({bike}: any) => {
 
-    const [newBike,setNewBike] = useState<BikeObject>({...bike});
+    const [newBike, setNewBike] = useState<BikeObject>({...bike});
 
     const [isEdit, setEdit] = useState(false);
 
     const [pictures, setPictures] = useState<any>(null);
+
+    // this state is for uploading
+    const [imageFile,setImageFile] = useState<FormData | null | undefined>()
 
     const handleEdit = () => {
 
         setEdit(!isEdit);
     }
 
-    const changeBike = (data:string, target:string) => {
-        const currentBike:any = {...bike}
+    const changeBike = (data: string, target: string) => {
+        const currentBike: any = {...bike}
         currentBike[target] = data;
         setNewBike(currentBike);
     }
@@ -28,33 +31,26 @@ const EditBike: NextPage = ({bike}: any) => {
 
     useEffect(() => {
 
-         images().then(e => {
-             setPictures(e);
-         })
+        images().then(e => {
+            setPictures(e);
+        })
     }, []);
 
     const images = async () => {
-        const currentPictures:any = [];
+        const currentPictures: any = [];
 
-        const getImage =async () => await Promise.all(
-            await bike.bikePictures.map((pic:any) => {
-
+        await Promise.all(
+            bike.bikePictures.map(async (blob: any) => {
                 const params = new URLSearchParams();
-                params.append("id", pic.id);
+                params.append("id", blob.id);
 
-                const getImage = async () => {
-                    return await axiosCreate.get("bike/photo", {params});
-                }
+                const {picture} = await axiosCreate.get("bike/photo", {params}).then(result => {
+                    return result.data;
+                });
 
-                getImage().then(e => {
-                    const picture = e.data.picture;
-                    currentPictures.push(picture);
-                })
-
+                currentPictures.push(picture);
             })
-        );
-
-        await getImage().then(ignored => {});
+        )
 
         return currentPictures;
     }
@@ -67,9 +63,7 @@ const EditBike: NextPage = ({bike}: any) => {
             </Head>
             <div className="h-full font-sans antialiased bg-white w-full overflow-y-auto">
                 <div className="w-full bg-green shadow z-1 flex justify-between p-2">
-                    <div className="w-full bg-green shadow z-1 flex justify-between p-2">
-                        <Back/>
-                    </div>
+                    <Back/>
                     <button type="button"
                             onClick={() => handleDeleteBike(bike.id)}
                             className="text-red-700 hover:bg-red-700 hover:text-white  border-2 border-red-700 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center">
@@ -124,7 +118,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                             placeholder="Bike Brand"
                                             disabled={!isEdit}
                                             value={newBike.brand}
-                                            onChange={(e) => changeBike(e.target.value,'brand')}
+                                            onChange={(e) => changeBike(e.target.value, 'brand')}
                                         />
                                     </div>
                                     <div className="w-1/2 ml-1">
@@ -139,7 +133,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                             placeholder="Bike Model"
                                             disabled={!isEdit}
                                             value={newBike.name}
-                                            onChange={(e) => changeBike(e.target.value,'name')}
+                                            onChange={(e) => changeBike(e.target.value, 'name')}
                                         />
                                     </div>
                                 </div>
@@ -155,7 +149,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                             placeholder="Enter Quantity"
                                             disabled={!isEdit}
                                             value={newBike.quantity}
-                                            onChange={(e) => changeBike(e.target.value,'quantity')}
+                                            onChange={(e) => changeBike(e.target.value, 'quantity')}
                                         />
                                     </div>
                                     <div className="w-1/3 ml-1">
@@ -168,7 +162,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                             type="number"
                                             placeholder="Bike Price/Hr"
                                             value={newBike.price}
-                                            onChange={(e) => changeBike(e.target.value,'price')}
+                                            onChange={(e) => changeBike(e.target.value, 'price')}
                                         />
                                     </div>
                                     <div className="w-1/3 ml-1">
@@ -181,7 +175,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                             disabled={!isEdit}
                                             value={newBike.size}
                                             placeholder="Size"
-                                            onChange={(e) => changeBike(e.target.value,'size')}
+                                            onChange={(e) => changeBike(e.target.value, 'size')}
                                         />
                                     </div>
                                 </div>
@@ -195,7 +189,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                               value={newBike.description}
                                               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                               placeholder="Enter Bike Description"
-                                              onChange={(e) => changeBike(e.target.value,'description')}
+                                              onChange={(e) => changeBike(e.target.value, 'description')}
                                     >
 
                                     </textarea>
@@ -229,47 +223,61 @@ const EditBike: NextPage = ({bike}: any) => {
                                     </div>
                                     <br/>
 
-                                    {
-                                        pictures?.map((e:any) => {
-                                            return  <img src={`data:image/png;base64,${e.blob}`} key={e.blob}/>
-                                        })
-                                    }
-                                    {
-                                        pictures === null? <img src={pictures} width={100} height={100}/>:<p>hotdog</p>
-                                    }
-                                    {
-                                        isEdit? <button onClick={(e) => handleSubmit(e,newBike)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
-                                            Submit
-                                        </button>: null
-                                    }
+                                    <section className="overflow-hidden text-gray-700 ">
+                                        <div className="container  mx-auto ">
+                                            <div className="flex flex-wrap -m-1 md:-m-2">
+                                                {
+                                                    pictures?.map((e: any, index: number) => {
+                                                        return <div className="flex flex-wrap" key={e.id}>
+                                                            <div className="w-full p-1 md:p-2">
+                                                                <img alt={'this is bike picture'}
+                                                                     src={`data:image/png;base64,${e.blob}`}
+                                                                     className={'w-full'}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    })
+                                                }
+                                        </div>
                                 </div>
-                            </div>
+                            </section>
+
+                            <br/>
+                            {
+                                isEdit ? <button onClick={(e) => handleSubmit(e, newBike, imageFile)} type="button"
+                                                 className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                                    Submit
+                                </button> : null
+                            }
                         </div>
                     </div>
                 </div>
             </div>
-        </Fragment>
-    )
+        </div>
+</div>
+</Fragment>
+)
 }
 
 export default EditBike;
 
 export const getServerSideProps = async (context: any) => {
-    const {id} = context.query;
+        const {id} = context.query;
 
 
-    const bike = await getBikeData(id);
+        const bike = await getBikeData(id);
 
 
-    if (!bike) {
+        if (!bike) {
+            return {
+                notFound: true,
+            };
+        }
+
         return {
-            notFound: true,
+            props: {
+                bike,
+            },
         };
     }
-
-    return {
-        props: {
-            bike,
-        },
-    };
-};
+;

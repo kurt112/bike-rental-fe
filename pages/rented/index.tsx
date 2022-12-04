@@ -2,11 +2,10 @@ import {NextPage} from "next";
 import {Fragment} from "react";
 import Head from "next/head";
 import {rentedColumn} from "../../types/rent";
-import {graphQl} from "../../.config/api";
+import {bikeSettings, getBikes} from "../bike/api";
 
-const Rented:NextPage = ({bikes}: any) =>{
-    console.log('hotdog');
-    console.log(bikes);
+const Rented:NextPage = ({bikes,settings}: any) =>{
+    alert('asdf')
     return <Fragment>
         <Head>
             <title>Bike Rented</title>
@@ -149,24 +148,17 @@ const Rented:NextPage = ({bikes}: any) =>{
 export default Rented;
 
 export const getServerSideProps = async (context: any) => {
-    const {search, page, size, status} = context.query;
-    const query = () => {
-        return {
-            query: `query{
-                        bikes(search:"${search}",page:${page}, size: ${size}, status: ${2}) {  
-                                brand,
-                                price,
-                                name,
-                                quantity,
-                                id,
-                                description
-                             }
-                        }`
-        }
-    };
-    const {data} = await graphQl.post('', query());
+    const {search, page, size} = context.query;
 
-    const bikes = data.data.bikes;
+    const data=  await Promise.all(
+        [
+            await getBikes(search, page, size, 2),
+            await bikeSettings()
+        ]
+    )
+
+
+
 
     if (!data) {
         return {
@@ -176,7 +168,8 @@ export const getServerSideProps = async (context: any) => {
 
     return {
         props: {
-            bikes,
+            bikes: data[0],
+            settings: data[1]
         },
     };
 };

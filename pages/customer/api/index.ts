@@ -1,8 +1,9 @@
 import {SyntheticEvent} from "react";
-import {axiosSubmit, graphQl} from "../../../.config/api";
+import {axiosGet, axiosSubmit, graphQl} from "../../../.config/api";
 import {CustomerCreate} from "../../../types/customer";
 import moment from "moment";
 import {path} from "../../../utils/api/endpoint";
+import Swal from "sweetalert2";
 
 export const handleSubmitCustomer = async (e:SyntheticEvent, customer:CustomerCreate) => {
     await axiosSubmit.post(path.customer,customer).then(ignored => {
@@ -41,6 +42,28 @@ export const handleDeleteCustomer = async (id: any) => {
     }).then(ignored => {
         alert("Customer Delete Success");
         history.back();
+    }).catch(error => {
+        console.log(error)
+    });
+}
+
+    export const handleApproveRequestByCustomer = async (userId:string, bikeId: string) => {
+
+    const params = new URLSearchParams();
+
+    params.append('userId',userId);
+    params.append('bikeId',bikeId);
+
+    console.log(params);
+
+    await axiosSubmit.post(`${path.bike}/request/approved`,params).then(ignored => {
+        Swal.fire(
+            'Approved!',
+            'The request for bike is approved',
+            'success'
+        ).then(() => {
+            location.reload();
+        })
     }).catch(error => {
         console.log(error)
     });
@@ -108,4 +131,8 @@ export const getCustomers = async (search:any, page:any, size:any, status:any) =
     const {data} = await graphQl.post('', query());
 
     return data.data.customers;
+}
+
+export const customerSettings = async () => {
+    return await axiosGet.get('customer/settings').then(result => result.data.data)
 }

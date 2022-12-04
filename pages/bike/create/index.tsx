@@ -7,17 +7,21 @@ import Back from "../../../components/layout/back";
 
 const createBike: NextPage = () => {
 
+    // this state is for displaying only
     const [images, setImages] = useState<Array<string>>();
-    const [bike,setBike] = useState<BikeObject>({brand:'',size:0,name:'',description:'',price:0,quantity:0, code: ''});
+    const [bike,setBike] = useState<BikeObject>({brand:'',size:0,name:'',description:'',price:0,quantity:0, code: '', bikePictures: []});
+
+    // this state is for uploading
+    const [imageFile,setImageFile] = useState<FormData | null | undefined>()
 
     const uploadImage = async (e: any) => {
         const {files} = e.target;
         const currentImages: Array<string> = [];
-        const formData = new FormData();
+        const formData:FormData = new FormData();
         Object.keys(files).forEach(i => {
             formData.append('photo',files[i]);
-            // formData.append()
-            handleUploadPhoto(e,formData);
+            setImageFile(formData);
+            // handleUploadPhoto(e,formData);
             currentImages.push(URL.createObjectURL(files[i]));
         });
 
@@ -123,15 +127,6 @@ const createBike: NextPage = () => {
                                                onChange={(e) => changeBike(e.target.value,'size')}
                                         />
                                     </div>
-                                    {/*<div className="w-1/4 ml-1">*/}
-                                    {/*    <label className="block text-grey-darker text-sm font-bold mb-2"*/}
-                                    {/*           htmlFor="last_name">Current Index</label>*/}
-                                    {/*    <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"*/}
-                                    {/*           id="last_name"*/}
-                                    {/*           type="text"*/}
-                                    {/*           placeholder="Current Index"*/}
-                                    {/*    />*/}
-                                    {/*</div>*/}
                                 </div>
 
                                 <div className="mb-4">
@@ -185,7 +180,7 @@ const createBike: NextPage = () => {
                                     </div>
 
 
-                                    <button onClick={(e) => handleSubmit(e,bike)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                                    <button onClick={(e) => handleSubmit(e,bike,imageFile)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                         Submit
                                     </button>
                                 </div>

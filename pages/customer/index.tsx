@@ -1,54 +1,26 @@
 import {NextPage} from "next";
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useState} from "react";
 import Head from "next/head";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {pagination} from "../../types/pagination";
-import {getCustomers} from "./api";
+import {customerSettings, getCustomers} from "./api";
 import {customerColumns} from "../../types/customer";
 import {formatDate, formatDateWithTime} from "../../utils/date";
-import {axiosGet} from "../../.config/api";
-import moment from "moment";
 
-const customer:NextPage = ({customers}: any) => {
+const customer:NextPage = ({customers,settings}: any) => {
     const router = useRouter()
-    const {search, page, size, status} = router.query
+    const {search, page, size, status}:any = router.query
 
     const [pagination, setPagination] = useState<pagination>({search, page, size, status})
-    const [totalPages, setTotalPages] = useState<number[]>([]);
-    const [customerItem, setCustomerItem] = useState(customers)
 
     const handleSearch = (data: string) => {
         const tempPagination = {...pagination};
-
+        router.query.search = data;
         tempPagination.search = data;
-
         setPagination(tempPagination);
     }
 
-    const __handleIncrementPage = async () => {
-        let tempPage: any = page;
-        tempPage++;
-        if (tempPage > totalPages) return;
-        await getCustomers(search, tempPage, size, status).then(result => {
-            setCustomerItem(result);
-        });
-    }
-
-    const __handleDecrementPage = async () => {
-        let tempPage: any = page;
-        tempPage--;
-        if (tempPage <= 0) return;
-        await getCustomers(search, tempPage, size, status).then(result => {
-            setCustomerItem(result);
-        });
-    }
-
-    const __handleManualPage = async (page:number) => {
-        await getCustomers(search, page, size, status).then(result => {
-            setCustomerItem(result);
-        });
-    }
 
     const __handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
 
@@ -59,51 +31,8 @@ const customer:NextPage = ({customers}: any) => {
     }
 
     const searchClick = async () => {
-        router.query.search = search
-
-        router.push({
-                query: {...router.query}
-            },
-            undefined,
-            {}
-        ).then(ignored => {
-
-        })
-
-        await getCustomers(search, page, size, status).then(result => {
-            setCustomerItem(result);
-        });
-
+        await router.push(`/customer?search=${pagination.search}&page=${1}&size=${size}&status=${status}`)
     }
-
-    useEffect(() => {
-        axiosGet.get('customer/settings').then(result => {
-            let {data} = result;
-
-            data = data.data;
-            const {totalPages, currentPage} = data;
-
-            const tempTotalPages: Array<number> = [];
-
-            for (let i = 1; i <= totalPages; i++) {
-                tempTotalPages.push(i);
-            }
-
-            setTotalPages(tempTotalPages);
-
-            router.query.page = currentPage
-
-            router.push({
-                    query: {...router.query}
-                },
-                undefined,
-                {}
-            ).then(ignored => {
-
-            })
-        })
-
-    }, [customerItem])
 
     return (
         <Fragment>
@@ -168,7 +97,7 @@ const customer:NextPage = ({customers}: any) => {
                     <tbody>
 
                     {
-                        customerItem?customerItem.map((customer: any) => {
+                        customers?customers.map((customer: any) => {
                             const {user} = customer;
                             return (
                                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>
@@ -215,46 +144,60 @@ const customer:NextPage = ({customers}: any) => {
                 <nav className="flex justify-between items-center pt-4 pb-4" aria-label="Table navigation">
                             <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5">Showing <span
                                 className="font-semibold text-gray-900 dark:text-white">{page}</span> of <span
-                                className="font-semibold text-gray-900 dark:text-white">{totalPages.length === 0? 0: totalPages[totalPages.length - 1]}</span></span>
+                                className="font-semibold text-gray-900 dark:text-white">{settings.totalPages}</span>
+                            </span>
                     <ul className="inline-flex items-center -space-x-px mr-5">
-                        <li className='cursor-pointer'>
-                            <a onClick={__handleDecrementPage}
-                               className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span className="sr-only">Previous</span>
-                                <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd"
-                                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                          clipRule="evenodd"></path>
-                                </svg>
-                            </a>
-                        </li>
                         {
-                            totalPages.map((page) => {
+                            page > 1 ? <li className='cursor-pointer'>
+                                <Link
+                                    href={`/customer?search=${search}&page=${parseInt(page) - 1}&size=${size}&status=${status}`}>
+                                    <a
+                                        className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span className="sr-only">Previous</span>
+                                        <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
+                                             viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd"
+                                                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                  clipRule="evenodd"></path>
+                                        </svg>
+                                    </a>
+                                </Link>
+                            </li> : null
+                        }
+
+                        {
+                            Array.from(Array(settings.totalPages).keys()).map((page) => {
                                 return (
                                     <li key={page} className={'cursor-pointer'}>
-                                        <a
-                                            onClick={() => __handleManualPage(page)}
-                                            className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                            {page}
-                                        </a>
+                                        <Link href={`/customer?search=${search}&page=${page+1}&size=${size}&status=${status}`}>
+                                            <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                                {page+1}
+                                            </a>
+                                        </Link>
                                     </li>
                                 )
                             })
                         }
 
-                        <li className='cursor-pointer'>
-                            <a onClick={__handleIncrementPage}
-                               className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span className="sr-only">Next</span>
-                                <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd"
-                                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                          clipRule="evenodd"></path>
-                                </svg>
-                            </a>
-                        </li>
+                        {
+                            page >= settings.totalPages ? null :
+                                <Link
+                                    href={`/customer?search=${search}&page=${parseInt(page) + 1}&size=${size}&status=${status}`}>
+                                    <li className='cursor-pointer'>
+                                        <a className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                            <span className="sr-only">Next</span>
+                                            <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
+                                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd"
+                                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                      clipRule="evenodd"></path>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                </Link>
+
+                        }
+
                     </ul>
                 </nav>
             </div>
@@ -266,9 +209,14 @@ export default customer
 export const getServerSideProps = async (context: any) => {
     const {search, page, size, status} = context.query;
 
-    const customers = await getCustomers(search, page, size, status);
+    const data =  await Promise.all(
+        [
+            await getCustomers(search, page, size, status),
+            await customerSettings()
+        ]
+    )
 
-    if (!customers) {
+    if (!data) {
         return {
             notFound: true,
         };
@@ -276,7 +224,8 @@ export const getServerSideProps = async (context: any) => {
 
     return {
         props: {
-            customers,
+            customers: data[0],
+            settings: data[1]
         },
     };
 };

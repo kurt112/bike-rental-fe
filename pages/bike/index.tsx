@@ -1,111 +1,30 @@
 import {NextPage} from "next";
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useState} from "react";
 import {bikeColumns} from "../../types/bike";
 import {pagination} from "../../types/pagination";
 import {useRouter} from 'next/router'
 import Link from "next/link";
 import Head from "next/head";
-import {getBikes} from "./api";
-import {axiosGet} from "../../.config/api";
+import {bikeSettings, getBikes} from "./api";
 
-const Bike: NextPage = ({bikes}: any) => {
+const Bike: NextPage = ({bikes,settings}: any) => {
 
     const router = useRouter()
     const {search, page, size, status}: any = router.query
-
     const [pagination, setPagination] = useState<pagination>({search, page, size, status})
-
-    const [totalPages, setTotalPages] = useState<number[]>([]);
-    // @ts-ignore
-    const [bikeItem, setBikeItem] = useState(bikes)
 
     const handleSearch = (data: string) => {
         const tempPagination = {...pagination};
-
         tempPagination.search = data;
-
-        router.query.search = data;
-
         setPagination(tempPagination);
     }
 
     const searchClick = async () => {
-        router.query.search = search
-
-        router.push({
-                query: {...router.query}
-            },
-            undefined,
-            {}
-        ).then(ignored => {
-
-        })
-
-        await getBikes(search, page, size, status).then(result => {
-            setBikeItem(result);
-        });
-
+        await router.push(`/bike?search=${pagination.search}&page=${1}&size=${size}&status=${status}`)
     }
 
     const __handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-
-        if (e.code === 'Enter') {
-            searchClick().then(ignored => {
-            });
-        }
-    }
-
-    useEffect(() => {
-        axiosGet.get('bike/settings').then(result => {
-            let {data} = result;
-
-            data = data.data;
-            const {totalPages, currentPage} = data;
-
-            const tempTotalPages: Array<number> = [];
-
-            for (let i = 1; i <= totalPages; i++) {
-                tempTotalPages.push(i);
-            }
-
-            setTotalPages(tempTotalPages);
-
-            router.query.page = currentPage
-
-            router.push({
-                    query: {...router.query}
-                },
-                undefined,
-                {}
-            ).then(ignored => {
-
-            })
-        })
-
-    }, [bikeItem])
-
-    const __handleIncrementPage = async () => {
-        let tempPage: any = page;
-        tempPage++;
-        if (tempPage > totalPages) return;
-        await getBikes(search, tempPage, size, status).then(result => {
-            setBikeItem(result);
-        });
-    }
-
-    const __handleDecrementPage = async () => {
-        let tempPage: any = page;
-        tempPage--;
-        if (tempPage <= 0) return;
-        await getBikes(search, tempPage, size, status).then(result => {
-            setBikeItem(result);
-        });
-    }
-
-    const __handleManualPage = async (page:number) => {
-        await getBikes(search, page, size, status).then(result => {
-            setBikeItem(result);
-        });
+        if (e.code === 'Enter') searchClick().then(ignored => {});
     }
 
     return <Fragment>
@@ -172,7 +91,7 @@ const Bike: NextPage = ({bikes}: any) => {
                 <tbody>
 
                 {
-                    bikeItem ? bikeItem.map((bike: any) => {
+                    bikes ? bikes.map((bike: any) => {
                         const {name, description, price, quantity, code, id} = bike;
                         return (
                             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -208,46 +127,59 @@ const Bike: NextPage = ({bikes}: any) => {
             <nav className="flex justify-between items-center pt-4 pb-4" aria-label="Table navigation">
                             <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5">Showing <span
                                 className="font-semibold text-gray-900 dark:text-white">{page}</span> of <span
-                                className="font-semibold text-gray-900 dark:text-white">{totalPages.length === 0? 0: totalPages[totalPages.length - 1]}</span></span>
+                                className="font-semibold text-gray-900 dark:text-white">{settings.totalPages}</span></span>
                 <ul className="inline-flex items-center -space-x-px mr-5">
-                    <li className='cursor-pointer'>
-                        <a onClick={__handleDecrementPage}
-                           className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span className="sr-only">Previous</span>
-                            <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd"
-                                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                      clipRule="evenodd"></path>
-                            </svg>
-                        </a>
-                    </li>
                     {
-                        totalPages.map((page) => {
+                        page > 1 ? <li className='cursor-pointer'>
+                            <Link
+                                href={`/bike?search=${search}&page=${parseInt(page) - 1}&size=${size}&status=${status}`}>
+                                <a
+                                    className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <span className="sr-only">Previous</span>
+                                    <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
+                                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd"
+                                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                              clipRule="evenodd"></path>
+                                    </svg>
+                                </a>
+                            </Link>
+                        </li> : null
+                    }
+
+                    {
+                        Array.from(Array(settings.totalPages).keys()).map((page) => {
                             return (
                                 <li key={page} className={'cursor-pointer'}>
-                                    <a
-                                        onClick={() => __handleManualPage(page)}
-                                        className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                        {page}
-                                    </a>
+                                    <Link href={`/bike?search=${search}&page=${page+1}&size=${size}&status=${status}`}>
+                                        <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                            {page+1}
+                                        </a>
+                                    </Link>
                                 </li>
                             )
                         })
                     }
+                    {
+                        page >= settings.totalPages ? null :
+                            <Link
+                                href={`/bike?search=${search}&page=${parseInt(page) + 1}&size=${size}&status=${status}`}>
+                                <li className='cursor-pointer'>
+                                    <a className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span className="sr-only">Next</span>
+                                        <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
+                                             viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd"
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clipRule="evenodd"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                            </Link>
 
-                    <li className='cursor-pointer'>
-                        <a onClick={__handleIncrementPage}
-                           className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span className="sr-only">Next</span>
-                            <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd"
-                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                      clipRule="evenodd"></path>
-                            </svg>
-                        </a>
-                    </li>
+                    }
+
+
                 </ul>
             </nav>
         </div>
@@ -260,10 +192,15 @@ export const getServerSideProps = async (context: any) => {
 
     const {search, page, size, status} = context.query;
 
-    const bikes = await getBikes(search, page, size, status);
+    const data=  await Promise.all(
+        [
+            await getBikes(search, page, size, status),
+            await bikeSettings()
+        ]
+    )
 
 
-    if (!bikes) {
+    if (!data) {
         return {
             notFound: true,
         };
@@ -271,7 +208,8 @@ export const getServerSideProps = async (context: any) => {
 
     return {
         props: {
-            bikes,
+            bikes: data[0],
+            settings: data[1]
         },
     };
 };

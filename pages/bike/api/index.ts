@@ -1,15 +1,27 @@
 import {SyntheticEvent} from "react";
-import {axiosSubmit, graphQl} from "../../../.config/api";
+import {axiosGet, axiosSubmit, graphQl} from "../../../.config/api";
 import {BikeObject} from "../../../types/bike";
 import Swal from 'sweetalert2'
-export const handleSubmit = async (e:SyntheticEvent, bike:BikeObject) => {
+export const handleSubmit = async (e:SyntheticEvent, bike:BikeObject, image: FormData | null | undefined) => {
+
+    if(!image){
+        return Swal.fire(
+            'Photo Not Found',
+            'Please upload at least three photo!',
+            'error'
+        ).then((ignored) => {})
+    }
+
+
     // e.preventDefault();
-    await axiosSubmit.post('bike',bike).then(ignored => {
+    await axiosSubmit.post('bike',bike).then(result => {
+        const newBike = result.data.data;
         Swal.fire(
             'Good Job!',
             'Create Bike Success!',
             'success'
         ).then(() => {
+            handleUploadPhoto(image,newBike.id);
             location.reload();
         })
 
@@ -74,6 +86,15 @@ export const getBikes = async (search:any, page:any, size:any, status:any) => {
                                 id,
                                 description,
                                 code
+                                assignedCustomer{
+                                    user{
+                                       id, 
+                                       firstName,
+                                       lastName,
+                                       cellphone,
+                                       email
+                                    }
+                                }
                              }
                         }`
         }
@@ -86,21 +107,25 @@ export const getBikes = async (search:any, page:any, size:any, status:any) => {
 }
 
 // for photo
-export const handleUploadPhoto = async (e:SyntheticEvent, formData:any) => {
-    // e.preventDefault();
-    console.log("wew")
-    console.log(formData);
+export const handleUploadPhoto = async (formData:FormData, bikeId: string) => {
+    const params = new URLSearchParams();
+    params.append('bike-id',bikeId);
+
     const config = {
         headers: {
             'content-type': 'multipart/form-data'
-        }
+        },
+        params
     }
 
-    await axiosSubmit.post('bike/photo',formData,config).then(e => {
-        alert('Create Bike Success');
-        // location.reload();
+    await axiosSubmit.post('bike/photo',formData,config).then(ignored => {
+
     }).catch(error => {
         console.log(error)
     });
+}
+
+export const bikeSettings = async () => {
+    return await axiosGet.get('bike/settings').then(result => result.data.data);
 }
 
