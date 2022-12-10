@@ -1,176 +1,99 @@
 import {NextPage} from "next";
-import {Fragment} from "react";
+import {Fragment, useEffect, useState} from "react";
 import Head from "next/head";
-import {rentedColumn} from "../../types/rent";
-import {bikeSettings, getBikes} from "../bike/api";
+import {getBikeByCustomer, loadImages, rented, requested} from "../bike/api";
+import {BikeObject} from "../../types/bike";
+import Image from "next/image";
+import NoBikeImage from "../../components/layout/sidebar/icon/noBikeImage.png";
 
-const Rented:NextPage = ({bikes,settings}: any) =>{
-    alert('asdf')
+const Rented: NextPage = () => {
+
+    const [bikes, setBikes] = useState<Array<BikeObject>>();
+    const [pictures, setPictures] = useState([]);
+
+    useEffect(() => {
+        if (requested.length === 0 && rented.length === 0) {
+            getBikeByCustomer('').then(ignored => {
+                setBikes(rented)
+                loadImages(rented, setPictures).then(ignored => {
+                })
+            })
+        } else {
+            setBikes(rented)
+            loadImages(rented, setPictures).then(ignored => {})
+        }
+    }, [])
+
     return <Fragment>
         <Head>
             <title>Bike Rented</title>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
         </Head>
-        <div className="overflow-x-auto relative shadow-md sm:rounded-lg mr-2 ml-2 mt-5">
-            <div className="pb-4 bg-white dark:bg-gray-900 pt-2 pl-2 flex justify-between p-4">
-                <div id="right">
-                    <label htmlFor="table-search" className="sr-only">Search</label>
-                    <div className="relative mt-1 absolute">
-                        <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                            <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                 fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd"
-                                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                      clipRule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <input type="text" id="table-search"
-                               // value={pagination.search}
-                               // onChange={(e) => handleSearch(e.target.value)}
-                               className="p-2 pl-10 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                               placeholder="Search Anything"/>
-                        <button type="submit"
-                                className="text-white ml-2.5  right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search
-                        </button>
-                    </div>
-                </div>
+
+        <div className={'container mx-auto h-full w-full '}>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5">
+                {
+                    bikes?.map((bike: BikeObject, i: number) => {
+                        return (
+                            <div className={'w-full'} key={i}>
+                                <div
+                                    className="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+                                    {
+                                        pictures[i] === '' ?
+                                            <a href={'#'}>
+                                                <Image className="rounded-t-lg"
+                                                       src={NoBikeImage}
+                                                       alt="No Bike Found"
+                                                       width="100%"
+                                                       height="100"
+                                                       layout="responsive"
+                                                       objectFit="contain"
+                                                />
+
+                                            </a> :
+                                            <a href={'#'}>
+                                                <Image className="rounded-t-lg"
+                                                       src={`data:image/png;base64,${pictures[i]}`}
+                                                       alt="bike image"
+                                                       width="100%" height="100" layout="responsive"
+                                                       objectFit="contain"
+
+                                                />
+                                            </a>
+                                    }
+
+                                    <div className="p-2">
+                                        <a href="">
+                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                                {bike.name}
+                                            </h5>
+                                        </a>
+                                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{bike.description}</p>
+                                        <hr/>
+
+
+                                        <div className="text-xl font-normal text-gray-700 dark:text-gray-400">
+                                            <b>Start:</b> {`${bike.price}₱`}
+                                            <br/>
+                                            <b>End:</b> {`${bike.price}₱`}
+
+                                        </div>
+                                        <hr/>
+                                        <h1 className="text-center  text-xl font-normal text-gray-700 dark:text-gray-400">
+                                           {`${bike.price}₱/hr`}
+                                        </h1>
+
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
             </div>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead
-                    className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    {
-                        rentedColumn?rentedColumn.map((column, key) => {
-                            return (
-                                <th scope="col" className="py-3 px-6" key={key}>
-                                    {column}
-                                </th>
-                            )
-                        }): null
-                    }
-
-                </tr>
-                </thead>
-                <tbody>
-
-                {/*{*/}
-                {/*    employees?employees.map((employee: any) => {*/}
-                {/*        const {user} = employee;*/}
-                {/*        return (*/}
-                {/*            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>*/}
-                {/*                <th scope="row"*/}
-                {/*                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">*/}
-                {/*                    {user.firstName}*/}
-                {/*                </th>*/}
-                {/*                <td className="py-4 px-6">*/}
-                {/*                    {user.lastName}*/}
-                {/*                </td>*/}
-                {/*                <td className="py-4 px-6">*/}
-                {/*                    {user.email}*/}
-                {/*                </td>*/}
-                {/*                <td className="py-4 px-6">*/}
-                {/*                    {user.cellphone}*/}
-                {/*                </td>*/}
-
-                {/*                <td className="py-4 px-6">*/}
-                {/*                    {user.birthdate? formatDate(user.birthdate): 'NA'}*/}
-                {/*                </td>*/}
-                {/*                <td className="py-4 px-6">*/}
-                {/*                    {user.gender}*/}
-                {/*                </td>*/}
-
-                {/*                <td className="py-4 px-6">*/}
-                {/*                    <a href={`/employee/edit?id=${employee.id}`}*/}
-                {/*                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>*/}
-                {/*                </td>*/}
-                {/*            </tr>*/}
-                {/*        )*/}
-                {/*    }): null*/}
-                {/*}*/}
-
-                </tbody>
-            </table>
-            <nav className="flex justify-between items-center pt-4 pb-4" aria-label="Table navigation">
-                            <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-5">Showing <span
-                                className="font-semibold text-gray-900 dark:text-white">1-10</span> of <span
-                                className="font-semibold text-gray-900 dark:text-white">1000</span></span>
-                <ul className="inline-flex items-center -space-x-px mr-5">
-                    <li>
-                        <a href="#"
-                           className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span className="sr-only">Previous</span>
-                            <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd"
-                                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                      clipRule="evenodd"></path>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page"
-                           className="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span className="sr-only">Next</span>
-                            <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd"
-                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                      clipRule="evenodd"></path>
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
         </div>
+
     </Fragment>
 }
 
 export default Rented;
-
-export const getServerSideProps = async (context: any) => {
-    const {search, page, size} = context.query;
-
-    const data=  await Promise.all(
-        [
-            await getBikes(search, page, size, 2),
-            await bikeSettings()
-        ]
-    )
-
-
-
-
-    if (!data) {
-        return {
-            notFound: true,
-        };
-    }
-
-    return {
-        props: {
-            bikes: data[0],
-            settings: data[1]
-        },
-    };
-};
 

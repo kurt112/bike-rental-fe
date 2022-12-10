@@ -6,7 +6,8 @@ export interface BikeObject{
     size: number,
     brand: string,
     code: string,
-    bikePictures: bikePictures[]
+    bikePictures: bikePictures[],
+    status: number;
 }
 
 interface bikePictures{

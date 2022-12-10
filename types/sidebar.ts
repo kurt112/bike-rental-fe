@@ -6,5 +6,7 @@ export interface sidebar {
 
 export  interface sidebarList {
     sidebars: Array<sidebar>,
-    children: any
+    children: any,
+    sidebarStatus: boolean,
+    handleSidebarStatus(): void
 }

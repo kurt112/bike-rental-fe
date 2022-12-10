@@ -4,7 +4,7 @@ import Sidebar from "../components/layout/sidebar";
 import SidebarItemAdmin from "../components/layout/sidebar/sidebar-item-admin";
 import SidebarItemClient from "../components/layout/sidebar/sidebar-item-client";
 import Login from "../components/auth/login";
-import {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {sidebar} from "../types/sidebar";
 
 function MyApp({Component, pageProps}: AppProps) {
@@ -13,16 +13,21 @@ function MyApp({Component, pageProps}: AppProps) {
     const [role, setRole] = useState('');
     const [sidebarItem, setSidebarItem] = useState<Array<sidebar>>([])
     const [isLoading, setIsLoading] = useState(true);
-
+    const [showSidebar, setShowSideBar] = useState(false);
 
     useEffect(() => {
         setIsLoading(true);
         const token: string | null = localStorage.getItem('token');
+        const sidebarStatus: string | null = localStorage.getItem('sidebarStatus')
         let user: any | null = localStorage.getItem('user');
-        if (token == null || user == null) {
+        if (token === null || user == null) {
             localStorage.clear();
             setIsLoading(false);
             return;
+        }
+
+        if (sidebarStatus === null) {
+            localStorage.setItem('sidebarStatus', 'open');
         }
 
         user = JSON.parse(user);
@@ -47,19 +52,34 @@ function MyApp({Component, pageProps}: AppProps) {
         setIsLoading(false);
     }, [role, isLogin])
 
-    return <div className="h-screen overflow-hidden flex items-center justify-center" style={{background: '#edf2f7'}}>
+    const _handleSidebarStatus = (status: boolean) => {
+        setShowSideBar(status);
+    }
+
+
+    return <Fragment>
         {
-            isLogin ? <Sidebar sidebars={sidebarItem}>
-                    <Component {...pageProps} />
-                </Sidebar> :
-                <Login setIsLogin={setLogin}
-                       setRole={setRole}
-                />
+            showSidebar ? <div onClick={() => _handleSidebarStatus(false)}
+                               className={'w-full z-40   h-screen fixed backdrop-filter backdrop-blur-sm backdrop-opacity-100'}></div>
+                : null
         }
+        <div className="h-screen h-full  flex items-center justify-center" style={{background: '#edf2f7'}}>
+            {
+                isLogin ? <Sidebar sidebarStatus={showSidebar}
+                                   handleSidebarStatus={() => _handleSidebarStatus(true)}
+                                   sidebars={sidebarItem}>
+                        <Component {...pageProps} />
+                    </Sidebar> :
+                    <Login setIsLogin={setLogin}
+                           setRole={setRole}
+                    />
+            }
 
-        {/*<Landing/>*/}
+            {/*<Landing/>*/}
 
-    </div>
+        </div>
+    </Fragment>
+
 }
 
 export default MyApp

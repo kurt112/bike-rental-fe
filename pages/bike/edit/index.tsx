@@ -229,7 +229,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                                 {
                                                     pictures?.map((e: any, index: number) => {
                                                         return <div className="flex flex-wrap" key={e.id}>
-                                                            <div className="w-full p-1 md:p-2">
+                                                            <div className="w-64 p-1 md:p-2">
                                                                 <img alt={'this is bike picture'}
                                                                      src={`data:image/png;base64,${e.blob}`}
                                                                      className={'w-full'}
