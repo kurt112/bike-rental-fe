@@ -16,7 +16,7 @@ const EditBike: NextPage = ({bike}: any) => {
     const [pictures, setPictures] = useState<any>(null);
 
     // this state is for uploading
-    const [imageFile,setImageFile] = useState<FormData | null | undefined>()
+    const [imageFile, setImageFile] = useState<FormData | null | undefined>()
 
     const handleEdit = () => {
 
@@ -232,33 +232,36 @@ const EditBike: NextPage = ({bike}: any) => {
                                                     pictures?.map((e: any, index: number) => {
                                                         return <div className="flex flex-wrap" key={e.id}>
                                                             <div className="w-64 p-1 md:p-2">
-                                                                <Image alt={'this is bike picture'}
-                                                                     src={`data:image/png;base64,${e.blob}`}
-                                                                     className={'w-full'}
+                                                                <Image
+                                                                    src={`data:image/png;base64,${e.blob}`}
+                                                                    alt="bike image"
+                                                                    width="100%" height="100" layout="responsive"
+                                                                    objectFit="contain"
                                                                 />
                                                             </div>
                                                         </div>
                                                     })
                                                 }
+                                            </div>
                                         </div>
-                                </div>
-                            </section>
+                                    </section>
 
-                            <br/>
-                            {
-                                isEdit ? <button onClick={(e) => handleSubmit(e, newBike, imageFile)} type="button"
-                                                 className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
-                                    Submit
-                                </button> : null
-                            }
+                                    <br/>
+                                    {
+                                        isEdit ?
+                                            <button onClick={(e) => handleSubmit(e, newBike, imageFile)} type="button"
+                                                    className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                                                Submit
+                                            </button> : null
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-</div>
-</Fragment>
-)
+        </Fragment>
+    )
 }
 
 export default EditBike;

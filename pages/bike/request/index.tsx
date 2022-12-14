@@ -7,7 +7,6 @@ import {bikeSettings, getBikes} from "../../../api/bike-api";
 import {useRouter} from "next/router";
 import {pagination} from "../../../types/pagination";
 import Link from "next/link";
-import {Button} from "@chakra-ui/react";
 
 const Requested:NextPage = ({bikes,settings}: any) =>{
     const router = useRouter()
@@ -36,7 +35,7 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
 
     return <Fragment>
         <Head>
-            <title>Bike Rented</title>
+            <title>Bike Request</title>
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         </Head>
         <div className="overflow-x-auto relative shadow-md sm:rounded-lg mr-2 ml-2 mt-5">
@@ -111,8 +110,11 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
                                     {bike.price}
                                 </td>
                                 <td className="py-4 px-6">
-                                    <Link href={`/employee/edit?id=${user.id}`}
-                                       className="font-medium text-red-600 dark:text-blue-500 hover:underline"><div>Terminate</div></Link>
+                                    <Link href={`/employee/edit?id=${user.id}`}>
+                                        <div className="cursor-pointer font-medium text-green-600 dark:text-green-500 hover:underline">
+                                            Approve
+                                        </div>
+                                    </Link>
                                 </td>
                             </tr>
                         )
@@ -130,7 +132,7 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
                         page > 1 ? <li className='cursor-pointer'>
                             <Link
                                 href={`/bike?search=${search}&page=${parseInt(page) - 1}&size=${size}&status=${getBikeStatus.FOR_REQUEST}`}>
-                                <Button
+                                <button
                                     className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     <span className="sr-only">Previous</span>
                                     <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -139,7 +141,7 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
                                               d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                                               clipRule="evenodd"></path>
                                     </svg>
-                                </Button>
+                                </button>
                             </Link>
                         </li> : null
                     }
