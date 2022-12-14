@@ -6,6 +6,7 @@ import SidebarItemClient from "../components/layout/sidebar/sidebar-item-client"
 import Login from "../components/auth/login";
 import React, {Fragment, useEffect, useState} from "react";
 import {sidebar} from "../types/sidebar";
+import Head from "next/head";
 
 function MyApp({Component, pageProps}: AppProps) {
 
@@ -58,6 +59,9 @@ function MyApp({Component, pageProps}: AppProps) {
 
 
     return <Fragment>
+        <Head>
+            <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
+        </Head>
         {
             showSidebar ? <div onClick={() => _handleSidebarStatus(false)}
                                className={'w-full z-40   h-screen fixed backdrop-filter backdrop-blur-sm backdrop-opacity-100'}></div>
