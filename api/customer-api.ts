@@ -1,8 +1,8 @@
 import {SyntheticEvent} from "react";
-import {axiosGet, axiosSubmit, graphQl} from "../../../.config/api";
-import {CustomerCreate} from "../../../types/customer";
+import {axiosGet, axiosSubmit, graphQl} from "../.config/api";
+import {CustomerCreate} from "../types/customer";
 import moment from "moment";
-import {path} from "../../../utils/api/endpoint";
+import {path} from "../utils/api/endpoint";
 import Swal from "sweetalert2";
 
 export const handleSubmitCustomer = async (e:SyntheticEvent, customer:CustomerCreate) => {

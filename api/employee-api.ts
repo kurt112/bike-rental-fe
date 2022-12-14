@@ -1,8 +1,8 @@
 import {SyntheticEvent} from "react";
-import {axiosGet, axiosSubmit, graphQl} from "../../../.config/api";
-import {path} from "../../../utils/api/endpoint";
+import {axiosGet, axiosSubmit, graphQl} from "../.config/api";
+import {path} from "../utils/api/endpoint";
 import moment from "moment/moment";
-import {EmployeeCreate} from "../../../types/employee";
+import {EmployeeCreate} from "../types/employee";
 
 export const handleSubmitEmployee = async (e:SyntheticEvent, employee:EmployeeCreate) => {
     await axiosSubmit.post(path.employee,employee).then(ignored => {

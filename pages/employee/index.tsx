@@ -6,9 +6,10 @@ import {pagination} from "../../types/pagination";
 import Link from "next/link";
 import {formatDate} from "../../utils/date";
 import {employeeColumns} from "../../types/employee";
-import {customerSettings, getEmployees} from "./api";
+import {customerSettings, getEmployees} from "../../api/employee-api";
+import {Button} from "@chakra-ui/react";
 
-const employee: NextPage = ({employees,settings}: any) => {
+const Employee: NextPage = ({employees,settings}: any) => {
     const router = useRouter()
     const {search, page, size, status}:any = router.query
     const [pagination, setPagination] = useState<pagination>({search, page, size, status})
@@ -124,8 +125,8 @@ const employee: NextPage = ({employees,settings}: any) => {
                                     </td>
 
                                     <td className="py-4 px-6">
-                                        <a href={`/employee/edit?id=${employee.id}`}
-                                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
+                                        <Link href={`/employee/edit?id=${employee.id}`}
+                                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</Link>
                                     </td>
                                 </tr>
                             )
@@ -145,7 +146,7 @@ const employee: NextPage = ({employees,settings}: any) => {
                             page > 1 ? <li className='cursor-pointer'>
                                 <Link
                                     href={`/employee?search=${search}&page=${parseInt(page) - 1}&size=${size}&status=${status}`}>
-                                    <a
+                                    <Button
                                         className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         <span className="sr-only">Previous</span>
                                         <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -154,7 +155,7 @@ const employee: NextPage = ({employees,settings}: any) => {
                                                   d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                                                   clipRule="evenodd"></path>
                                         </svg>
-                                    </a>
+                                    </Button>
                                 </Link>
                             </li> : null
                         }
@@ -164,9 +165,9 @@ const employee: NextPage = ({employees,settings}: any) => {
                                 return (
                                     <li key={page} className={'cursor-pointer'}>
                                         <Link href={`/employee?search=${search}&page=${page+1}&size=${size}&status=${status}`}>
-                                            <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                            <Button className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                                 {page+1}
-                                            </a>
+                                            </Button>
                                         </Link>
                                     </li>
                                 )
@@ -178,7 +179,7 @@ const employee: NextPage = ({employees,settings}: any) => {
                                 <Link
                                     href={`/employee?search=${search}&page=${parseInt(page) + 1}&size=${size}&status=${status}`}>
                                     <li className='cursor-pointer'>
-                                        <a className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <Button className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                             <span className="sr-only">Next</span>
                                             <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
                                                  viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -186,7 +187,7 @@ const employee: NextPage = ({employees,settings}: any) => {
                                                       d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                                       clipRule="evenodd"></path>
                                             </svg>
-                                        </a>
+                                        </Button>
                                     </li>
                                 </Link>
 
@@ -197,7 +198,7 @@ const employee: NextPage = ({employees,settings}: any) => {
         </Fragment>
     )
 }
-export default employee
+export default Employee
 
 export const getServerSideProps = async (context: any) => {
     const {search, page, size, status} = context.query;

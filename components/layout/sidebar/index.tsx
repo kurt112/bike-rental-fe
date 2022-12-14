@@ -44,11 +44,14 @@ const Sidebar = ({
                                             <Link href={sidebar.link} key={i}>
                                                 <li className="flex w-full justify-between text-gray-300 cursor-pointer items-center mb-6">
                                                     <Image
-                                                        src={sidebar.icon.src} loading="eager"
+                                                        src={sidebar.icon.src}
+                                                        loading="eager"
                                                         layout={'fixed'}
                                                         height={25}
                                                         width={25}
-                                                        style={{filter: 'invert(0.8  )'}} alt={sidebar.name}/>
+                                                        style={{filter: 'invert(0.8  )'}}
+                                                        alt={sidebar.name}
+                                                    />
                                                     <span className="text-sm ml-2">{sidebar.name}</span>
                                                     <div
                                                         className="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">5
@@ -60,7 +63,7 @@ const Sidebar = ({
                                 }
                             </ul>
                         </div>
-                        <Image src={logo} className={'w-full'}/>
+                        <Image src={logo} className={'w-full'} alt='logo'/>
                         <div className="px-8 border-t border-gray-700">
                             <ul className="w-full flex items-center justify-between bg-gray-800">
                                 <li className="cursor-pointer text-white pt-5 pb-3">

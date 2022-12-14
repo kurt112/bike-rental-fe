@@ -1,8 +1,8 @@
 import {SyntheticEvent} from "react";
-import {axiosCreate, axiosGet, axiosSubmit, graphQl} from "../../../.config/api";
-import {BikeObject} from "../../../types/bike";
+import {axiosCreate, axiosGet, axiosSubmit, graphQl} from "../.config/api";
+import {BikeObject} from "../types/bike";
 import Swal from 'sweetalert2'
-import {getBikeStatus} from "../../../utils/bike";
+import {getBikeStatus} from "../utils/bike";
 
 export const requested:Array<BikeObject> = [];
 export const rented:Array<BikeObject> = [];

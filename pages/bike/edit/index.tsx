@@ -2,9 +2,10 @@ import {NextPage} from "next";
 import {Fragment, useEffect, useState} from "react";
 import Head from "next/head";
 import {BikeObject} from "../../../types/bike";
-import {getBikeData, handleDeleteBike, handleSubmit} from "../api";
+import {getBikeData, handleDeleteBike, handleSubmit} from "../../../api/bike-api";
 import Back from "../../../components/layout/back";
 import {axiosCreate} from "../../../.config/api";
+import Image from "next/image";
 
 const EditBike: NextPage = ({bike}: any) => {
 
@@ -34,6 +35,7 @@ const EditBike: NextPage = ({bike}: any) => {
         images().then(e => {
             setPictures(e);
         })
+        // eslint-disable-next-line
     }, []);
 
     const images = async () => {
@@ -197,7 +199,7 @@ const EditBike: NextPage = ({bike}: any) => {
 
                                 <div className="mb-4\">
                                     <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">
-                                        Bike Picture's
+                                        Bike Picture<q></q>s
                                     </label>
                                     <div className="flex justify-center items-center w-full">
                                         <label htmlFor="dropzone-file"
@@ -230,7 +232,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                                     pictures?.map((e: any, index: number) => {
                                                         return <div className="flex flex-wrap" key={e.id}>
                                                             <div className="w-64 p-1 md:p-2">
-                                                                <img alt={'this is bike picture'}
+                                                                <Image alt={'this is bike picture'}
                                                                      src={`data:image/png;base64,${e.blob}`}
                                                                      className={'w-full'}
                                                                 />

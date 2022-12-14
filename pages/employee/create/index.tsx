@@ -4,7 +4,7 @@ import Back from "../../../components/layout/back";
 import {Fragment, useState} from "react";
 import {UserCreate} from "../../../types/user";
 import {EmployeeCreate} from "../../../types/employee";
-import {handleSubmitEmployee} from "../api";
+import {handleSubmitEmployee} from "../../../api/employee-api";
 
 const CreateEmployee: NextPage = () => {
     const [user, setUser] = useState<UserCreate>({

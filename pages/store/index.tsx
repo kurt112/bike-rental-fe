@@ -1,38 +1,35 @@
 import Head from "next/head";
 import Back from "../../components/layout/back";
 import {Fragment, useEffect, useState} from "react";
-import {getStoreData, handleSubmit} from "./api";
+import {getStoreData, handleSubmit} from "../../api/store-api";
 import {NextPage} from "next";
 import {StoreMap} from "../../utils/googleMap/StoreMap";
 
-const EditStore:NextPage = () => {
+const EditStore: NextPage = () => {
 
     const [isEdit, setEdit] = useState(false);
-    const [store,setStore] = useState<any> (null);
+    const [store, setStore] = useState<any>(null);
 
 
     const handleEdit = () => {
         setEdit(!isEdit);
     }
 
-    const changeStore = (data:any, target:any) => {
+    const changeStore = (data: any, target: any) => {
         const currentStore = {...store}
         currentStore[target] = data;
         setStore(currentStore);
     }
 
     useEffect(() => {
-       if(store === null){
-           getStore().then(ignored => {});
-       }
+        if (store === null) {
+            getStoreData(1).then(store => {
+                setStore(store);
+            })
+        }
 
-    }, [])
-
-    const getStore = async () => {
-         await getStoreData(1).then(store => {
-            setStore(store);
-         })
-    }
+        // eslint-disable-next-line
+    }, []);
 
     return <Fragment>
         <Head>
@@ -40,7 +37,7 @@ const EditStore:NextPage = () => {
             <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
         </Head>
         {
-            store !== null?
+            store !== null ?
                 <div className="h-full font-sans antialiased bg-white    w-full overflow-y-auto">
                     <div className="w-full bg-green shadow z-1 flex justify-between p-2">
                         <Back/>
@@ -76,7 +73,7 @@ const EditStore:NextPage = () => {
                             <div className=" mx-auto bg-white rounded ">
                                 <div className="text-black text-4xl pl-2">
                                     {
-                                        isEdit? 'Edit Store': 'Store Data'
+                                        isEdit ? 'Edit Store' : 'Store Data'
                                     }
                                 </div>
                                 <div className="py-4 px-8 mb-10">
@@ -91,7 +88,7 @@ const EditStore:NextPage = () => {
                                                 placeholder="Store Name"
                                                 disabled={!isEdit}
                                                 value={store.name}
-                                                onChange={(e) => changeStore(e.target.value,'name')}
+                                                onChange={(e) => changeStore(e.target.value, 'name')}
                                             />
                                         </div>
                                     </div>
@@ -106,7 +103,7 @@ const EditStore:NextPage = () => {
                                                 type="number"
                                                 placeholder="Enter Latitude"
                                                 value={store.latitude}
-                                                onChange={(e) => changeStore(e.target.value,'latitude')}
+                                                onChange={(e) => changeStore(e.target.value, 'latitude')}
                                             />
                                         </div>
 
@@ -120,7 +117,7 @@ const EditStore:NextPage = () => {
                                                 placeholder="Enter Longitude"
                                                 disabled={!isEdit}
                                                 value={store.longitude}
-                                                onChange={(e) => changeStore(e.target.value,'longitude')}
+                                                onChange={(e) => changeStore(e.target.value, 'longitude')}
                                             />
                                         </div>
                                     </div>
@@ -136,7 +133,7 @@ const EditStore:NextPage = () => {
                                                 type="text"
                                                 placeholder="Enter ScopeColor"
                                                 value={store.scopeColor}
-                                                onChange={(e) => changeStore(e.target.value,'scopeColor')}
+                                                onChange={(e) => changeStore(e.target.value, 'scopeColor')}
                                             />
                                         </div>
 
@@ -150,7 +147,7 @@ const EditStore:NextPage = () => {
                                                 placeholder="Enter ScopeEdge Color"
                                                 disabled={!isEdit}
                                                 value={store.scopeEdgeColor}
-                                                onChange={(e) => changeStore(e.target.value,'scopeEdgeColor')}
+                                                onChange={(e) => changeStore(e.target.value, 'scopeEdgeColor')}
                                             />
                                         </div>
                                     </div>
@@ -166,7 +163,7 @@ const EditStore:NextPage = () => {
                                                 placeholder="Store Name"
                                                 disabled={!isEdit}
                                                 value={store.radius}
-                                                onChange={(e) => changeStore(e.target.value,'radius')}
+                                                onChange={(e) => changeStore(e.target.value, 'radius')}
                                             />
                                         </div>
                                     </div>
@@ -177,15 +174,16 @@ const EditStore:NextPage = () => {
                                         }
                                     </div>
                                     {
-                                        isEdit? <button onClick={(e) => handleSubmit(e,store)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                                        isEdit ? <button onClick={(e) => handleSubmit(e, store)} type="button"
+                                                         className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                             Submit
-                                        </button>: null
+                                        </button> : null
                                     }
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>: null
+                </div> : null
         }
     </Fragment>
 }

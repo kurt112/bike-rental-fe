@@ -5,7 +5,8 @@ import {pagination} from "../../types/pagination";
 import {useRouter} from 'next/router'
 import Link from "next/link";
 import Head from "next/head";
-import {bikeSettings, getBikes} from "./api";
+import {bikeSettings, getBikes} from "../../api/bike-api";
+import {Button} from "@chakra-ui/react";
 
 const Bike: NextPage = ({bikes,settings}: any) => {
 
@@ -35,7 +36,7 @@ const Bike: NextPage = ({bikes,settings}: any) => {
         <div className="overflow-x-auto relative shadow-md sm:rounded-lg mr-2 ml-2 mt-5">
             <div className="pb-4 bg-white dark:bg-gray-900 pt-2 pl-2 flex justify-between p-4">
                 <div id="left">
-                    <Link href="bike/create">
+                    <Link href="bike/CreateBike">
                         <div className="relative mt-1 absolute">
                             <button
                                 className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
@@ -114,8 +115,8 @@ const Bike: NextPage = ({bikes,settings}: any) => {
                                     {quantity}
                                 </td>
                                 <td className="py-4 px-6">
-                                    <a href={`/bike/edit?id=${bike.id}`}
-                                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
+                                    <Link href={`/bike/edit?id=${bike.id}`}
+                                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</Link>
                                 </td>
                             </tr>
                         )
@@ -133,7 +134,7 @@ const Bike: NextPage = ({bikes,settings}: any) => {
                         page > 1 ? <li className='cursor-pointer'>
                             <Link
                                 href={`/bike?search=${search}&page=${parseInt(page) - 1}&size=${size}&status=${status}`}>
-                                <a
+                                <Button
                                     className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     <span className="sr-only">Previous</span>
                                     <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -142,7 +143,7 @@ const Bike: NextPage = ({bikes,settings}: any) => {
                                               d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                                               clipRule="evenodd"></path>
                                     </svg>
-                                </a>
+                                </Button>
                             </Link>
                         </li> : null
                     }
@@ -152,9 +153,9 @@ const Bike: NextPage = ({bikes,settings}: any) => {
                             return (
                                 <li key={page} className={'cursor-pointer'}>
                                     <Link href={`/bike?search=${search}&page=${page+1}&size=${size}&status=${status}`}>
-                                        <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <div className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                             {page+1}
-                                        </a>
+                                        </div>
                                     </Link>
                                 </li>
                             )
@@ -165,7 +166,7 @@ const Bike: NextPage = ({bikes,settings}: any) => {
                             <Link
                                 href={`/bike?search=${search}&page=${parseInt(page) + 1}&size=${size}&status=${status}`}>
                                 <li className='cursor-pointer'>
-                                    <a className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <div className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         <span className="sr-only">Next</span>
                                         <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
                                              viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -173,7 +174,7 @@ const Bike: NextPage = ({bikes,settings}: any) => {
                                                   d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                                   clipRule="evenodd"></path>
                                         </svg>
-                                    </a>
+                                    </div>
                                 </li>
                             </Link>
 

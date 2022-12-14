@@ -1,10 +1,11 @@
 import {NextPage} from "next";
 import {Fragment, useEffect, useState} from "react";
 import Head from "next/head";
-import {getBikeByCustomer, loadImages, rented, requested} from "../bike/api";
+import {getBikeByCustomer, loadImages, rented, requested} from "../../api/bike-api";
 import {BikeObject} from "../../types/bike";
 import Image from "next/image";
 import NoBikeImage from "../../components/layout/sidebar/icon/noBikeImage.png";
+import Link from "next/link";
 
 const Rented: NextPage = () => {
 
@@ -40,7 +41,7 @@ const Rented: NextPage = () => {
                                     className="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                                     {
                                         pictures[i] === '' ?
-                                            <a href={'#'}>
+                                            <Link href={'#'}>
                                                 <Image className="rounded-t-lg"
                                                        src={NoBikeImage}
                                                        alt="No Bike Found"
@@ -50,8 +51,8 @@ const Rented: NextPage = () => {
                                                        objectFit="contain"
                                                 />
 
-                                            </a> :
-                                            <a href={'#'}>
+                                            </Link> :
+                                            <Link href={'#'}>
                                                 <Image className="rounded-t-lg"
                                                        src={`data:image/png;base64,${pictures[i]}`}
                                                        alt="bike image"
@@ -59,15 +60,15 @@ const Rented: NextPage = () => {
                                                        objectFit="contain"
 
                                                 />
-                                            </a>
+                                            </Link>
                                     }
 
                                     <div className="p-2">
-                                        <a href="">
+                                        <Link href="">
                                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                                 {bike.name}
                                             </h5>
-                                        </a>
+                                        </Link>
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{bike.description}</p>
                                         <hr/>
 

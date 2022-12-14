@@ -4,7 +4,7 @@ import {CustomerCreate} from "../../../types/customer";
 import {useState, Fragment} from "react";
 import Back from "../../../components/layout/back";
 import {UserCreate} from "../../../types/user";
-import {handleSubmitCustomer} from "../api";
+import {handleSubmitCustomer} from "../../../api/customer-api";
 const CreateCustomer: NextPage = () => {
 
     const [user, setUser] = useState<UserCreate>({

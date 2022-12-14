@@ -5,22 +5,21 @@ import {graphQl} from "../../.config/api";
 import {useRouter} from "next/router";
 import {pagination} from "../../types/pagination";
 import Link from "next/link";
-import {bikeColumns} from "../../types/bike";
 import {recieptColumn} from "../../types/receipt";
 
-const receipt:NextPage = ({bikes}: any) => {
+const Receipt:NextPage = ({bikes}: any) => {
 
-    const router = useRouter()
-    const {search, page, size, status} = router.query
+    const Router = useRouter()
+    const {search, page, size, status} = Router.query
 
-    const [pagination, setPagination] = useState<pagination>({search, page, size, status})
+    const [Pagination, SetPagination] = useState<pagination>({search, page, size, status})
 
     const handleSearch = (data: string) => {
-        const tempPagination = {...pagination};
+        const tempPagination = {...Pagination};
 
         tempPagination.search = data;
 
-        setPagination(tempPagination);
+        SetPagination(tempPagination);
     }
 
     return (
@@ -31,7 +30,7 @@ const receipt:NextPage = ({bikes}: any) => {
             </Head>
             <div className="overflow-x-auto relative shadow-md sm:rounded-lg mr-2 ml-2 mt-5">
                 <div className="pb-4 bg-white dark:bg-gray-900 pt-2 pl-2 flex justify-between p-4">
-                    
+
                     <div id="right">
                         <label htmlFor="table-search" className="sr-only">Search</label>
                         <div className="relative mt-1 absolute">
@@ -44,7 +43,7 @@ const receipt:NextPage = ({bikes}: any) => {
                                 </svg>
                             </div>
                             <input type="text" id="table-search"
-                                   value={pagination.search}
+                                   value={Pagination.search}
                                    onChange={(e) => handleSearch(e.target.value)}
                                    className="p-2 pl-10 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                    placeholder="Search Anything"/>
@@ -90,8 +89,8 @@ const receipt:NextPage = ({bikes}: any) => {
                                         {bike.quantity}
                                     </td>
                                     <td className="py-4 px-6">
-                                        <a href="/bike/profile"
-                                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
+                                        <Link href="/bike/profile"
+                                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</Link>
                                     </td>
                                 </tr>
                             )
@@ -106,7 +105,7 @@ const receipt:NextPage = ({bikes}: any) => {
                                 className="font-semibold text-gray-900 dark:text-white">1000</span></span>
                     <ul className="inline-flex items-center -space-x-px mr-5">
                         <li>
-                            <a href="#"
+                            <Link href="#"
                                className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                 <span className="sr-only">Previous</span>
                                 <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -115,30 +114,30 @@ const receipt:NextPage = ({bikes}: any) => {
                                           d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                                           clipRule="evenodd"></path>
                                 </svg>
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#"
-                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                            <Link href="#"
+                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</Link>
                         </li>
                         <li>
-                            <a href="#"
-                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                            <Link href="#"
+                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</Link>
                         </li>
                         <li>
-                            <a href="#" aria-current="page"
-                               className="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                            <Link href="#" aria-current="page"
+                               className="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</Link>
                         </li>
                         <li>
-                            <a href="#"
-                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
+                            <Link href="#"
+                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</Link>
                         </li>
                         <li>
-                            <a href="#"
-                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
+                            <Link href="#"
+                               className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</Link>
                         </li>
                         <li>
-                            <a href="#"
+                            <Link href="#"
                                className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                 <span className="sr-only">Next</span>
                                 <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -147,7 +146,7 @@ const receipt:NextPage = ({bikes}: any) => {
                                           d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                           clipRule="evenodd"></path>
                                 </svg>
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </nav>
@@ -156,7 +155,7 @@ const receipt:NextPage = ({bikes}: any) => {
     )
 }
 
-export default receipt
+export default Receipt
 
 export const getServerSideProps = async (context: any) => {
     const {search, page, size, status} = context.query;

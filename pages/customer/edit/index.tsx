@@ -1,7 +1,7 @@
 import {NextPage} from "next";
 import Head from "next/head";
 import Back from "../../../components/layout/back";
-import {getCustomerData, handleDeleteCustomer, handlePatchCustomer} from "../api";
+import {getCustomerData, handleDeleteCustomer, handlePatchCustomer} from "../../../api/customer-api";
 import {Fragment, useState} from "react";
 import {CustomerCreate} from "../../../types/customer";
 import moment from "moment";

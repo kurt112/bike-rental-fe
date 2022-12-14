@@ -1,6 +1,6 @@
-import {axiosSubmit, graphQl} from "../../../.config/api";
+import {axiosSubmit, graphQl} from "../.config/api";
 import {SyntheticEvent} from "react";
-import {Store} from "../../../types/store";
+import {Store} from "../types/store";
 import Swal from "sweetalert2";
 
 export const handleSubmit = async (e:SyntheticEvent, store:Store) => {

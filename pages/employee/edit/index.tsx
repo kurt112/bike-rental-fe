@@ -3,7 +3,7 @@ import {Fragment, useState} from "react";
 import Head from "next/head";
 import Back from "../../../components/layout/back";
 import moment from "moment/moment";
-import {getEmployeeData, handleDeleteEmployee, handlePatchEmployee} from "../api";
+import {getEmployeeData, handleDeleteEmployee, handlePatchEmployee} from "../../../api/employee-api";
 import {UserCreate} from "../../../types/user";
 import {EmployeeCreate} from "../../../types/employee";
 

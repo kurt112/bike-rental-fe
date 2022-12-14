@@ -3,10 +3,11 @@ import React, {Fragment, useState} from "react";
 import Head from "next/head";
 import {rentedColumn} from "../../../types/rent";
 import {getBikeStatus} from "../../../utils/bike";
-import {bikeSettings, getBikes} from "../api";
+import {bikeSettings, getBikes} from "../../../api/bike-api";
 import {useRouter} from "next/router";
 import {pagination} from "../../../types/pagination";
 import Link from "next/link";
+import {Button} from "@chakra-ui/react";
 
 const Rented:NextPage = ({bikes,settings}: any) =>{
     const router = useRouter()
@@ -110,8 +111,8 @@ const Rented:NextPage = ({bikes,settings}: any) =>{
                                     {bike.price}
                                 </td>
                                 <td className="py-4 px-6">
-                                    <a href={`/employee/edit?id=${user.id}`}
-                                       className="font-medium text-red-600 dark:text-blue-500 hover:underline">Terminate</a>
+                                    <Link href={`/employee/edit?id=${user.id}`}
+                                       className="font-medium text-red-600 dark:text-blue-500 hover:underline"><div>Terminate</div></Link>
                                 </td>
                             </tr>
                         )
@@ -129,7 +130,7 @@ const Rented:NextPage = ({bikes,settings}: any) =>{
                         page > 1 ? <li className='cursor-pointer'>
                             <Link
                                 href={`/bike?search=${search}&page=${parseInt(page) - 1}&size=${size}&status=${getBikeStatus.RENTED}`}>
-                                <a
+                                <Button
                                     className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     <span className="sr-only">Previous</span>
                                     <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -138,7 +139,7 @@ const Rented:NextPage = ({bikes,settings}: any) =>{
                                               d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                                               clipRule="evenodd"></path>
                                     </svg>
-                                </a>
+                                </Button>
                             </Link>
                         </li> : null
                     }
@@ -147,9 +148,9 @@ const Rented:NextPage = ({bikes,settings}: any) =>{
                             return (
                                 <li key={page} className={'cursor-pointer'}>
                                     <Link href={`/bike?search=${search}&page=${page+1}&size=${size}&status=${getBikeStatus.RENTED}`}>
-                                        <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <Button className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                             {page+1}
-                                        </a>
+                                        </Button>
                                     </Link>
                                 </li>
                             )
@@ -160,7 +161,7 @@ const Rented:NextPage = ({bikes,settings}: any) =>{
                             <Link
                                 href={`/bike?search=${search}&page=${parseInt(page) + 1}&size=${size}&status=${getBikeStatus.RENTED}`}>
                                 <li className='cursor-pointer'>
-                                    <a className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <div className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         <span className="sr-only">Next</span>
                                         <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
                                              viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -168,7 +169,7 @@ const Rented:NextPage = ({bikes,settings}: any) =>{
                                                   d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                                   clipRule="evenodd"></path>
                                         </svg>
-                                    </a>
+                                    </div>
                                 </li>
                             </Link>
 
