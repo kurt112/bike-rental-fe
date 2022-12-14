@@ -2,7 +2,6 @@ import {SyntheticEvent, useState} from "react";
 import {UserLogin} from "../../types/credential";
 import {axiosSubmit} from "../../.config/api";
 import {path} from "../../utils/api/endpoint";
-import Image from "next/image";
 import Link from "next/link";
 
 const Login = ({

@@ -60,7 +60,7 @@ function MyApp({Component, pageProps}: AppProps) {
 
     return <Fragment>
         <Head>
-            <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
+            {/*<meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>*/}
         </Head>
         {
             showSidebar ? <div onClick={() => _handleSidebarStatus(false)}
