@@ -1,6 +1,6 @@
 import {NextPage} from "next";
-import {bikeSettings, getBikeAvailable, loadImages} from "../../../api/bike-api";
-import {useCallback, useEffect, useState} from "react";
+import {bikeSettings, getBikeAvailable, loadImages, requestBikeByCustomer} from "../../../api/bike-api";
+import {useEffect, useState} from "react";
 import {BikeObject} from "../../../types/bike";
 import Image from "next/image";
 import NoBikeImage from '../../../components/layout/sidebar/icon/noBikeImage.png'
@@ -12,8 +12,11 @@ const Available: NextPage = ({
 
     const [pictures, setPictures] = useState([]);
 
-    const _handleRequest = () => {
-
+    const _handleRequest = async (bikeId: string) => {
+        await requestBikeByCustomer(bikeId).then(ignored => {
+            alert('Request Success');
+            location.reload();
+        })
     }
 
 
@@ -67,7 +70,7 @@ const Available: NextPage = ({
                                         <hr/>
                                         <h1 className="mb-3 text-xl font-normal text-gray-700 dark:text-gray-400">44$/hour
                                             (44 in stock)</h1>
-                                        <button onClick={_handleRequest}
+                                        <button onClick={() => _handleRequest(bike.id)}
                                                 className="w-full inline-flex place-content-center  py-2 px-3 text-sm font-medium  text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             Request
                                             <svg aria-hidden="true" className="ml-2 -mr-1 w-4 h-4" fill="currentColor"

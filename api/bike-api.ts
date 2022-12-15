@@ -4,8 +4,8 @@ import {BikeObject} from "../types/bike";
 import Swal from 'sweetalert2'
 import {getBikeStatus} from "../utils/bike";
 
-export const requested:Array<BikeObject> = [];
-export const rented:Array<BikeObject> = [];
+export let requested:Array<BikeObject> = [];
+export let rented:Array<BikeObject> = [];
 export const handleSubmit = async (e:SyntheticEvent, bike:BikeObject, image: FormData | null | undefined) => {
 
     if(!image){
@@ -223,4 +223,46 @@ export const loadImages = async (bikes: any, setPictures:any) => {
     setPictures(currentPictures);
 
     return currentPictures;
+}
+
+export const requestBikeByCustomer = async (bikeId: string) => {
+    const token = localStorage.getItem('token')
+
+    if(!token){
+        alert('No Token Found');
+        return;
+    }
+
+    const params = new URLSearchParams();
+    params.append("token", token);
+    params.append("bikeId",bikeId);
+
+    await axiosCreate.post("bike/request", params).then(result => {
+        console.log(result);
+        console.log("the bike id");
+        console.log(bikeId);
+    });
+}
+
+
+export const cancelRequestBikeByCustomer = async (bikeId: string) => {
+    const token = localStorage.getItem('token')
+
+    if(!token){
+        alert('No Token Found');
+        return;
+    }
+
+    const params = new URLSearchParams();
+    params.append("token", token);
+    params.append("bikeId",bikeId);
+
+    await axiosCreate.post("bike/cancel", params).then(result => {
+        alert("Cancel Request Success")
+    });
+}
+
+export const setRequestAndRentedToEmpty = () => {
+    requested = [];
+    rented = [];
 }

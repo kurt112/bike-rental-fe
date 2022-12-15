@@ -8,6 +8,7 @@ export interface BikeObject{
     code: string,
     bikePictures: bikePictures[],
     status: number;
+    id: string,
 }
 
 interface bikePictures{
