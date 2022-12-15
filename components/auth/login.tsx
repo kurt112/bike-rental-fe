@@ -1,8 +1,9 @@
-import {SyntheticEvent, useState} from "react";
+import React, {SyntheticEvent, useState} from "react";
 import {UserLogin} from "../../types/credential";
 import {axiosSubmit} from "../../.config/api";
 import {path} from "../../utils/api/endpoint";
-import Link from "next/link";
+import logo from '../../_images/erick.jpg';
+import Image from "next/image";
 
 const Login = ({
     setIsLogin,
@@ -35,122 +36,73 @@ const Login = ({
     }
 
     return (
-        <section className="h-full w-full flex justify-center item items-center">
-            <div className=" px-6 py-12 h-full w-full">
-                <div className="bg-white shadow-2xl flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
-                    <div className="h-full md:w-8/12 lg:w-6/12 mb-12 md:mb-0 border-r-2 border-gray-600 flex justify-center items-center">
-                        {/*<Image*/}
-                        {/*    src="https://bicyclensw.org.au/wp-content/uploads/2019/09/757-0919-Bicycle-NSW-Rolling-bike-Orange.gif"*/}
-                        {/*    className="h-1/2"*/}
-                        {/*    alt="Phone image"*/}
-                        {/*    width='90'*/}
-                        {/*    height='90'*/}
-                        {/*/>*/}
-                    </div>
-                    <div className="md:w-8/12 lg:w-5/12 lg:ml-20 ">
-                        <form>
-                            <div className="mb-6">
-                                <input
-                                    type="text"
-                                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    placeholder="Email address"
-                                    value={cred.username}
-                                    onChange={(e) => handlerChange(e.target.value,'username')}
-                                />
-                            </div>
-
-                            <div className="mb-6">
-                                <input
-                                    type="password"
-                                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                    placeholder="Password"
-                                    value={cred.password}
-                                    onChange={(e) => handlerChange(e.target.value, 'password')}
-                                />
-                            </div>
-
-                            <div className="flex justify-between items-center mb-6">
-                                <div className="form-group form-check">
-                                    {/*<input*/}
-                                    {/*    type="checkbox"*/}
-                                    {/*    className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"*/}
-                                    {/*    id="exampleCheck3"*/}
-                                    {/*    checked*/}
-                                    {/*/>*/}
-                                    {/*<label className="form-check-label inline-block text-gray-800"*/}
-                                    {/*       htmlFor="exampleCheck2"*/}
-                                    {/*       defaultValue={true}*/}
-                                    {/*>Remember me</label*/}
-                                    {/*>*/}
+        <section className="h-fit w-full flex justify-center item items-center">
+            <div className="h-full w-full">
+                <div className="bg-white min-h-screen  flex justify-center items-center bg-green-800">
+                    <div className=' shadow-2xl w-3/4 flex justify-center items-center text-gray-800 bg-white' style={{height: '900px'}}>
+                        <div className=" md:w-8/12 lg:w-6/12 mb-12 md:mb-0 border-r-2 border-gray-600 flex justify-center items-center">
+                            <Image
+                                src={logo}
+                                className="h-screen"
+                                alt="Phone image"
+                                width="400" height="400"
+                            />
+                        </div>
+                        <div className="md:w-8/12 lg:w-5/12 lg:ml-20 ">
+                            <form>
+                                <div className="mb-6">
+                                    <input
+                                        type="text"
+                                        className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        placeholder="Email address"
+                                        value={cred.username}
+                                        onChange={(e) => handlerChange(e.target.value,'username')}
+                                    />
                                 </div>
-                                <Link
-                                    href=''
-                                    className="text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out"
-                                >Forgot password?</Link
+
+                                <div className="mb-6">
+                                    <input
+                                        type="password"
+                                        className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        placeholder="Password"
+                                        value={cred.password}
+                                        onChange={(e) => handlerChange(e.target.value, 'password')}
+                                    />
+                                </div>
+
+                                <div className="flex justify-between items-center mb-6">
+                                    <div className="form-group form-check">
+                                        {/*<input*/}
+                                        {/*    type="checkbox"*/}
+                                        {/*    className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"*/}
+                                        {/*    id="exampleCheck3"*/}
+                                        {/*    checked*/}
+                                        {/*/>*/}
+                                        {/*<label className="form-check-label inline-block text-gray-800"*/}
+                                        {/*       htmlFor="exampleCheck2"*/}
+                                        {/*       defaultValue={true}*/}
+                                        {/*>Remember me</label*/}
+                                        {/*>*/}
+                                    </div>
+                                    {/*<Link*/}
+                                    {/*    href=''*/}
+                                    {/*    className="text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out"*/}
+                                    {/*>Forgot password?</Link>*/}
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+                                    data-mdb-ripple="true"
+                                    data-mdb-ripple-color="light"
+                                    onClick={_handleLogin}
                                 >
-                            </div>
+                                    Sign in
+                                </button>
 
-                            <button
-                                type="submit"
-                                className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
-                                data-mdb-ripple="true"
-                                data-mdb-ripple-color="light"
-                                onClick={_handleLogin}
-                            >
-                                Sign in
-                            </button>
 
-                            <div
-                                className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5"
-                            >
-                                <p className="text-center font-semibold mx-4 mb-0">OR</p>
-                            </div>
-
-                            {/*<Link*/}
-                            {/*    className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center mb-3"*/}
-                            {/*    style={{backgroundColor: '#3b5998'}}*/}
-                            {/*    href=''*/}
-                            {/*    role="button"*/}
-                            {/*    data-mdb-ripple="true"*/}
-                            {/*    data-mdb-ripple-color="light"*/}
-                            {/*>*/}
-                            {/*    <div>*/}
-                            {/*        <svg*/}
-                            {/*            xmlns="http://www.w3.org/2000/svg"*/}
-                            {/*            viewBox="0 0 320 512"*/}
-                            {/*            className="w-3.5 h-3.5 mr-2"*/}
-                            {/*        >*/}
-                            {/*            <path*/}
-                            {/*                fill="currentColor"*/}
-                            {/*                d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"*/}
-                            {/*            />*/}
-                            {/*        </svg>*/}
-                            {/*        Continue with Facebook*/}
-                            {/*    </div>*/}
-                            {/*</Link>*/}
-                            {/*<Link*/}
-                            {/*    className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center"*/}
-                            {/*    style={{backgroundColor:'#55acee'}}*/}
-                            {/*    href=''*/}
-                            {/*    role="button"*/}
-                            {/*    data-mdb-ripple="true"*/}
-                            {/*    data-mdb-ripple-color="light"*/}
-                            {/*>*/}
-                            {/*   <div>*/}
-                            {/*       <svg*/}
-                            {/*           xmlns="http://www.w3.org/2000/svg"*/}
-                            {/*           viewBox="0 0 512 512"*/}
-                            {/*           className="w-3.5 h-3.5 mr-2"*/}
-                            {/*       >*/}
-                            {/*           <path*/}
-                            {/*               fill="currentColor"*/}
-                            {/*               d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"*/}
-                            {/*           />*/}
-                            {/*       </svg>*/}
-                            {/*       Continue with Twitter*/}
-                            {/*   </div>*/}
-                            {/*</Link>*/}
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
