@@ -4,6 +4,7 @@ export interface CustomerCreate {
     user: UserCreate | undefined,
     toPay: number,
     isMember: boolean,
+    isActive: boolean
 }
 
 

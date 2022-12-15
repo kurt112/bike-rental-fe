@@ -7,6 +7,8 @@ import Login from "../components/auth/login";
 import React, {Fragment, useEffect, useState} from "react";
 import {sidebar} from "../types/sidebar";
 import Head from "next/head";
+import {useRouter} from "next/router";
+
 
 function MyApp({Component, pageProps}: AppProps) {
 
@@ -15,6 +17,7 @@ function MyApp({Component, pageProps}: AppProps) {
     const [sidebarItem, setSidebarItem] = useState<Array<sidebar>>([])
     const [isLoading, setIsLoading] = useState(true);
     const [showSidebar, setShowSideBar] = useState(false);
+    const Router = useRouter();
 
     useEffect(() => {
         setIsLoading(true);
@@ -36,6 +39,7 @@ function MyApp({Component, pageProps}: AppProps) {
         setLogin(true);
         setRole(user.userRole);
         setIsLoading(false);
+
     }, []);
 
     useEffect(() => {
@@ -43,14 +47,17 @@ function MyApp({Component, pageProps}: AppProps) {
         switch (role) {
             case 'customer':
                 setSidebarItem(SidebarItemClient);
+                Router.push('/bike/available?search=&page=1&size=10&status=0').then(ignored => {});
                 break;
             case 'admin':
                 setSidebarItem(SidebarItemAdmin);
+                Router.push('/bike?search=&page=1&size=10&status=0').then(ignored => {});
                 break;
             default:
                 break;
         }
         setIsLoading(false);
+
     }, [role, isLogin])
 
     const _handleSidebarStatus = (status: boolean) => {
@@ -62,6 +69,7 @@ function MyApp({Component, pageProps}: AppProps) {
         <Head>
             {/*<meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>*/}
         </Head>
+
         {
             showSidebar ? <div onClick={() => _handleSidebarStatus(false)}
                                className={'w-full z-40   h-screen fixed backdrop-filter backdrop-blur-sm backdrop-opacity-100'}></div>

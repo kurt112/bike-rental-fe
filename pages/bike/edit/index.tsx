@@ -199,7 +199,7 @@ const EditBike: NextPage = ({bike}: any) => {
 
                                 <div className="mb-4\">
                                     <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">
-                                        Bike Picture<q></q>s
+                                        Bike Picture&lsquo;s
                                     </label>
                                     <div className="flex justify-center items-center w-full">
                                         <label htmlFor="dropzone-file"

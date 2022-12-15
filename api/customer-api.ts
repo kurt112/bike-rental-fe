@@ -4,11 +4,20 @@ import {CustomerCreate} from "../types/customer";
 import moment from "moment";
 import {path} from "../utils/api/endpoint";
 import Swal from "sweetalert2";
+import {handleUploadPhoto} from "./bike-api";
 
 export const handleSubmitCustomer = async (e:SyntheticEvent, customer:CustomerCreate) => {
+
+
     await axiosSubmit.post(path.customer,customer).then(ignored => {
-        alert("Customer Create Success");
-        location.reload();
+        Swal.fire(
+            'Good Job!',
+            'Create Customer Success!',
+            'success'
+        ).then(() => {
+
+            location.reload();
+        })
     }).catch(error => {
         console.log(error)
     });
@@ -21,8 +30,13 @@ export const handlePatchCustomer = async (e:SyntheticEvent, customer:CustomerCre
     }
 
     await axiosSubmit.patch(path.customer,customer).then(ignored => {
-        alert("Customer Update Success");
-        location.reload();
+        Swal.fire(
+            'Good Job!',
+            'Update Customer Success!',
+            'success'
+        ).then(() => {
+            location.reload();
+        })
     }).catch(error => {
         console.log(error)
     });

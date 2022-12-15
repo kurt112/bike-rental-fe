@@ -28,7 +28,8 @@ const CreateCustomer: NextPage = () => {
     const [customer, setCustomer] = useState<CustomerCreate>({
         user: user,
         toPay: 0,
-        isMember: false,
+        isMember: true,
+        isActive: true
     });
 
 

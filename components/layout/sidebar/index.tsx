@@ -1,9 +1,10 @@
-import {useRef} from "react";
 import {sidebarList} from "../../../types/sidebar";
 import Navbar from "../navbar/navbar";
 import Image from "next/image";
 import Link from "next/link";
 import logo from '../sidebar/icon/bikeLogo.jpg'
+import Swal from "sweetalert2";
+import {useRouter} from "next/router";
 
 const Sidebar = ({
                      sidebars,
@@ -11,26 +12,34 @@ const Sidebar = ({
                      sidebarStatus,
                      handleSidebarStatus
                  }: sidebarList) => {
-    const openSideBar: any = useRef(null);
-    const closeSidebar: any = useRef(null);
 
+    const Router = useRouter();
 
-    const sidebarHandler = (flag: boolean) => {
-        if (flag) {
-            openSideBar.current.classList.add("hidden");
-            closeSidebar.current.classList.remove("hidden");
-        } else {
-            closeSidebar.current.classList.add("hidden");
-            openSideBar.current.classList.remove("hidden");
-        }
+    const _handleLogout = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You will logout this account",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Logout!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Router.push('/').then(ignored => {
+                    localStorage.clear();
+                    location.reload();
+                });
+            }
+        })
     }
-    // height: 100%; display: block; overflow: hidden; position: fixed; width: 300px; background: red; right: 0; top: 0;
+
     return (
         <div className="w-full h-full ">
             <div className="flex flex-no-wrap">
                 {
-                    sidebarStatus? <div style={{minHeight: 716}}
-                                        className="fixed h-full z-50
+                    sidebarStatus ? <div style={{minHeight: 716}}
+                                         className="fixed h-full z-50
                       w-64  bg-gray-800 shadow flex-col justify-between  "
                     >
                         <div className="h-full">
@@ -62,6 +71,10 @@ const Sidebar = ({
                                     })
                                 }
                             </ul>
+                            <button onClick={_handleLogout}
+                                className="w-full text-lg bg-transparent hover:bg-red-500 text-white font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent ">
+                                Logout
+                            </button>
                         </div>
                         <Image src={logo} className={'w-full'} alt='logo'/>
                         <div className="px-8 border-t border-gray-700">
@@ -128,7 +141,7 @@ const Sidebar = ({
                                 </li>
                             </ul>
                         </div>
-                    </div>:null
+                    </div> : null
                 }
                 <div className="w-full h-full">
                     <Navbar handleSidebarStatus={handleSidebarStatus}/>

@@ -1,5 +1,5 @@
 import {sidebar} from "../../../types/sidebar";
-import bikeIcon from './icon/test.svg'
+// import bikeIcon from './icon/test.svg'
 import bike from './icon/bike.svg'
 import customer from './icon/customer.svg'
 import employee from './icon/employee.svg'
@@ -9,7 +9,7 @@ import store from './icon/store.svg'
 import contract from './icon/contract.svg'
 import {getBikeStatus} from "../../../utils/bike";
 const sidebarItemAdmin:Array<sidebar> = [
-    {icon: bikeIcon,link:'#',name: 'Dashboard'},
+    // {icon: bikeIcon,link:'#',name: 'Dashboard'},
     {icon: bike,link:'/bike?search=&page=1&size=10&status=0',name: 'Bike'},
     {icon: customer,link:'/customer?search=&page=1&size=10&status=0',name: 'Customer'},
     {icon: receipt,link:'/receipt?search=&page=1&size=10&status=0',name: 'Receipt'},
