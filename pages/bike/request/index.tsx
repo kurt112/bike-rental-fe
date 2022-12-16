@@ -3,16 +3,17 @@ import React, {Fragment, useState} from "react";
 import Head from "next/head";
 import {rentedColumn} from "../../../types/rent";
 import {getBikeStatus} from "../../../utils/bike";
-import {bikeSettings, getBikes} from "../../../api/bike-api";
+import {bikeSettings, getBikes, handleApproveRequestByCustomer} from "../../../api/bike-api";
 import {useRouter} from "next/router";
 import {pagination} from "../../../types/pagination";
 import Link from "next/link";
+import {formatDateWithTime} from "../../../utils/date";
+import Swal from "sweetalert2";
 
-const Requested:NextPage = ({bikes,settings}: any) =>{
+const Requested: NextPage = ({bikes, settings}: any) => {
     const router = useRouter()
-    const {search, page, size, status}:any = router.query
+    const {search, page, size, status}: any = router.query
     const [pagination, setPagination] = useState<pagination>({search, page, size, status})
-
 
     const handleSearch = (data: string) => {
         const tempPagination = {...pagination};
@@ -22,21 +23,37 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
     }
 
     const __handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.code === 'Enter') searchClick().then(ignored => {});
+        if (e.code === 'Enter') searchClick().then(ignored => {
+        });
     }
 
     const searchClick = async () => {
-        await router.push(`/bike?search=${pagination.search}&page=${1}&size=${size}&status=${getBikeStatus.FOR_REQUEST}`)
+        await router.push(`/bike/request?search=${pagination.search}&page=${1}&size=${size}&status=${getBikeStatus.FOR_REQUEST}`)
     }
 
-    const _handleTerminate = async (userId: string, bikeId: string) => {
-        // await handleApproveRequestByCustomer(userId, bikeId);
+    const _handleApprove = async (userId: string, bikeId: string) => {
+
+        Swal.fire({
+            title: 'Pending for Approval',
+            text: "You want to approve this request?",
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, approve it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                 handleApproveRequestByCustomer(userId,bikeId).then(ignored => {
+                     searchClick();
+                 })
+            }
+        })
     }
 
     return <Fragment>
         <Head>
             <title>Bike Request</title>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
         </Head>
         <div className="overflow-x-auto relative shadow-md sm:rounded-lg mr-2 ml-2 mt-5">
             <div className="pb-4 bg-white dark:bg-gray-900 pt-2 pl-2 flex justify-between p-4">
@@ -69,13 +86,13 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
                     className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     {
-                        rentedColumn?rentedColumn.map((column, key) => {
+                        rentedColumn ? rentedColumn.map((column, key) => {
                             return (
                                 <th scope="col" className="py-3 px-6" key={key}>
                                     {column}
                                 </th>
                             )
-                        }): null
+                        }) : null
                     }
 
                 </tr>
@@ -83,12 +100,13 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
                 <tbody>
 
                 {
-                    bikes?bikes.map((bike: any, i: number) => {
+                    bikes ? bikes.map((bike: any, i: number) => {
                         const {assignedCustomer} = bike;
                         const {user} = assignedCustomer;
                         const {firstName, lastName} = user
                         return (
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={i}>
+                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                key={i}>
                                 <th scope="row"
                                     className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {firstName}
@@ -97,10 +115,14 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
                                     {lastName}
                                 </td>
                                 <td className="py-4 px-6">
-                                    No value
+                                    {
+                                        bike.startBarrow ? formatDateWithTime(bike.startBarrow) : 'No Date Found'
+                                    }
                                 </td>
                                 <td className="py-4 px-6">
-                                    No Value
+                                    {
+                                        bike.endBarrow ? formatDateWithTime(bike.endBarrow) : 'No Date Found'
+                                    }
                                 </td>
 
                                 <td className="py-4 px-6">
@@ -110,15 +132,22 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
                                     {bike.price}
                                 </td>
                                 <td className="py-4 px-6">
-                                    <Link href={`/employee/edit?id=${user.id}`}>
-                                        <div className="cursor-pointer font-medium text-green-600 dark:text-green-500 hover:underline">
-                                            Approve
-                                        </div>
-                                    </Link>
+                                    <button onClick={() => _handleApprove(user.id,bike.id)}
+                                        type="button"
+                                        className="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800">
+                                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                                            <path fillRule="evenodd"
+                                                  d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                  clipRule="evenodd"></path>
+                                        </svg>
+                                        <span className="sr-only">Icon description</span>
+                                    </button>
                                 </td>
                             </tr>
                         )
-                    }): null
+                    }) : null
                 }
 
                 </tbody>
@@ -149,9 +178,11 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
                         Array.from(Array(settings.totalPages).keys()).map((page) => {
                             return (
                                 <li key={page} className={'cursor-pointer'}>
-                                    <Link href={`/bike?search=${search}&page=${page+1}&size=${size}&status=${getBikeStatus.FOR_REQUEST}`}>
-                                        <div className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                            {page+1}
+                                    <Link
+                                        href={`/bike/request?search=${search}&page=${page + 1}&size=${size}&status=${getBikeStatus.FOR_REQUEST}`}>
+                                        <div
+                                            className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                            {page + 1}
                                         </div>
                                     </Link>
                                 </li>
@@ -163,7 +194,8 @@ const Requested:NextPage = ({bikes,settings}: any) =>{
                             <Link
                                 href={`/bike?search=${search}&page=${parseInt(page) + 1}&size=${size}&status=${getBikeStatus.FOR_REQUEST}`}>
                                 <li className='cursor-pointer'>
-                                    <div className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <div
+                                        className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         <span className="sr-only">Next</span>
                                         <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
                                              viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -187,7 +219,7 @@ export default Requested;
 export const getServerSideProps = async (context: any) => {
     const {search, page, size} = context.query;
 
-    const data=  await Promise.all(
+    const data = await Promise.all(
         [
             await getBikes(search, page, size, getBikeStatus.FOR_REQUEST),
             await bikeSettings()

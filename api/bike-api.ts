@@ -4,28 +4,29 @@ import {BikeObject} from "../types/bike";
 import Swal from 'sweetalert2'
 import {getBikeStatus} from "../utils/bike";
 
-export let requested:Array<BikeObject> = [];
-export let rented:Array<BikeObject> = [];
-export const handleSubmit = async (e:SyntheticEvent, bike:BikeObject, image: FormData | null | undefined) => {
+export let requested: Array<BikeObject> = [];
+export let rented: Array<BikeObject> = [];
+export const handleSubmit = async (e: SyntheticEvent, bike: BikeObject, image: FormData | null | undefined) => {
 
-    if(!image){
+    if (!image) {
         return Swal.fire(
             'Photo Not Found',
             'Please upload at least three photo!',
             'error'
-        ).then((ignored) => {})
+        ).then((ignored) => {
+        })
     }
 
 
     // e.preventDefault();
-    await axiosSubmit.post('bike',bike).then(result => {
+    await axiosSubmit.post('bike', bike).then(result => {
         const newBike = result.data.data;
         Swal.fire(
             'Good Job!',
             'Create Bike Success!',
             'success'
         ).then(() => {
-            handleUploadPhoto(image,newBike.id);
+            handleUploadPhoto(image, newBike.id);
             location.reload();
         })
 
@@ -34,7 +35,7 @@ export const handleSubmit = async (e:SyntheticEvent, bike:BikeObject, image: For
     });
 }
 
-export const getBikeData = async (id:any) => {
+export const getBikeData = async (id: any) => {
     const query = () => {
         return {
             query: `query{
@@ -64,12 +65,12 @@ export const handleDeleteBike = async (id: any) => {
 
     const result = confirm("Are you sure you want to delete this bike?");
 
-    if(!result) return;
+    if (!result) return;
 
     const params = new URLSearchParams();
-    params.append('id',id);
+    params.append('id', id);
 
-    await axiosSubmit.delete('bike',{
+    await axiosSubmit.delete('bike', {
         params
     }).then(ignored => {
         alert("Bike Delete Success");
@@ -79,7 +80,7 @@ export const handleDeleteBike = async (id: any) => {
     });
 }
 
-export const getBikes = async (search:any, page:any, size:any, status:any) => {
+export const getBikes = async (search: any, page: any, size: any, status: any) => {
     const query = () => {
         return {
             query: `query{
@@ -90,7 +91,9 @@ export const getBikes = async (search:any, page:any, size:any, status:any) => {
                                 quantity,
                                 id,
                                 description,
-                                code
+                                code,
+                                startBarrow,
+                                endBarrow,
                                 assignedCustomer{
                                     user{
                                        id, 
@@ -111,7 +114,7 @@ export const getBikes = async (search:any, page:any, size:any, status:any) => {
     return data.data.bikes;
 }
 
-export const getBikeAvailable = async (search:any, page:any, size:any) => {
+export const getBikeAvailable = async (search: any, page: any, size: any) => {
     const query = () => {
         return {
             query: `query{
@@ -138,7 +141,7 @@ export const getBikeAvailable = async (search:any, page:any, size:any) => {
     return data.data.bikes;
 }
 
-export const getBikeByCustomer = async (search:any) => {
+export const getBikeByCustomer = async (search: any) => {
     const token = localStorage.getItem('token')
     const query = () => {
         return {
@@ -164,9 +167,9 @@ export const getBikeByCustomer = async (search:any) => {
     const {data} = await graphQl.post('', query());
 
     data.data.getBikeByCustomer.forEach((bike: BikeObject) => {
-        if(bike.status  === getBikeStatus.FOR_REQUEST){
+        if (bike.status === getBikeStatus.FOR_REQUEST) {
             requested.push(bike);
-        }else if(bike.status === getBikeStatus.RENTED) {
+        } else if (bike.status === getBikeStatus.RENTED) {
             rented.push(bike);
         }
 
@@ -177,9 +180,9 @@ export const getBikeByCustomer = async (search:any) => {
 }
 
 // for photo4
-export const handleUploadPhoto = async (formData:FormData, bikeId: string) => {
+export const handleUploadPhoto = async (formData: FormData, bikeId: string) => {
     const params = new URLSearchParams();
-    params.append('bike-id',bikeId);
+    params.append('bike-id', bikeId);
 
     const config = {
         headers: {
@@ -188,7 +191,7 @@ export const handleUploadPhoto = async (formData:FormData, bikeId: string) => {
         params
     }
 
-    await axiosSubmit.post('bike/photo',formData,config).then(ignored => {
+    await axiosSubmit.post('bike/photo', formData, config).then(ignored => {
 
     }).catch(error => {
         console.log(error)
@@ -199,7 +202,7 @@ export const bikeSettings = async () => {
     return await axiosGet.get('bike/settings').then(result => result.data.data);
 }
 
-export const loadImages = async (bikes: any, setPictures:any) => {
+export const loadImages = async (bikes: any, setPictures: any) => {
     const currentPictures: any = [];
     await Promise.all(
         bikes.map(async (bike: any) => {
@@ -229,17 +232,17 @@ export const requestBikeByCustomer = async (bike: BikeObject) => {
 
     const token = localStorage.getItem('token');
 
-    if(!bike.endBarrow) {
+    if (!bike.endBarrow) {
         alert('need date for end barrow')
         return;
     }
 
-    if(!bike.startBarrow) {
+    if (!bike.startBarrow) {
         alert('need date for end barrow')
         return;
     }
 
-    if(!token){
+    if (!token) {
         alert('No Token Found');
         return;
     }
@@ -247,7 +250,7 @@ export const requestBikeByCustomer = async (bike: BikeObject) => {
     const startDate = new Date(bike.startBarrow);
     const endDate = new Date(bike.endBarrow);
 
-    await axiosCreate.post("bike/request/"+token+"/"+bike.id+'/'+startDate+'/'+endDate,bike).then(ignored => {
+    await axiosCreate.post("bike/request/" + token + "/" + bike.id + '/' + startDate + '/' + endDate, bike).then(ignored => {
         Swal.fire(
             'Good Job!',
             'Request Bike Success!',
@@ -262,21 +265,38 @@ export const requestBikeByCustomer = async (bike: BikeObject) => {
 export const cancelRequestBikeByCustomer = async (bikeId: string) => {
     const token = localStorage.getItem('token')
 
-    if(!token){
+    if (!token) {
         alert('No Token Found');
         return;
     }
 
     const params = new URLSearchParams();
     params.append("token", token);
-    params.append("bikeId",bikeId);
+    params.append("bikeId", bikeId);
 
-    await axiosCreate.post("bike/cancel", params).then(result => {
+    await axiosCreate.post("bike/cancel", params).then(ignored => {
         Swal.fire(
             'Good Job!',
             'Cancel Bike Success!',
             'success'
         ).then(() => {
+        })
+    });
+}
+
+export const handleApproveRequestByCustomer = async (userId: string, bikeId: string) => {
+
+    const params = new URLSearchParams();
+    params.append("userId", userId);
+    params.append("bikeId", bikeId);
+
+    await axiosCreate.post("bike/request/approval", params).then(ignored => {
+        Swal.fire({
+            title: 'Approve',
+            timer: 2000,
+            icon: 'success'
+        }).then((ignored) => {
+
         })
     });
 }
