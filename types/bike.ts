@@ -11,6 +11,7 @@ export interface BikeObject{
     id?: string,
     startBarrow?: any | Date,
     endBarrow?: any | Date
+    parentBike?:BikeObject
 }
 
 interface bikePictures{
