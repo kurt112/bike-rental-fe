@@ -160,7 +160,7 @@ const CreateBike: NextPage = () => {
                                     </textarea>
                                 </div>
 
-                                <div className="mb-4\">
+                                <div className="mb-4">
                                     <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">
                                         Bike Picture<q></q>s
                                     </label>

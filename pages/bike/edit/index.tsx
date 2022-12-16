@@ -196,8 +196,7 @@ const EditBike: NextPage = ({bike}: any) => {
 
                                     </textarea>
                                 </div>
-
-                                <div className="mb-4\">
+                                <div className="mb-4">
                                     <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">
                                         Bike Picture&lsquo;s
                                     </label>
@@ -267,22 +266,22 @@ const EditBike: NextPage = ({bike}: any) => {
 export default EditBike;
 
 export const getServerSideProps = async (context: any) => {
-        const {id} = context.query;
+    const {id} = context.query;
 
 
-        const bike = await getBikeData(id);
+    const bike = await getBikeData(id);
 
 
-        if (!bike) {
-            return {
-                notFound: true,
-            };
-        }
-
+    if (!bike) {
         return {
-            props: {
-                bike,
-            },
+            notFound: true,
         };
     }
-;
+
+    return {
+        props: {
+            bike,
+        },
+    };
+}
+

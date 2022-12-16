@@ -8,7 +8,9 @@ export interface BikeObject{
     code: string,
     bikePictures: bikePictures[],
     status: number;
-    id: string,
+    id?: string,
+    startBarrow?: any | Date,
+    endBarrow?: any | Date
 }
 
 interface bikePictures{

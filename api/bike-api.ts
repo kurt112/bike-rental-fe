@@ -46,6 +46,7 @@ export const getBikeData = async (id:any) => {
                                 quantity,
                                 id,
                                 description,
+                                code,
                                 bikePictures{
                                     id,
                                     image
@@ -114,7 +115,7 @@ export const getBikeAvailable = async (search:any, page:any, size:any) => {
     const query = () => {
         return {
             query: `query{
-                        bikes(search:"${search}",page:${page}, size: ${size}, status:${getBikeStatus.NOT_RENTED}) {  
+                            bikes(search:"${search}",page:${page}, size: ${size}, status:${getBikeStatus.NOT_RENTED}) {  
                                 brand,
                                 price,
                                 name,
@@ -163,7 +164,6 @@ export const getBikeByCustomer = async (search:any) => {
     const {data} = await graphQl.post('', query());
 
     data.data.getBikeByCustomer.forEach((bike: BikeObject) => {
-        console.log(bike);
         if(bike.status  === getBikeStatus.FOR_REQUEST){
             requested.push(bike);
         }else if(bike.status === getBikeStatus.RENTED) {
@@ -225,22 +225,36 @@ export const loadImages = async (bikes: any, setPictures:any) => {
     return currentPictures;
 }
 
-export const requestBikeByCustomer = async (bikeId: string) => {
-    const token = localStorage.getItem('token')
+export const requestBikeByCustomer = async (bike: BikeObject) => {
+
+    const token = localStorage.getItem('token');
+
+    if(!bike.endBarrow) {
+        alert('need date for end barrow')
+        return;
+    }
+
+    if(!bike.startBarrow) {
+        alert('need date for end barrow')
+        return;
+    }
 
     if(!token){
         alert('No Token Found');
         return;
     }
 
-    const params = new URLSearchParams();
-    params.append("token", token);
-    params.append("bikeId",bikeId);
+    const startDate = new Date(bike.startBarrow);
+    const endDate = new Date(bike.endBarrow);
 
-    await axiosCreate.post("bike/request", params).then(result => {
-        console.log(result);
-        console.log("the bike id");
-        console.log(bikeId);
+    await axiosCreate.post("bike/request/"+token+"/"+bike.id+'/'+startDate+'/'+endDate,bike).then(ignored => {
+        Swal.fire(
+            'Good Job!',
+            'Request Bike Success!',
+            'success'
+        ).then(() => {
+            location.reload();
+        })
     });
 }
 
@@ -258,7 +272,12 @@ export const cancelRequestBikeByCustomer = async (bikeId: string) => {
     params.append("bikeId",bikeId);
 
     await axiosCreate.post("bike/cancel", params).then(result => {
-        alert("Cancel Request Success")
+        Swal.fire(
+            'Good Job!',
+            'Cancel Bike Success!',
+            'success'
+        ).then(() => {
+        })
     });
 }
 

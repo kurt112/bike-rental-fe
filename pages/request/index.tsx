@@ -32,6 +32,9 @@ const BikeRequest: NextPage = () => {
     },[])
 
     const _handleCancel = async (bikeId: string) => {
+        if(bikeId === ''){
+            return alert('No Id Found');
+        }
         let cancel = false;
         await cancelRequestBikeByCustomer(bikeId).then(ignored => {
             cancel = true;
@@ -93,7 +96,7 @@ const BikeRequest: NextPage = () => {
                                         <hr/>
                                         <h1 className="mb-3 text-xl font-normal text-gray-700 dark:text-gray-400">44$/hour
                                             (44 in stock)</h1>
-                                        <button onClick={() => _handleCancel(bike.id)}
+                                        <button onClick={() => _handleCancel(bike.id?bike.id:'')}
                                                 className="w-full inline-flex place-content-center  py-2 px-3 text-sm font-medium  text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                             Cancel
 
