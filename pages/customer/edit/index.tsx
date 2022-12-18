@@ -6,9 +6,10 @@ import {Fragment, SyntheticEvent, useState} from "react";
 import {CustomerCreate} from "../../../types/customer";
 import moment from "moment";
 import {UserCreate} from "../../../types/user";
-import {router} from "next/client";
+import {useRouter} from "next/router";
 
 const EditCustomer: NextPage = ({currentCustomer}: any) => {
+    const router = useRouter();
 
     const [user,setUser] = useState<UserCreate>({...currentCustomer.user});
 

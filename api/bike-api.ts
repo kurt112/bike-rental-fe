@@ -31,7 +31,7 @@ export const handleSubmit = async (e: SyntheticEvent, bike: BikeObject, images: 
             // getting the bike id
             images.forEach((image:any) => {
                 uploadToS3(image,data).then(ignored => {})
-                location.reload();
+                // location.reload();
             });
         })
 

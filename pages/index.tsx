@@ -6,7 +6,7 @@ const Home: NextPage = () => {
     const router = useRouter();
 
     useEffect(() => {
-        router.push(`/bike?search=&page=1&size=10&status=0`)
+        router.push(`/bike?search=&page=1&size=10&status=0`).then(ignored => {});
     }, [])
 
     return <div role="status" style={{display: 'flex', justifyContent: 'center', height: '90vh'}}>

@@ -5,8 +5,9 @@ import {useState, Fragment, SyntheticEvent} from "react";
 import Back from "../../../components/layout/back";
 import {UserCreate} from "../../../types/user";
 import {handleSubmitCustomer} from "../../../api/customer-api";
-import {router} from "next/client";
+import {useRouter} from "next/router";
 const CreateCustomer: NextPage = () => {
+    const router = useRouter();
 
     const [user, setUser] = useState<UserCreate>({
         email: "",
