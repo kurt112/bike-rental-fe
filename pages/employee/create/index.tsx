@@ -1,12 +1,15 @@
 import {NextPage} from "next";
 import Head from "next/head";
 import Back from "../../../components/layout/back";
-import {Fragment, useState} from "react";
+import {Fragment, SyntheticEvent, useState} from "react";
 import {UserCreate} from "../../../types/user";
 import {EmployeeCreate} from "../../../types/employee";
 import {handleSubmitEmployee} from "../../../api/employee-api";
+import {useRouter} from "next/router";
 
 const CreateEmployee: NextPage = () => {
+
+    const router = useRouter()
     const [user, setUser] = useState<UserCreate>({
         email: "",
         firstName: "",
@@ -37,6 +40,12 @@ const CreateEmployee: NextPage = () => {
         const currentEmployee: EmployeeCreate = {...employee};
         currentEmployee.user = currentUser;
         setEmployee(currentEmployee);
+    }
+
+    const submitEmployee =async (e: SyntheticEvent) => {
+        await handleSubmitEmployee(employee).then(ignored => {
+            router.reload();
+        })
     }
 
     return (
@@ -178,7 +187,7 @@ const CreateEmployee: NextPage = () => {
                                         />
                                     </div>
                                 </div>
-                                <button onClick={(e) => handleSubmitEmployee(e, employee)}
+                                <button onClick={(e) => submitEmployee(e)}
                                         className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                     Submit
                                 </button>

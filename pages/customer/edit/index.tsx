@@ -2,10 +2,11 @@ import {NextPage} from "next";
 import Head from "next/head";
 import Back from "../../../components/layout/back";
 import {getCustomerData, handleDeleteCustomer, handlePatchCustomer} from "../../../api/customer-api";
-import {Fragment, useState} from "react";
+import {Fragment, SyntheticEvent, useState} from "react";
 import {CustomerCreate} from "../../../types/customer";
 import moment from "moment";
 import {UserCreate} from "../../../types/user";
+import {router} from "next/client";
 
 const EditCustomer: NextPage = ({currentCustomer}: any) => {
 
@@ -27,6 +28,12 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
 
     const handleEdit = () => {
         setEdit(!isEdit);
+    }
+
+    const _patchCustomer = async (e: SyntheticEvent) => {
+        await handlePatchCustomer(customer).then(ignored => {
+            router.reload();
+        })
     }
 
     return <Fragment>
@@ -205,7 +212,7 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                             </div>
 
                             {
-                                isEdit?<button onClick={(e) => handlePatchCustomer(e,customer)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                                isEdit?<button onClick={(e) => _patchCustomer(e)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                     Submit
                                 </button>:null
                             }

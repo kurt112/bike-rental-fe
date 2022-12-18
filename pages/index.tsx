@@ -1,5 +1,14 @@
 import type {NextPage} from 'next'
+import {useEffect} from "react";
+import {useRouter} from "next/router";
 const Home: NextPage = () => {
+
+    const router = useRouter();
+
+    useEffect(() => {
+        router.push(`/bike?search=&page=1&size=10&status=0`)
+    }, [])
+
     return <div role="status" style={{display: 'flex', justifyContent: 'center', height: '90vh'}}>
         <svg className="flex justify-center inline mr-2 w-40 h-50 text-gray-200 animate-spin dark:text-gray-600 fill-green-600"
              viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

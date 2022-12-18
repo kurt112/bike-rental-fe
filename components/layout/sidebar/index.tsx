@@ -16,6 +16,7 @@ const Sidebar = ({
     const Router = useRouter();
 
     const _handleLogout = () => {
+        handleSidebarStatus(false)
         Swal.fire({
             title: 'Are you sure?',
             text: "You will logout this account",
@@ -46,12 +47,13 @@ const Sidebar = ({
                             <div className=" w-full flex items-center justify-center mt-6">
                                 <p className={'text-xl font-bold text-white'}> Erik Bike Shop</p>
                             </div>
-                            <ul className="mt-5 px-8">
+                            <ul className="mt-5 ">
                                 {
                                     sidebars.map((sidebar, i) => {
                                         return sidebar.icon ?
                                             <Link href={sidebar.link} key={i}>
-                                                <li className="flex w-full justify-between text-gray-300 cursor-pointer items-center mb-6">
+                                                <li className="flex w-full justify-between text-gray-300 cursor-pointer items-center pt-3 pb-3 hover:bg-sky-700"
+                                                    onClick={() => handleSidebarStatus(false)}>
                                                     <Image
                                                         src={sidebar.icon.src}
                                                         loading="eager"
@@ -62,9 +64,12 @@ const Sidebar = ({
                                                         alt={sidebar.name}
                                                     />
                                                     <span className="text-sm ml-2">{sidebar.name}</span>
-                                                    <div
-                                                        className="py-1 px-3 bg-gray-600 rounded text-gray-300 flex items-center justify-center text-xs">5
-                                                    </div>
+                                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd"
+                                                              d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                                                              clipRule="evenodd"></path>
+                                                    </svg>
                                                 </li>
                                             </Link>
                                             : null

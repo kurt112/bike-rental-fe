@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {bikeColumns} from "../../types/bike";
 import {pagination} from "../../types/pagination";
 import {useRouter} from 'next/router'
@@ -27,6 +27,14 @@ const Bike: NextPage = ({bikes, settings}: any) => {
         if (e.code === 'Enter') searchClick().then(ignored => {
         });
     }
+
+    useEffect(() => {
+        const path = localStorage.getItem('path');
+
+        if(!path){
+            localStorage.setItem('path', router.pathname);
+        }
+    }, []);
 
     return <Fragment>
         <Head>

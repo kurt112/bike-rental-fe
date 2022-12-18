@@ -44,14 +44,17 @@ function MyApp({Component, pageProps}: AppProps) {
 
     useEffect(() => {
         setIsLoading(true);
+        const data = localStorage.getItem('path');
+
         switch (role) {
             case 'customer':
                 setSidebarItem(SidebarItemClient);
-                Router.push('/bike/available?search=&page=1&size=10&status=0').then(ignored => {});
+                if(!data) Router.push('/bike/available?search=&page=1&size=10&status=0').then(ignored => {});
+
                 break;
             case 'admin':
                 setSidebarItem(SidebarItemAdmin);
-                Router.push('/bike?search=&page=1&size=10&status=0').then(ignored => {});
+                if(!data) Router.push('/bike?search=&page=1&size=10&status=0').then(ignored => {});
                 break;
             default:
                 break;
@@ -78,7 +81,7 @@ function MyApp({Component, pageProps}: AppProps) {
         <div className="h-screen h-full  flex items-center justify-center" style={{background: '#edf2f7'}}>
             {
                 isLogin ? <Sidebar sidebarStatus={showSidebar}
-                                   handleSidebarStatus={() => _handleSidebarStatus(true)}
+                                   handleSidebarStatus={(status) => _handleSidebarStatus(status)}
                                    sidebars={sidebarItem}>
                         <Component {...pageProps} />
                     </Sidebar> :

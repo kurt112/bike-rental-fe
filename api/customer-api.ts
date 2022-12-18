@@ -6,7 +6,7 @@ import {path} from "../utils/api/endpoint";
 import Swal from "sweetalert2";
 import {handleUploadPhoto} from "./bike-api";
 
-export const handleSubmitCustomer = async (e:SyntheticEvent, customer:CustomerCreate) => {
+export const handleSubmitCustomer = async (customer:CustomerCreate) => {
 
 
     await axiosSubmit.post(path.customer,customer).then(ignored => {
@@ -14,16 +14,13 @@ export const handleSubmitCustomer = async (e:SyntheticEvent, customer:CustomerCr
             'Good Job!',
             'Create Customer Success!',
             'success'
-        ).then(() => {
-
-            location.reload();
-        })
+        ).then(() => {})
     }).catch(error => {
         console.log(error)
     });
 }
 
-export const handlePatchCustomer = async (e:SyntheticEvent, customer:CustomerCreate) => {
+export const handlePatchCustomer = async (customer:CustomerCreate) => {
 
     if(customer.user !== undefined){
         customer.user.birthdate = customer.user.birthdate?moment(customer.user.birthdate): moment();
@@ -34,9 +31,7 @@ export const handlePatchCustomer = async (e:SyntheticEvent, customer:CustomerCre
             'Good Job!',
             'Update Customer Success!',
             'success'
-        ).then(() => {
-            location.reload();
-        })
+        ).then(() => {})
     }).catch(error => {
         console.log(error)
     });

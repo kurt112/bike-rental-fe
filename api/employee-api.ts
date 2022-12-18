@@ -3,11 +3,16 @@ import {axiosGet, axiosSubmit, graphQl} from "../.config/api";
 import {path} from "../utils/api/endpoint";
 import moment from "moment/moment";
 import {EmployeeCreate} from "../types/employee";
-
-export const handleSubmitEmployee = async (e:SyntheticEvent, employee:EmployeeCreate) => {
+import Swal from "sweetalert2";
+export const handleSubmitEmployee = async (employee:EmployeeCreate) => {
     await axiosSubmit.post(path.employee,employee).then(ignored => {
-        alert("Employee Create Success");
-        location.reload();
+        Swal.fire(
+            'Good Job!',
+            'Create Employee Success!',
+            'success'
+        ).then(() => {
+
+        })
     }).catch(error => {
         console.log(error)
     });
@@ -20,8 +25,12 @@ export const handlePatchEmployee = async (e:SyntheticEvent, employee:EmployeeCre
     }
 
     await axiosSubmit.patch(path.employee,employee).then(ignored => {
-        alert("Employee Update Success");
-        location.reload();
+        Swal.fire(
+            'Good Job!',
+            'Update Employee Success!',
+            'success'
+        ).then(() => {
+        });
     }).catch(error => {
         console.log(error)
     });
@@ -39,7 +48,12 @@ export const handleDeleteEmployee = async (id: any) => {
     await axiosSubmit.delete(path.employee,{
         params
     }).then(ignored => {
-        alert("Employee Delete Success");
+        Swal.fire(
+            'Good Job!',
+            'Delete Employee Success!',
+            'success'
+        ).then(() => {
+        })
         history.back();
     }).catch(error => {
         console.log(error)

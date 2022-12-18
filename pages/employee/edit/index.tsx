@@ -1,13 +1,16 @@
 import {NextPage} from "next";
-import {Fragment, useState} from "react";
+import {Fragment, SyntheticEvent, useState} from "react";
 import Head from "next/head";
 import Back from "../../../components/layout/back";
 import moment from "moment/moment";
 import {getEmployeeData, handleDeleteEmployee, handlePatchEmployee} from "../../../api/employee-api";
 import {UserCreate} from "../../../types/user";
 import {EmployeeCreate} from "../../../types/employee";
+import {useRouter} from "next/router";
 
 const EditEmployee:NextPage = ({currentEmployee}: any) => {
+
+    const router = useRouter();
 
     const [user,setUser] = useState<UserCreate>({...currentEmployee.user});
 
@@ -27,6 +30,12 @@ const EditEmployee:NextPage = ({currentEmployee}: any) => {
 
     const handleEdit = () => {
         setEdit(!isEdit);
+    }
+
+    const _handlePatchEmployee = async (e: SyntheticEvent) => {
+        await handlePatchEmployee(e,employee).then(ignored => {
+            router.reload()
+        });
     }
 
     return (
@@ -205,7 +214,7 @@ const EditEmployee:NextPage = ({currentEmployee}: any) => {
                                     </div>
                                 </div>
                                 {
-                                    isEdit? <button onClick={(e) => handlePatchEmployee(e,employee)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                                    isEdit? <button onClick={(e) => _handlePatchEmployee(e)} type="button" className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                         Submit
                                     </button>:null
                                 }
