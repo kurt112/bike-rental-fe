@@ -20,6 +20,19 @@ export const handleSubmitCustomer = async (customer:CustomerCreate) => {
     });
 }
 
+export const getCustomerBill = async (userId: any) => {
+
+    const {data} = await axiosSubmit.get(path.customer+'/'+userId).then(data => {
+
+        if(!data.data) return 0;
+        return data.data;
+    }).catch(error => {
+        console.log(error)
+    });
+
+    return data;
+}
+
 export const handlePatchCustomer = async (customer:CustomerCreate) => {
 
     if(customer.user !== undefined){

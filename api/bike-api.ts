@@ -133,7 +133,7 @@ export const getBikeAvailable = async (search: any, page: any, size: any) => {
                                 code
                                 bikePictures{
                                     id,
-                                    image
+                                    pictureName
                                 }
                              }
                         }`
@@ -162,7 +162,7 @@ export const getBikeByCustomer = async (search: any) => {
                                 status,
                                 bikePictures{
                                     id,
-                                    image
+                                    pictureName
                                 },
                                 parentBike{
                                     quantity
@@ -210,7 +210,7 @@ export const bikeSettings = async () => {
     return await axiosGet.get('bike/settings').then(result => result.data.data);
 }
 
-export const loadImages = async (bikes: any, setPictures: any) => {
+    export const loadImages = async (bikes: any, setPictures: any) => {
     const currentPictures: any = [];
     await Promise.all(
         bikes.map(async (bike: any) => {

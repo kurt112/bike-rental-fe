@@ -16,7 +16,7 @@ export interface BikeObject{
 
 interface bikePictures{
     id: number,
-    image: string | null
+    pictureName: string | null
 }
 
 export const bikeColumns:string[] = ['code', 'name/model', 'description', 'price/hr', 'quantity', 'profile'];

@@ -10,15 +10,6 @@ const Available: NextPage = ({
                                  bikes,
                              }: any) => {
 
-    const [pictures, setPictures] = useState([]);
-
-    useEffect(() => {
-        loadImages(bikes, setPictures).then(ignored => {
-        })
-        // eslint-disable-next-line
-    }, [])
-
-    console.log(bikes);
 
 
     return (
@@ -31,7 +22,7 @@ const Available: NextPage = ({
                                 <div
                                     className="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                                     {
-                                        pictures[i] === '' ?
+                                        bike.bikePictures.length <=0 ?
                                             <Link href={'#'}>
                                                 <Image className="rounded-t-lg"
                                                        src={NoBikeImage}
@@ -45,7 +36,7 @@ const Available: NextPage = ({
                                             </Link> :
                                             <Link href={'#'}>
                                                 <Image className="rounded-t-lg"
-                                                       src={`data:image/png;base64,${pictures[i]}`}
+                                                       src={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${bike.bikePictures[0].pictureName}`}
                                                        alt="bike image"
                                                        width="100%" height="100" layout="responsive"
                                                        objectFit="contain"
