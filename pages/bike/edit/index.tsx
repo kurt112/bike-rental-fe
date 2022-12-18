@@ -4,22 +4,19 @@ import Head from "next/head";
 import {BikeObject} from "../../../types/bike";
 import {getBikeData, handleDeleteBike, handleSubmit} from "../../../api/bike-api";
 import Back from "../../../components/layout/back";
-import {axiosCreate} from "../../../.config/api";
 import Image from "next/image";
 
 const EditBike: NextPage = ({bike}: any) => {
 
     const [newBike, setNewBike] = useState<BikeObject>({...bike});
-
     const [isEdit, setEdit] = useState(false);
 
-    const [pictures, setPictures] = useState<any>(null);
+    const [pictures, setPictures] = useState<any>();
 
     // this state is for uploading
     const [imageFile, setImageFile] = useState<FormData | null | undefined>()
 
     const handleEdit = () => {
-
         setEdit(!isEdit);
     }
 
@@ -29,32 +26,17 @@ const EditBike: NextPage = ({bike}: any) => {
         setNewBike(currentBike);
     }
 
+    const uploadImage = async (e: any) => {
+        const {files} = e.target;
+        const currentImages: Array<string> = [];
+        const tempImagesToUpload: any = [];
 
-    useEffect(() => {
-
-        images().then(e => {
-            setPictures(e);
-        })
-        // eslint-disable-next-line
-    }, []);
-
-    const images = async () => {
-        const currentPictures: any = [];
-
-        await Promise.all(
-            bike.bikePictures.map(async (blob: any) => {
-                const params = new URLSearchParams();
-                params.append("id", blob.id);
-
-                const {picture} = await axiosCreate.get("bike/photo", {params}).then(result => {
-                    return result.data;
-                });
-
-                currentPictures.push(picture);
-            })
-        )
-
-        return currentPictures;
+        Object.keys(files).forEach(i => {
+            tempImagesToUpload.push(files[i]);
+            currentImages.push(URL.createObjectURL(files[i]));
+        });
+        setImageFile(tempImagesToUpload);
+        setPictures(currentImages);
     }
 
     return (
@@ -218,8 +200,9 @@ const EditBike: NextPage = ({bike}: any) => {
                                                     GIF
                                                     (MAX. 800x400px)</p>
                                             </div>
-                                            {/*<input id="dropzone-file" disabled={!isEdit} type="file" className="hidden" multiple*/}
-                                            {/*       onChange={(e) => uploadImage(e)}/>*/}
+                                            <input id="dropzone-file" disabled={!isEdit} type="file" className="hidden"
+                                                   multiple
+                                                   onChange={(e) => uploadImage(e)}/>
                                         </label>
                                     </div>
                                     <br/>
@@ -228,19 +211,37 @@ const EditBike: NextPage = ({bike}: any) => {
                                         <div className="container  mx-auto ">
                                             <div className="flex flex-wrap -m-1 md:-m-2">
                                                 {
-                                                    pictures?.map((e: any, index: number) => {
-                                                        return <div className="flex flex-wrap" key={e.id}>
-                                                            <div className="w-64 p-1 md:p-2">
-                                                                <Image
-                                                                    src={`data:image/png;base64,${e.blob}`}
-                                                                    alt="bike image"
-                                                                    width="100%" height="100" layout="responsive"
-                                                                    objectFit="contain"
-                                                                />
+                                                    isEdit ? pictures?.map((picture: any, index: number) => {
+                                                            return <div className="flex flex-wrap" key={index}>
+                                                                <div className="w-64 p-1 md:p-2">
+                                                                    <Image alt={'bike images'}
+                                                                           key={index}
+                                                                           src={picture}
+                                                                           width="100%"
+                                                                           height="100"
+                                                                           layout="responsive"
+                                                                           objectFit="contain"
+                                                                    />
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    })
+                                                        }) :
+                                                        newBike.bikePictures?.map((picture: any, index: number) => {
+                                                            return <div className="flex flex-wrap" key={index}>
+                                                                <div className="w-64 p-1 md:p-2">
+                                                                    <Image
+                                                                        src={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${picture.pictureName}`}
+                                                                        alt="bike image"
+                                                                        width="100%"
+                                                                        height="100"
+                                                                        layout="responsive"
+                                                                        objectFit="contain"
+                                                                    />
+
+                                                                </div>
+                                                            </div>
+                                                        })
                                                 }
+
                                             </div>
                                         </div>
                                     </section>

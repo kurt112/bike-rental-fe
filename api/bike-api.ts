@@ -3,22 +3,22 @@ import {axiosCreate, axiosGet, axiosSubmit, graphQl} from "../.config/api";
 import {BikeObject} from "../types/bike";
 import Swal from 'sweetalert2'
 import {getBikeStatus} from "../utils/bike";
+import {uploadToS3} from "./aws/s3";
 
 export let requested: Array<BikeObject> = [];
 export let rented: Array<BikeObject> = [];
-export const handleSubmit = async (e: SyntheticEvent, bike: BikeObject, image: FormData | null | undefined) => {
+export const handleSubmit = async (e: SyntheticEvent, bike: BikeObject, images: any ) => {
+    e.preventDefault();
 
-    if (!image) {
+    if (!images) {
         return Swal.fire(
             'Photo Not Found',
-            'Please upload at least three photo!',
+            'Please upload at least one photo!',
             'error'
         ).then((ignored) => {
         })
     }
 
-
-    // e.preventDefault();
     await axiosSubmit.post('bike', bike).then(result => {
         const newBike = result.data.data;
         Swal.fire(
@@ -26,8 +26,12 @@ export const handleSubmit = async (e: SyntheticEvent, bike: BikeObject, image: F
             'Create Bike Success!',
             'success'
         ).then(() => {
-            handleUploadPhoto(image, newBike.id);
-            location.reload();
+            const {data} = result.data;
+
+            // getting the bike id
+            images.forEach((image:any) => {
+                uploadToS3(image,data).then(ignored => {})
+            });
         })
 
     }).catch(error => {
@@ -50,7 +54,7 @@ export const getBikeData = async (id: any) => {
                                 code,
                                 bikePictures{
                                     id,
-                                    image
+                                    pictureName
                                 }
                              }
                         }`

@@ -23,19 +23,18 @@ const CreateBike: NextPage = () => {
     });
 
     // this state is for uploading
-    const [imageFile, setImageFile] = useState<FormData | null | undefined>()
+    const [imageFile, setImageFile] = useState<any>()
 
     const uploadImage = async (e: any) => {
         const {files} = e.target;
         const currentImages: Array<string> = [];
-        const formData: FormData = new FormData();
+        const tempImagesToUpload:any = [];
+
         Object.keys(files).forEach(i => {
-            formData.append('photo', files[i]);
-            setImageFile(formData);
-            // handleUploadPhoto(e,formData);
+            tempImagesToUpload.push(files[i]);
             currentImages.push(URL.createObjectURL(files[i]));
         });
-
+        setImageFile(tempImagesToUpload);
         setImages(currentImages);
     }
 
