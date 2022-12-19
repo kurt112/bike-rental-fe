@@ -7,9 +7,7 @@ import {uploadToS3} from "./aws/s3";
 
 export let requested: Array<BikeObject> = [];
 export let rented: Array<BikeObject> = [];
-export const handleSubmit = async (e: SyntheticEvent, bike: BikeObject, images: any ) => {
-    e.preventDefault();
-
+export const handleSubmit = async (bike: BikeObject, images: any ) => {
     if (!images) {
         return Swal.fire(
             'Photo Not Found',

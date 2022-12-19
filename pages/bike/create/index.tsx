@@ -1,12 +1,14 @@
 import {NextPage} from "next";
-import {Fragment, useState} from "react";
+import {Fragment, SyntheticEvent, useState} from "react";
 import Head from "next/head";
 import {BikeObject} from "../../../types/bike";
 import {handleSubmit} from "../../../api/bike-api";
 import Back from "../../../components/layout/back";
 import Image from "next/image";
+import {useRouter} from "next/router";
 
 const CreateBike: NextPage = () => {
+    const router = useRouter();
 
     // this state is for displaying only
     const [images, setImages] = useState<Array<string>>();
@@ -42,6 +44,12 @@ const CreateBike: NextPage = () => {
         const currentBike: any = {...bike}
         currentBike[target] = data;
         setBike(currentBike);
+    }
+
+    const _handleCreateBike =async (e: SyntheticEvent) => {
+        await handleSubmit(bike, imageFile).then(ignored => {
+            router.reload();
+        })
     }
 
     return (
@@ -161,7 +169,7 @@ const CreateBike: NextPage = () => {
 
                                 <div className="mb-4">
                                     <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">
-                                        Bike Picture<q></q>s
+                                        Bike Picture&lsquo;s
                                     </label>
                                     <div className="flex justify-center items-center w-full">
                                         <label htmlFor="dropzone-file"
@@ -205,7 +213,7 @@ const CreateBike: NextPage = () => {
                                     </div>
 
 
-                                    <button onClick={(e) => handleSubmit(e, bike, imageFile)} type="button"
+                                    <button onClick={(e) => _handleCreateBike(e)} type="button"
                                             className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                         Submit
                                     </button>
