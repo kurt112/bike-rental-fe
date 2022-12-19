@@ -7,7 +7,8 @@ import Image from "next/image";
 
 const Login = ({
     setIsLogin,
-    setRole
+    setRole,
+    setLoginClick
                }: any) => {
 
     const [cred,setCred] = useState<UserLogin>({
@@ -92,14 +93,21 @@ const Login = ({
 
                                 <button
                                     type="submit"
-                                    className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+                                    className="mb-5 inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
                                     data-mdb-ripple="true"
                                     data-mdb-ripple-color="light"
                                     onClick={_handleLogin}
                                 >
                                     Sign in
                                 </button>
-
+                                <button
+                                    className="inline-block px-7 py-3 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+                                    data-mdb-ripple="true"
+                                    data-mdb-ripple-color="light"
+                                    onClick={() => setLoginClick(false)}
+                                >
+                                    Go back
+                                </button>
 
                             </form>
                         </div>

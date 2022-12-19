@@ -8,6 +8,7 @@ import React, {Fragment, useEffect, useState} from "react";
 import {sidebar} from "../types/sidebar";
 import Head from "next/head";
 import {useRouter} from "next/router";
+import Landing from "./landing/landing";
 
 
 function MyApp({Component, pageProps}: AppProps) {
@@ -17,6 +18,8 @@ function MyApp({Component, pageProps}: AppProps) {
     const [sidebarItem, setSidebarItem] = useState<Array<sidebar>>([])
     const [isLoading, setIsLoading] = useState(true);
     const [showSidebar, setShowSideBar] = useState(false);
+     const [loginCLick,setLoginClick] = useState(false);
+
     const Router = useRouter();
 
     useEffect(() => {
@@ -85,9 +88,10 @@ function MyApp({Component, pageProps}: AppProps) {
                                    sidebars={sidebarItem}>
                         <Component {...pageProps} />
                     </Sidebar> :
-                    <Login setIsLogin={setLogin}
-                           setRole={setRole}
-                    />
+                    loginCLick? <Login setIsLogin={setLogin}
+                                       setRole={setRole}
+                                       setLoginClick={setLoginClick}
+                    />: <Landing setLogin={setLoginClick}></Landing>
             }
 
             {/*<Landing/>*/}
