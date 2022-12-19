@@ -72,7 +72,10 @@ const Landing = ({
                             </button
                             >
                             <h2 className="mt-10 font-semibold text-2xl mb-4">Contact us: </h2>
-                            <h2 className="font-semibold text-1xl mb-4">09321232123s</h2>
+                            <h2 className="font-semibold text-1xl mb-4">09391455383</h2>
+
+
+                            <p className="font-semibold text-xl mb-4">Located at 41 E. Rodriguez Avenue, Antipolo, Rizal, 1870</p>
                         </div>
                     </div>
                 </div>
@@ -81,8 +84,12 @@ const Landing = ({
 
             <div className={'h-full text-center w-full m-auto bg-white h-96 pt-5'} style={{height: '100%'}}>
                 <h2 className="text-center font-semibold text-4xl mb-4">Erick Bike Shop</h2>
-                <span>
-                     is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                <span className={'text-xl'}>
+                     The business started selling way back in 2006 when it
+                    was firstly named Rik&sbquo;s Enterprises where they sold Japan
+                    <br/>
+                    Bikes before by repairing and at the same time repainting it
+                    which made it look brand new, then started to sell MTB and BMX later on.
                 </span>
 
                 <section className="overflow-hidden text-gray-700 ">

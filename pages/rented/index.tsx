@@ -1,7 +1,7 @@
 import {NextPage} from "next";
 import {Fragment, useEffect, useState} from "react";
 import Head from "next/head";
-import {getBikeByCustomer, loadImages, rented, requested} from "../../api/bike-api";
+import {getBikeByCustomer, rented, requested} from "../../api/bike-api";
 import {BikeObject} from "../../types/bike";
 import Image from "next/image";
 import NoBikeImage from "../../components/layout/sidebar/icon/noBikeImage.png";
@@ -10,18 +10,15 @@ import Link from "next/link";
 const Rented: NextPage = () => {
 
     const [bikes, setBikes] = useState<Array<BikeObject>>();
-    const [pictures, setPictures] = useState([]);
+    const [pictures] = useState([]);
 
     useEffect(() => {
         if (requested.length === 0 && rented.length === 0) {
             getBikeByCustomer('').then(ignored => {
                 setBikes(rented)
-                loadImages(rented, setPictures).then(ignored => {
-                })
             })
         } else {
             setBikes(rented)
-            loadImages(rented, setPictures).then(ignored => {})
         }
     }, [])
 
@@ -54,7 +51,7 @@ const Rented: NextPage = () => {
                                             </Link> :
                                             <Link href={'#'}>
                                                 <Image className="rounded-t-lg"
-                                                       src={`data:image/png;base64,${pictures[i]}`}
+                                                       src={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${bike.parentBike?.bikePictures[0].pictureName}`}
                                                        alt="bike image"
                                                        width="100%" height="100" layout="responsive"
                                                        objectFit="contain"
@@ -74,14 +71,14 @@ const Rented: NextPage = () => {
 
 
                                         <div className="text-xl font-normal text-gray-700 dark:text-gray-400">
-                                            <b>Start:</b> {`${bike.price}₱`}
+                                            <b>Start:</b> {`₱${bike.price}`}
                                             <br/>
-                                            <b>End:</b> {`${bike.price}₱`}
+                                            <b>End:</b> {`₱${bike.price}`}
 
                                         </div>
                                         <hr/>
                                         <h1 className="text-center  text-xl font-normal text-gray-700 dark:text-gray-400">
-                                           {`${bike.price}₱/hr`}
+                                           {`₱${bike.price}/hr`}
                                         </h1>
 
                                     </div>

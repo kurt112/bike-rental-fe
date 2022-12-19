@@ -11,18 +11,14 @@ import {axiosCreate} from "../../../../.config/api";
 const BikeRequest: NextPage = ({bike}: any) => {
 
     console.log(bike);
-
     const [newBike, setNewBike] = useState<BikeObject>({...bike});
     const [today, setToday] = useState<any>();
-    const [pictures, setPictures] = useState<any>(null);
+
 
     useEffect(() => {
         const tempToday = moment().format('yyyy-MM-DDThh:mm');
 
         setToday(tempToday)
-        images().then(e => {
-            setPictures(e);
-        })
     }, []);
 
     const images = async () => {
@@ -172,11 +168,12 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                             <div className="container  mx-auto ">
                                                 <div className="flex flex-wrap -m-1 md:-m-2 justify-center">
                                                     {
-                                                        pictures?.map((e: any) => {
-                                                            return <div className="flex flex-wrap" key={e.id}>
+
+                                                        newBike.bikePictures?.map((picture: any) => {
+                                                            return <div className="flex flex-wrap" key={picture.id}>
                                                                 <div className="w-64 p-1 md:p-2 ">
                                                                     <Image
-                                                                        src={`data:image/png;base64,${e.blob}`}
+                                                                        src={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${picture.pictureName}`}
                                                                         alt="bike image"
                                                                         width="100%" height="100" layout="responsive"
                                                                         objectFit="contain"

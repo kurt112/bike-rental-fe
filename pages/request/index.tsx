@@ -4,7 +4,6 @@ import Head from "next/head";
 import {
     cancelRequestBikeByCustomer,
     getBikeByCustomer,
-    loadImages,
     rented,
     requested,
     setRequestAndRentedToEmpty
@@ -16,17 +15,15 @@ import Link from "next/link";
 const BikeRequest: NextPage = () => {
 
     const [bikes,setBikes] = useState<Array<BikeObject>>();
-    const [pictures, setPictures] = useState([]);
+    const [pictures] = useState([]);
 
     useEffect(() => {
         if(requested.length === 0 && rented.length === 0)  {
             getBikeByCustomer('').then(ignored => {
                 setBikes(requested)
-                loadImages(requested, setPictures).then(ignored => {})
             })
         } else {
             setBikes(requested)
-            loadImages(requested, setPictures).then(ignored => {})
         }
 
     },[])
@@ -44,7 +41,6 @@ const BikeRequest: NextPage = () => {
         setRequestAndRentedToEmpty();
         await getBikeByCustomer('').then(ignored => {
             setBikes(requested)
-            loadImages(requested, setPictures).then(ignored => {})
         });
     }
 
@@ -78,7 +74,7 @@ const BikeRequest: NextPage = () => {
                                             </Link> :
                                             <Link href={'#'}>
                                                 <Image className="rounded-t-lg"
-                                                       src={`data:image/png;base64,${pictures[i]}`}
+                                                       src={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${bike.parentBike?.bikePictures[0].pictureName}`}
                                                        alt="bike image"
                                                        width="100%" height="100" layout="responsive"
                                                        objectFit="contain"
@@ -96,7 +92,7 @@ const BikeRequest: NextPage = () => {
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{bike.description}</p>
                                         <hr/>
                                         <h1 className="mb-3 text-xl font-normal text-gray-700 dark:text-gray-400">
-                                            {bike.price}$/hour
+                                            ₱{bike.price}/hour
                                             ({qty} in stock)</h1>
                                         <button onClick={() => _handleCancel(bike.id?bike.id:'')}
                                                 className="w-full inline-flex place-content-center  py-2 px-3 text-sm font-medium  text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">

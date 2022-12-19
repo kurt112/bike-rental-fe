@@ -1,6 +1,5 @@
 import {NextPage} from "next";
-import {bikeSettings, getBikeAvailable, loadImages, requestBikeByCustomer} from "../../../api/bike-api";
-import {useEffect, useState} from "react";
+import {bikeSettings, getBikeAvailable} from "../../../api/bike-api";
 import {BikeObject} from "../../../types/bike";
 import Image from "next/image";
 import NoBikeImage from '../../../components/layout/sidebar/icon/noBikeImage.png'
@@ -54,7 +53,7 @@ const Available: NextPage = ({
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{bike.description}</p>
                                         <hr/>
                                         <h1 className="mb-3 text-xl font-normal text-gray-700 dark:text-gray-400">
-                                            {`${bike.price}$/hour (${bike.quantity} in stock)`}
+                                            {`₱${bike.price}/hour (${bike.quantity} in stock)`}
                                         </h1>
                                         <Link href={`/bike/available/request?id=${bike.id}`}>
                                             <button

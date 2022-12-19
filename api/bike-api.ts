@@ -165,7 +165,11 @@ export const getBikeByCustomer = async (search: any) => {
                                     pictureName
                                 },
                                 parentBike{
-                                    quantity
+                                    quantity,
+                                     bikePictures{
+                                        id,
+                                        pictureName
+                                     },
                                 }
                              }
                         }`
@@ -210,31 +214,31 @@ export const bikeSettings = async () => {
     return await axiosGet.get('bike/settings').then(result => result.data.data);
 }
 
-    export const loadImages = async (bikes: any, setPictures: any) => {
-    const currentPictures: any = [];
-    await Promise.all(
-        bikes.map(async (bike: any) => {
-
-            if (bike.bikePictures.length <= 0) {
-                currentPictures.push('');
-                return;
-            }
-
-            const params = new URLSearchParams();
-            params.append("id", bike.bikePictures[0].id);
-
-            const {picture} = await axiosCreate.get("bike/photo", {params}).then(result => {
-                return result.data;
-            });
-
-            currentPictures.push(picture.blob);
-        })
-    )
-
-    setPictures(currentPictures);
-
-    return currentPictures;
-}
+//     export const loadImages = async (bikes: any, setPictures: any) => {
+//     const currentPictures: any = [];
+//     await Promise.all(
+//         bikes.map(async (bike: any) => {
+//
+//             if (bike.bikePictures.length <= 0) {
+//                 currentPictures.push('');
+//                 return;
+//             }
+//
+//             const params = new URLSearchParams();
+//             params.append("id", bike.bikePictures[0].id);
+//
+//             const {picture} = await axiosCreate.get("bike/photo", {params}).then(result => {
+//                 return result.data;
+//             });
+//
+//             currentPictures.push(picture.blob);
+//         })
+//     )
+//
+//     setPictures(currentPictures);
+//
+//     return currentPictures;
+// }
 
 export const requestBikeByCustomer = async (bike: BikeObject) => {
 

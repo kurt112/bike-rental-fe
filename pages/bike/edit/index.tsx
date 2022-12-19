@@ -216,7 +216,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                                                 <div className="w-64 p-1 md:p-2">
                                                                     <Image alt={'bike images'}
                                                                            key={index}
-                                                                           src={picture}
+                                                                           src={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${picture.pictureName}`}
                                                                            width="100%"
                                                                            height="100"
                                                                            layout="responsive"
