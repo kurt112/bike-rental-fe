@@ -5,10 +5,9 @@ import moment from "moment";
 import {path} from "../utils/api/endpoint";
 import Swal from "sweetalert2";
 import {handleUploadPhoto} from "./bike-api";
+import {UserValidationMessage} from "../types/user";
 
 export const handleSubmitCustomer = async (customer:CustomerCreate) => {
-
-
     await axiosSubmit.post(path.customer,customer).then(ignored => {
         Swal.fire(
             'Good Job!',
@@ -16,13 +15,14 @@ export const handleSubmitCustomer = async (customer:CustomerCreate) => {
             'success'
         ).then(() => {})
     }).catch(error => {
-        console.log(error)
+        throw error.response.data;
     });
 }
 
 export const getCustomerBill = async (userId: any) => {
 
     const {data} = await axiosSubmit.get(path.customer+'/'+userId).then(data => {
+        console.log(data);
 
         if(!data.data) return 0;
         return data.data;
@@ -158,3 +158,28 @@ export const getCustomers = async (search:any, page:any, size:any, status:any) =
 export const customerSettings = async () => {
     return await axiosGet.get('customer/settings').then(result => result.data.data)
 }
+
+export const validateRegisterCustomerApi  = (validation:UserValidationMessage, error: any): UserValidationMessage =>  {
+    if(error['cellphone']) {
+        validation.cellphone.message  = error['cellphone'];
+        validation.cellphone.exist = true;
+    }
+
+    if(error['email']){
+        validation.email.message  = error['email'];
+        validation.email.exist = true;
+    }
+
+    return validation;
+}
+
+export const validateRegisterCustomerClient  = (validation:UserValidationMessage, customer: CustomerCreate): UserValidationMessage =>  {
+
+    const {user} = customer;
+
+
+
+
+    return validation;
+}
+

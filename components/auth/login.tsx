@@ -16,6 +16,8 @@ const Login = ({
         password: ''
     });
 
+    const [error,setError] = useState<string>('');
+
     const handlerChange = (value: string, key:string) => {
         const newCred:any = {...cred};
         newCred[key] = value;
@@ -33,62 +35,53 @@ const Login = ({
             localStorage.setItem('user',JSON.stringify(user))
             setIsLogin(true);
             setRole(user.userRole);
+            setError('');
+        }).catch(error => {
+            const {data} = error.response;
+            setError(data.message);
         })
     }
 
     return (
+
         <section className="h-fit w-full flex justify-center item items-center">
             <div className="h-full w-full">
-                <div className="bg-white min-h-screen  flex justify-center items-center bg-green-800">
-                    <div className=' shadow-2xl w-3/4 flex justify-center items-center text-gray-800 bg-white' style={{height: '900px'}}>
-                        <div className=" md:w-8/12 lg:w-6/12 mb-12 md:mb-0 border-r-2 border-gray-600 flex justify-center items-center">
-                            <Image
-                                src={logo}
-                                className="h-screen"
-                                alt="Phone image"
-                                width="400" height="400"
-                            />
-                        </div>
-                        <div className="md:w-8/12 lg:w-5/12 lg:ml-20 ">
-                            <form>
+                <div className="bg-white min-h-screen  flex justify-center items-center bg-gradient-to-tl from-green-400 via-green-500 to-white">
+                    <div className='shadow-2xl w-10/12 md:w-1/2 flex justify-center items-center text-gray-800 bg-white'>
+                        <div className="lg:w-6/12  pb-10 pt-10 text-center">
+                            <div >
+                                <Image
+                                    src={logo}
+                                    className="h-screen py-24"
+                                    alt="Phone image"
+                                    width="200" height="200"
+                                />
+                            </div>
+
+                            <form onSubmit={_handleLogin}>
                                 <div className="mb-6">
                                     <input
-                                        type="text"
+                                        type="email"
                                         className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                         placeholder="Email address"
+                                        required
                                         value={cred.username}
                                         onChange={(e) => handlerChange(e.target.value,'username')}
                                     />
                                 </div>
 
-                                <div className="mb-6">
+                                <div className="mb-6 text-right">
                                     <input
                                         type="password"
                                         className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                         placeholder="Password"
                                         value={cred.password}
+                                        required
                                         onChange={(e) => handlerChange(e.target.value, 'password')}
                                     />
-                                </div>
-
-                                <div className="flex justify-between items-center mb-6">
-                                    <div className="form-group form-check">
-                                        {/*<input*/}
-                                        {/*    type="checkbox"*/}
-                                        {/*    className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"*/}
-                                        {/*    id="exampleCheck3"*/}
-                                        {/*    checked*/}
-                                        {/*/>*/}
-                                        {/*<label className="form-check-label inline-block text-gray-800"*/}
-                                        {/*       htmlFor="exampleCheck2"*/}
-                                        {/*       defaultValue={true}*/}
-                                        {/*>Remember me</label*/}
-                                        {/*>*/}
-                                    </div>
-                                    {/*<Link*/}
-                                    {/*    href=''*/}
-                                    {/*    className="text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out"*/}
-                                    {/*>Forgot password?</Link>*/}
+                                    {
+                                        error !== '' ? <span className="text-sm text-red-600"> {error}</span>: null
+                                    }
                                 </div>
 
                                 <button
@@ -96,7 +89,6 @@ const Login = ({
                                     className="mb-5 inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
                                     data-mdb-ripple="true"
                                     data-mdb-ripple-color="light"
-                                    onClick={_handleLogin}
                                 >
                                     Sign in
                                 </button>
@@ -108,7 +100,6 @@ const Login = ({
                                 >
                                     Go back
                                 </button>
-
                             </form>
                         </div>
                     </div>

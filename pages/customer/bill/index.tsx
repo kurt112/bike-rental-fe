@@ -11,6 +11,7 @@ const CustomerBill = () => {
 
 
         getCustomerBill(user.id).then(data => {
+            console.log(data);
             if(!data) setBill(0)
             setBill(data);
         })

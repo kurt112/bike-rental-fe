@@ -1,9 +1,9 @@
 export interface UserCreate {
     email: string,
     firstName: string,
-    lastName:string,
-    middleName:string,
-    gender:string,
+    lastName: string,
+    middleName: string,
+    gender: string,
     password: string,
     birthdate: any,
     userRole: string,
@@ -12,7 +12,35 @@ export interface UserCreate {
     isAccountNotLocked: boolean,
     isCredentialNotExpired: boolean,
     isEnabled: boolean
- }
+}
+
+export interface UserValidationMessage {
+    email: Validation,
+    firstName: Validation,
+    lastName: Validation,
+    middleName: Validation,
+    gender: Validation,
+    password: Validation,
+    birthdate: Validation,
+    cellphone: Validation,
+}
+
+export interface Validation {
+    message: string,
+    exist: boolean
+}
+
+export const userInitValidation:UserValidationMessage = {
+    email: {message:'', exist: false},
+    birthdate: {message:'', exist: false},
+    cellphone: {message:'', exist: false},
+    firstName: {message:'', exist: false},
+    gender:{message:'', exist: false},
+    lastName:{message:'', exist: false},
+    middleName:{message:'', exist: false},
+    password:{message:'', exist: false},
+}
+
 //     createdAt: Date,
 //     updated_at: Date
 // id: number,

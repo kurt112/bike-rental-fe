@@ -27,6 +27,7 @@
     "react-dom": "18.2.0",
     "sweetalert2": "^11.6.8",
     "tailwindcss": "^3.1.6",
+    "tw-elements": "^1.0.0-alpha13",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

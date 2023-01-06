@@ -9,8 +9,6 @@ import {sidebar} from "../types/sidebar";
 import Head from "next/head";
 import {useRouter} from "next/router";
 import Landing from "./landing/landing";
-
-
 function MyApp({Component, pageProps}: AppProps) {
 
     const [isLogin, setLogin] = useState(false);
@@ -42,6 +40,7 @@ function MyApp({Component, pageProps}: AppProps) {
         setLogin(true);
         setRole(user.userRole);
         setIsLoading(false);
+
 
     }, []);
 
