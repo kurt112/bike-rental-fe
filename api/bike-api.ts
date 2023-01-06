@@ -7,7 +7,8 @@ import {uploadToS3} from "./aws/s3";
 
 export let requested: Array<BikeObject> = [];
 export let rented: Array<BikeObject> = [];
-export const handleSubmit = async (bike: BikeObject, images: any ) => {
+export const handleSubmit = async (bike: BikeObject, images: any) => {
+
     if (!images) {
         return Swal.fire(
             'Photo Not Found',
@@ -27,8 +28,9 @@ export const handleSubmit = async (bike: BikeObject, images: any ) => {
             const {data} = result.data;
 
             // getting the bike id
-            images.forEach((image:any) => {
-                uploadToS3(image,data).then(ignored => {})
+            images.forEach((image: any) => {
+                uploadToS3(image, data).then(ignored => {
+                })
                 // location.reload();
             });
         })
@@ -36,7 +38,7 @@ export const handleSubmit = async (bike: BikeObject, images: any ) => {
     }).catch(error => {
         console.log(error)
     });
-}
+};
 
 export const getBikeData = async (id: any) => {
     const query = () => {

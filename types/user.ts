@@ -1,3 +1,5 @@
+import {Validation} from "./validation";
+
 export interface UserCreate {
     email: string,
     firstName: string,
@@ -23,11 +25,6 @@ export interface UserValidationMessage {
     password: Validation,
     birthdate: Validation,
     cellphone: Validation,
-}
-
-export interface Validation {
-    message: string,
-    exist: boolean
 }
 
 export const userInitValidation:UserValidationMessage = {

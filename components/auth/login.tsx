@@ -46,18 +46,16 @@ const Login = ({
 
         <section className="h-fit w-full flex justify-center item items-center">
             <div className="h-full w-full">
-                <div className="bg-white min-h-screen  flex justify-center items-center bg-gradient-to-tl from-green-400 via-green-500 to-white">
+                <div className="bg-white min-h-screen  flex justify-center items-center bg-gradient-to-tl from-green-400 via-neutral-200 to-green-400">
                     <div className='shadow-2xl w-10/12 md:w-1/2 flex justify-center items-center text-gray-800 bg-white'>
                         <div className="lg:w-6/12  pb-10 pt-10 text-center">
-                            <div >
+                            <div className={'mb-10'}>
                                 <Image
                                     src={logo}
-                                    className="h-screen py-24"
                                     alt="Phone image"
-                                    width="200" height="200"
+                                    width="150" height="150"
                                 />
                             </div>
-
                             <form onSubmit={_handleLogin}>
                                 <div className="mb-6">
                                     <input

@@ -1,3 +1,6 @@
+import {UserValidationMessage} from "./user";
+import {Validation} from "./validation";
+
 export interface BikeObject{
     name: string,
     description: string,
@@ -20,3 +23,26 @@ interface bikePictures{
 }
 
 export const bikeColumns:string[] = ['code', 'name/model', 'description', 'price/hr', 'quantity', 'profile'];
+
+export interface BikeValidationMessage {
+    name: Validation,
+    description: Validation,
+    price: Validation,
+    quantity: Validation,
+    size: Validation,
+    brand: Validation,
+    code: Validation,
+    bikePictures: Validation,
+    startBarrow?: Validation,
+    endBarrow?: Validation
+}
+export const bikeInitValidation:BikeValidationMessage = {
+    name: {message:'', exist: false},
+    description: {message:'', exist: false},
+    price: {message:'', exist: false},
+    quantity: {message:'', exist: false},
+    size:{message:'', exist: false},
+    brand:{message:'', exist: false},
+    code:{message:'', exist: false},
+    bikePictures:{message:'', exist: false},
+}
