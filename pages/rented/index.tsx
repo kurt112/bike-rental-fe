@@ -33,7 +33,7 @@ const Rented: NextPage = () => {
                 {
                     bikes?.map((bike: BikeObject, i: number) => {
                         return (
-                            <div className={'w-full'} key={i}>
+                            <div className={'w-full overflow-hidden relative h-92 mt-2'} key={i}>
                                 <div
                                     className="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                                     {
@@ -47,40 +47,25 @@ const Rented: NextPage = () => {
                                                        layout="responsive"
                                                        objectFit="contain"
                                                 />
-
                                             </Link> :
                                             <Link href={'#'}>
                                                 <Image className="rounded-t-lg"
                                                        src={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${bike.parentBike?.bikePictures[0].pictureName}`}
                                                        alt="bike image"
-                                                       width="100%" height="100" layout="responsive"
-                                                       objectFit="contain"
-
+                                                       width="100%"
+                                                       height="100"
+                                                       layout="responsive"
                                                 />
                                             </Link>
                                     }
+                                    <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-gray-800 opacity-70">
+                                        <h3 className="text-2xl text-white font-bold">
+                                            {bike.name}<br/>{` (₱${bike.price}/hour)`}
+                                        </h3>
 
-                                    <div className="p-2">
-                                        <Link href="">
-                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                                {bike.name}
-                                            </h5>
-                                        </Link>
-                                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{bike.description}</p>
-                                        <hr/>
-
-
-                                        <div className="text-xl font-normal text-gray-700 dark:text-gray-400">
-                                            <b>Start:</b> {`₱${bike.price}`}
-                                            <br/>
-                                            <b>End:</b> {`₱${bike.price}`}
-
-                                        </div>
-                                        <hr/>
-                                        <h1 className="text-center  text-xl font-normal text-gray-700 dark:text-gray-400">
-                                           {`₱${bike.price}/hr`}
-                                        </h1>
-
+                                        <p className="mt-2 text-md text-gray-300">
+                                            {bike.description}
+                                        </p>
                                     </div>
                                 </div>
                             </div>

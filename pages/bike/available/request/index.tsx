@@ -10,7 +10,6 @@ import {axiosCreate} from "../../../../.config/api";
 
 const BikeRequest: NextPage = ({bike}: any) => {
 
-    console.log(bike);
     const [newBike, setNewBike] = useState<BikeObject>({...bike});
     const [today, setToday] = useState<any>();
 
@@ -21,30 +20,10 @@ const BikeRequest: NextPage = ({bike}: any) => {
         setToday(tempToday)
     }, []);
 
-    const images = async () => {
-        const currentPictures: any = [];
-
-        await Promise.all(
-            bike.bikePictures.map(async (blob: any) => {
-                const params = new URLSearchParams();
-                params.append("id", blob.id);
-
-                const {picture} = await axiosCreate.get("bike/photo", {params}).then(result => {
-                    return result.data;
-                });
-
-                currentPictures.push(picture);
-            })
-        )
-
-        return currentPictures;
-    }
-
     const changeBike = (data: string, target: string) => {
         const currentBike: any = {...newBike}
         currentBike[target] = data;
         setNewBike(currentBike);
-        console.log(currentBike);
     }
 
     return (

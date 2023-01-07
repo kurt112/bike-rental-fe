@@ -12,13 +12,14 @@ import {BikeObject} from "../../types/bike";
 import Image from "next/image";
 import NoBikeImage from "../../components/layout/sidebar/icon/noBikeImage.png";
 import Link from "next/link";
+
 const BikeRequest: NextPage = () => {
 
-    const [bikes,setBikes] = useState<Array<BikeObject>>();
+    const [bikes, setBikes] = useState<Array<BikeObject>>();
     const [pictures] = useState([]);
 
     useEffect(() => {
-        if(requested.length === 0 && rented.length === 0)  {
+        if (requested.length === 0 && rented.length === 0) {
             getBikeByCustomer('').then(ignored => {
                 setBikes(requested)
             })
@@ -26,10 +27,10 @@ const BikeRequest: NextPage = () => {
             setBikes(requested)
         }
 
-    },[])
+    }, [])
 
     const _handleCancel = async (bikeId: string) => {
-        if(bikeId === ''){
+        if (bikeId === '') {
             return alert('No Id Found');
         }
         let cancel = false;
@@ -37,7 +38,7 @@ const BikeRequest: NextPage = () => {
             cancel = true;
         })
 
-        if(!cancel) return;
+        if (!cancel) return;
         setRequestAndRentedToEmpty();
         await getBikeByCustomer('').then(ignored => {
             setBikes(requested)
@@ -47,7 +48,7 @@ const BikeRequest: NextPage = () => {
     return <Fragment>
         <Head>
             <title>Bike Requested</title>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
         </Head>
 
         <div className={'container mx-auto h-full w-full '}>
@@ -56,7 +57,7 @@ const BikeRequest: NextPage = () => {
                     bikes?.map((bike: BikeObject, i: number) => {
                         const qty = bike.parentBike?.quantity;
                         return (
-                            <div className={'w-full'} key={i}>
+                            <div className={'w-full overflow-hidden relative h-92 mt-2'} key={i}>
                                 <div
                                     className="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                                     {
@@ -70,41 +71,41 @@ const BikeRequest: NextPage = () => {
                                                        layout="responsive"
                                                        objectFit="contain"
                                                 />
-
                                             </Link> :
                                             <Link href={'#'}>
                                                 <Image className="rounded-t-lg"
                                                        src={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${bike.parentBike?.bikePictures[0].pictureName}`}
                                                        alt="bike image"
-                                                       width="100%" height="100" layout="responsive"
-                                                       objectFit="contain"
-
+                                                       width="100%"
+                                                       height="100"
+                                                       layout="responsive"
                                                 />
                                             </Link>
                                     }
+                                    <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-gray-800 opacity-70">
+                                        <h3 className="text-2xl text-white font-bold">
+                                            {bike.name}<br/>{` (₱${bike.price}/hour)`}
+                                        </h3>
 
-                                    <div className="p-5">
-                                        <Link href="">
-                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                                {bike.name}
-                                            </h5>
+                                        <p className="mt-2 text-md text-gray-300">
+                                            {bike.description}
+                                        </p>
+                                    </div>
+                                    <div className="absolute bottom-0 left-0 right-0">
+                                        <Link href={`/bike/available/request?id=${bike.id}`}>
+                                            <button onClick={() => _handleCancel(bike.id ? bike.id : '')}
+                                                    className="w-full inline-flex place-content-center  py-2 px-3 text-sm font-medium  text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                Cancel
+                                                <svg aria-hidden="true" className="ml-2 -mr-1 w-5 h-5"
+                                                     fill="currentColor" viewBox="0 0 20 20"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fillRule="evenodd"
+                                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                          clipRule="evenodd"></path>
+                                                </svg>
+                                            </button>
+
                                         </Link>
-                                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{bike.description}</p>
-                                        <hr/>
-                                        <h1 className="mb-3 text-xl font-normal text-gray-700 dark:text-gray-400">
-                                            ₱{bike.price}/hour
-                                            ({qty} in stock)</h1>
-                                        <button onClick={() => _handleCancel(bike.id?bike.id:'')}
-                                                className="w-full inline-flex place-content-center  py-2 px-3 text-sm font-medium  text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                            Cancel
-
-                                            <svg aria-hidden="true" className="ml-2 -mr-1 w-5 h-5"  fill="currentColor" viewBox="0 0 20 20"
-                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd"
-                                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                                      clipRule="evenodd"></path>
-                                            </svg>
-                                        </button>
                                     </div>
                                 </div>
                             </div>

@@ -80,7 +80,7 @@ function MyApp({Component, pageProps}: AppProps) {
                                className={'w-full z-40   h-screen fixed backdrop-filter backdrop-blur-sm backdrop-opacity-100'}></div>
                 : null
         }
-        <div className="h-screen h-full  flex items-center justify-center" style={{background: '#edf2f7'}}>
+        <div className="h-screen h-full  flex items-center justify-center">
             {
                 isLogin ? <Sidebar sidebarStatus={showSidebar}
                                    handleSidebarStatus={(status) => _handleSidebarStatus(status)}

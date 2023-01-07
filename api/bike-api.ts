@@ -1,4 +1,3 @@
-import {SyntheticEvent} from "react";
 import {axiosCreate, axiosGet, axiosSubmit, graphQl} from "../.config/api";
 import {BikeObject} from "../types/bike";
 import Swal from 'sweetalert2'
@@ -318,7 +317,7 @@ export const handleTerminateBikeByCustomer = async (userId: string, bikeId: stri
     params.append("userId", userId);
     params.append("bikeId", bikeId);
 
-    await axiosCreate.post("bike/terminate", params).then(ignored => {
+    await axiosCreate.post("bike/request/rejected", params).then(ignored => {
         Swal.fire({
             title: 'Terminate',
             timer: 2000,
