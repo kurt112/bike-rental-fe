@@ -17,7 +17,8 @@ export const handleSubmit = async (bike: BikeObject, images: any) => {
         })
     }
 
-    await axiosSubmit.post('bike', bike).then(result => {
+    // the one is the store id
+    await axiosSubmit.post(`bike/${1}`, bike).then(result => {
         const newBike = result.data.data;
         Swal.fire(
             'Good Job!',
@@ -98,6 +99,8 @@ export const getBikes = async (search: any, page: any, size: any, status: any) =
                                 code,
                                 startBarrow,
                                 endBarrow,
+                                longitude,
+                                latitude,
                                 assignedCustomer{
                                     user{
                                        id, 
@@ -212,32 +215,6 @@ export const handleUploadPhoto = async (formData: FormData, bikeId: string) => {
 export const bikeSettings = async () => {
     return await axiosGet.get('bike/settings').then(result => result.data.data);
 }
-
-//     export const loadImages = async (bikes: any, setPictures: any) => {
-//     const currentPictures: any = [];
-//     await Promise.all(
-//         bikes.map(async (bike: any) => {
-//
-//             if (bike.bikePictures.length <= 0) {
-//                 currentPictures.push('');
-//                 return;
-//             }
-//
-//             const params = new URLSearchParams();
-//             params.append("id", bike.bikePictures[0].id);
-//
-//             const {picture} = await axiosCreate.get("bike/photo", {params}).then(result => {
-//                 return result.data;
-//             });
-//
-//             currentPictures.push(picture.blob);
-//         })
-//     )
-//
-//     setPictures(currentPictures);
-//
-//     return currentPictures;
-// }
 
 export const requestBikeByCustomer = async (bike: BikeObject) => {
 

@@ -4,12 +4,15 @@ import {Fragment, useEffect, useState} from "react";
 import {getStoreData, handleSubmit} from "../../api/store-api";
 import {NextPage} from "next";
 import {StoreMap} from "../../utils/googleMap/StoreMap";
+import {getBikes} from "../../api/bike-api";
+import {getBikeStatus} from "../../utils/bike";
+import {BikeObject} from "../../types/bike";
 
 const EditStore: NextPage = () => {
 
     const [isEdit, setEdit] = useState(false);
     const [store, setStore] = useState<any>(null);
-
+    const [bikes,setBikes] = useState<BikeObject>();
 
     const handleEdit = () => {
         setEdit(!isEdit);
@@ -25,7 +28,12 @@ const EditStore: NextPage = () => {
         if (store === null) {
             getStoreData(1).then(store => {
                 setStore(store);
-            })
+            });
+
+            getBikes("all", 0, 0, getBikeStatus.RENTED).then(result => {
+                setBikes(result);
+            });
+
         }
 
         // eslint-disable-next-line
@@ -170,7 +178,7 @@ const EditStore: NextPage = () => {
 
                                     <div className="flex mb-4">
                                         {
-                                            StoreMap(store)
+                                            StoreMap(store,bikes)
                                         }
                                     </div>
                                     {

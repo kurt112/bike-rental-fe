@@ -1,5 +1,5 @@
-import {UserValidationMessage} from "./user";
 import {Validation} from "./validation";
+import {CustomerCreate} from "./customer";
 
 export interface BikeObject{
     name: string,
@@ -10,11 +10,14 @@ export interface BikeObject{
     brand: string,
     code: string,
     bikePictures: bikePictures[],
-    status: number;
+    status: number,
     id?: string,
     startBarrow?: any | Date,
-    endBarrow?: any | Date
-    parentBike?:BikeObject
+    endBarrow?: any | Date,
+    parentBike?:BikeObject,
+    latitude?:string,
+    longitude?:string,
+    assignedCustomer?: CustomerCreate
 }
 
 interface bikePictures{

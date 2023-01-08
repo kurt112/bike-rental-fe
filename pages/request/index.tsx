@@ -16,7 +16,6 @@ import Link from "next/link";
 const BikeRequest: NextPage = () => {
 
     const [bikes, setBikes] = useState<Array<BikeObject>>();
-    const [pictures] = useState([]);
 
     useEffect(() => {
         if (requested.length === 0 && rented.length === 0) {
@@ -61,7 +60,7 @@ const BikeRequest: NextPage = () => {
                                 <div
                                     className="bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                                     {
-                                        pictures[i] === '' ?
+                                        bike.parentBike?.bikePictures.length === 0 ?
                                             <Link href={'#'}>
                                                 <Image className="rounded-t-lg"
                                                        src={NoBikeImage}
