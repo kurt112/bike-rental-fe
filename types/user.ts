@@ -6,14 +6,14 @@ export interface UserCreate {
     lastName: string,
     middleName: string,
     gender: string,
-    password: string,
+    password?: string,
     birthdate: any,
     userRole: string,
     cellphone: string,
-    isAccountNotExpired: boolean,
-    isAccountNotLocked: boolean,
-    isCredentialNotExpired: boolean,
-    isEnabled: boolean
+    isAccountNotExpired: true,
+    isAccountNotLocked: true,
+    isCredentialNotExpired: true,
+    isEnabled:true
 }
 
 export interface UserValidationMessage {

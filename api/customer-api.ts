@@ -34,7 +34,6 @@ export const getCustomerBill = async (userId: any) => {
 }
 
 export const handlePatchCustomer = async (customer:CustomerCreate) => {
-
     if(customer.user !== undefined){
         customer.user.birthdate = customer.user.birthdate?moment(customer.user.birthdate): moment();
     }
@@ -46,7 +45,7 @@ export const handlePatchCustomer = async (customer:CustomerCreate) => {
             'success'
         ).then(() => {})
     }).catch(error => {
-        console.log(error)
+        throw error.response.data;
     });
 }
 
@@ -96,6 +95,7 @@ export const getCustomerData = async (id:any) => {
             query: `query{
                         customerById(id:${id}) {  
                                 id,
+                                isActive,
                                 user{
                                    id,
                                    email,
@@ -183,3 +183,16 @@ export const validateRegisterCustomerClient  = (validation:UserValidationMessage
     return validation;
 }
 
+export const validateCustomer = (validation: UserValidationMessage, customer: CustomerCreate, setValidation: any, reTypePassword: string) => {
+    const tempValidation: UserValidationMessage = {...validation}
+
+    // ui validation
+    if (customer.user?.password !== reTypePassword) {
+        tempValidation.password.exist = true;
+        tempValidation.password.message = "Password do not match";
+        setValidation(tempValidation);
+        return;
+    }else {
+        tempValidation.password.exist = false;
+    }
+}

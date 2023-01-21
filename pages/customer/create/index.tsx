@@ -4,7 +4,7 @@ import {CustomerCreate} from "../../../types/customer";
 import React, {Fragment, SyntheticEvent, useState} from "react";
 import Back from "../../../components/layout/back";
 import {UserCreate, userInitValidation, UserValidationMessage} from "../../../types/user";
-import {handleSubmitCustomer, validateRegisterCustomerApi} from "../../../api/customer-api";
+import {handleSubmitCustomer, validateCustomer, validateRegisterCustomerApi} from "../../../api/customer-api";
 import {useRouter} from "next/router";
 
 const CreateCustomer: NextPage = () => {
@@ -51,20 +51,11 @@ const CreateCustomer: NextPage = () => {
         e.preventDefault();
         const tempValidation: UserValidationMessage = {...validation}
 
-        // ui validation
-        if (customer.user?.password !== reTypePassword) {
-            tempValidation.password.exist = true;
-            tempValidation.password.message = "Password do not match";
-            setValidation(tempValidation);
-            return;
-        }else {
-            tempValidation.password.exist = false;
-        }
+        validateCustomer(tempValidation,customer,setValidation,reTypePassword);
 
         await handleSubmitCustomer(customer).then(ignored => {
             router.reload();
         }).catch(error => {
-
             // validate in backend
             const backendValidation: UserValidationMessage = validateRegisterCustomerApi(tempValidation, error);
             setValidation(backendValidation);

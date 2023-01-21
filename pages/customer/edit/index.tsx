@@ -1,21 +1,24 @@
 import {NextPage} from "next";
 import Head from "next/head";
 import Back from "../../../components/layout/back";
-import {getCustomerData, handleDeleteCustomer, handlePatchCustomer} from "../../../api/customer-api";
-import {Fragment, SyntheticEvent, useState} from "react";
+import {
+    getCustomerData,
+    handleDeleteCustomer,
+    handlePatchCustomer,
+    validateRegisterCustomerApi
+} from "../../../api/customer-api";
+import React, {Fragment, SyntheticEvent, useState} from "react";
 import {CustomerCreate} from "../../../types/customer";
 import moment from "moment";
-import {UserCreate} from "../../../types/user";
+import {UserCreate, userInitValidation, UserValidationMessage} from "../../../types/user";
 import {useRouter} from "next/router";
 
 const EditCustomer: NextPage = ({currentCustomer}: any) => {
     const router = useRouter();
-
-    const [user,setUser] = useState<UserCreate>({...currentCustomer.user});
-
+    const [user,setUser] = useState<UserCreate>({...currentCustomer.    user});
     const [reTypePassword, setReTypePassword] = useState(user.password)
-
     const [customer, setCustomer] = useState<CustomerCreate>({...currentCustomer});
+    const [validation, setValidation] = useState<UserValidationMessage>({...userInitValidation});
 
     const changeUser = (data: string, target: string) => {
         const currentUser: any = {...user}
@@ -32,8 +35,15 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
     }
 
     const _patchCustomer = async (e: SyntheticEvent) => {
+        e.preventDefault();
+        const tempValidation: UserValidationMessage = {...userInitValidation}
+
         await handlePatchCustomer(customer).then(ignored => {
             router.reload();
+        }).catch(error => {
+            // validate in backend
+            const backendValidation: UserValidationMessage = validateRegisterCustomerApi(tempValidation, error);
+            setValidation(backendValidation);
         })
     }
 
@@ -101,6 +111,12 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                         onChange={(e) => changeUser(e.target.value, 'firstName')}
                                         disabled={!isEdit}
                                     />
+                                    {
+                                        userInitValidation.firstName.exist ?
+                                            <span className="text-sm text-red-600">
+                                                   {validation.firstName.message}
+                                               </span> : null
+                                    }
                                 </div>
                                 <div className="w-1/3 mr-1">
                                     <label className="block text-grey-darker text-sm font-bold mb-2"
@@ -114,6 +130,12 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                         value={user.middleName?user.middleName:''}
                                         onChange={(e) => changeUser(e.target.value, 'middleName')}
                                     />
+                                    {
+                                        userInitValidation.middleName.exist ?
+                                            <span className="text-sm text-red-600">
+                                                   {validation.lastName.message}
+                                               </span> : null
+                                    }
                                 </div>
                                 <div className="w-1/3 ml-1">
                                     <label className="block text-grey-darker text-sm font-bold mb-2"
@@ -129,6 +151,12 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                         value={user.lastName?user.lastName:''}
                                         onChange={(e) => changeUser(e.target.value, 'lastName')}
                                     />
+                                    {
+                                        userInitValidation.lastName.exist ?
+                                            <span className="text-sm text-red-600">
+                                                   {validation.lastName.message}
+                                               </span> : null
+                                    }
                                 </div>
                             </div>
 
@@ -144,34 +172,13 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                         value={user.email?user.email:''}
                                         onChange={(e) => changeUser(e.target.value, 'email')}
                                     />
+                                    {
+                                        userInitValidation.email.exist ?
+                                            <span className="text-sm text-red-600">
+                                                   {validation.email.message}
+                                               </span> : null
+                                    }
                                 </div>
-                                <div className="w-1/3 ml-1">
-                                    <label className="block text-grey-darker text-sm font-bold mb-2"
-                                           htmlFor="last_name">Password</label>
-                                    <input
-                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                        type="password"
-                                        disabled={!isEdit}
-                                        placeholder="Password"
-                                        value={user.password?user.password:''}
-                                        onChange={(e) => changeUser(e.target.value, 'password')}
-                                    />
-                                </div>
-                                <div className="w-1/3 ml-1">
-                                    <label className="block text-grey-darker text-sm font-bold mb-2"
-                                           htmlFor="password">Retype Password</label>
-                                    <input
-                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                        type="password"
-                                        disabled={!isEdit}
-                                        placeholder="Retype Password"
-                                        value={reTypePassword}
-                                        onChange={(e) => setReTypePassword(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex mb-4">
                                 <div className="w-1/3 mr-1">
                                     <label className="block text-grey-darker text-sm font-bold mb-2"
                                            htmlFor="gender">Gender</label>
@@ -183,6 +190,12 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                     </select>
+                                    {
+                                        userInitValidation.gender.exist ?
+                                            <span className="text-sm text-red-600">
+                                                   {validation.gender.message}
+                                               </span> : null
+                                    }
                                 </div>
                                 <div className="w-1/3 ml-1">
                                     <label className="block text-grey-darker text-sm font-bold mb-2"
@@ -194,7 +207,16 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                         value={user.birthdate? moment(user.birthdate).format('YYYY-MM-DD').toString():new Date().toString()}
                                         onChange={(e) => changeUser(e.target.value, 'birthdate')}
                                     />
+                                    {
+                                        userInitValidation.birthdate.exist ?
+                                            <span className="text-sm text-red-600">
+                                                   {validation.birthdate.message}
+                                               </span> : null
+                                    }
                                 </div>
+                            </div>
+
+                            <div className="flex mb-4">
                                 <div className="w-1/3 ml-1">
                                     <label className="block text-grey-darker text-sm font-bold mb-2"
                                            htmlFor="cellphone">
@@ -209,6 +231,12 @@ const EditCustomer: NextPage = ({currentCustomer}: any) => {
                                         value={user.cellphone?user.cellphone:''}
                                         onChange={(e) => changeUser(e.target.value, 'cellphone')}
                                     />
+                                    {
+                                        userInitValidation.cellphone.exist ?
+                                            <span className="text-sm text-red-600">
+                                                   {validation.cellphone.message}
+                                               </span> : null
+                                    }
                                 </div>
                             </div>
 

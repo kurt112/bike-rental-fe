@@ -14,7 +14,7 @@ export const handleSubmitEmployee = async (employee:EmployeeCreate) => {
 
         })
     }).catch(error => {
-        console.log(error)
+        throw error.response.data;
     });
 }
 
@@ -24,15 +24,18 @@ export const handlePatchEmployee = async (e:SyntheticEvent, employee:EmployeeCre
         employee.user.birthdate = employee.user.birthdate?moment(employee.user.birthdate): moment();
     }
 
+    console.log(employee);
+
     await axiosSubmit.patch(path.employee,employee).then(ignored => {
         Swal.fire(
             'Good Job!',
             'Update Employee Success!',
             'success'
         ).then(() => {
+
         });
     }).catch(error => {
-        console.log(error)
+        throw error.response.data;
     });
 }
 
@@ -66,6 +69,7 @@ export const getEmployeeData = async (id:any) => {
             query: `query{
                         employeeById(id:${id}) {  
                                 id,
+                                isActive,
                                 user{
                                    id,
                                    email,
@@ -79,7 +83,8 @@ export const getEmployeeData = async (id:any) => {
                                    cellphone,
                                    isAccountNotExpired,
                                    isAccountNotLocked,
-                                   isCredentialNotExpired
+                                   isCredentialNotExpired,
+                                   isEnabled
                                 }
                              }
                         }`

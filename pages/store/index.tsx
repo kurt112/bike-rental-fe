@@ -39,6 +39,14 @@ const EditStore: NextPage = () => {
         // eslint-disable-next-line
     }, []);
 
+    const successCallback = (position:any) => {
+        console.log(position);
+    };
+
+    const errorCallback = (error:any) => {
+        console.log(error);
+    };
+
     return <Fragment>
         <Head>
             <title>View Store</title>

@@ -1,7 +1,8 @@
 import {UserCreate} from "./user";
 
 export interface EmployeeCreate {
-    user: UserCreate | undefined
+    user: UserCreate | undefined,
+    isActive: boolean,
 }
 
 

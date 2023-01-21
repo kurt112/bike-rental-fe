@@ -9,6 +9,14 @@ import {sidebar} from "../types/sidebar";
 import Head from "next/head";
 import {useRouter} from "next/router";
 import Landing from "./landing/landing";
+import SidebarItemEmployee from "../components/layout/sidebar/sidebar-item-employee";
+
+// when we access the screen in landing we will get the data from local storage
+// the name of the data is screen
+// if the data is
+// 1 -> landing
+// 2 -> login
+
 function MyApp({Component, pageProps}: AppProps) {
 
     const [isLogin, setLogin] = useState(false);
@@ -25,9 +33,29 @@ function MyApp({Component, pageProps}: AppProps) {
         const token: string | null = localStorage.getItem('token');
         const sidebarStatus: string | null = localStorage.getItem('sidebarStatus')
         let user: any | null = localStorage.getItem('user');
+        let screen: any | null = localStorage.getItem('screen');
+
+
         if (token === null || user == null) {
             localStorage.clear();
             setIsLoading(false);
+
+            if (!screen) {
+                localStorage.setItem('screen','1');
+            }else {
+                switch (screen){
+                    case '1':
+                        setLoginClick(false);
+                        break;
+                    case '2':
+                        setLoginClick(true);
+                        break;
+                    default:
+                        setLogin(false);
+                        break;
+                }
+            }
+
             return;
         }
 
@@ -40,8 +68,6 @@ function MyApp({Component, pageProps}: AppProps) {
         setLogin(true);
         setRole(user.userRole);
         setIsLoading(false);
-
-
     }, []);
 
     useEffect(() => {
@@ -58,6 +84,10 @@ function MyApp({Component, pageProps}: AppProps) {
                 setSidebarItem(SidebarItemAdmin);
                 if(!data) Router.push('/bike?search=&page=1&size=10&status=0').then(ignored => {});
                 break;
+            case 'employee':
+                setSidebarItem(SidebarItemEmployee)
+                if(!data) Router.push('/bike?search=&page=1&size=10&status=0').then(ignored => {});
+                break;
             default:
                 break;
         }
@@ -67,6 +97,16 @@ function MyApp({Component, pageProps}: AppProps) {
 
     const _handleSidebarStatus = (status: boolean) => {
         setShowSideBar(status);
+    }
+
+    const _handleLoginClick = (result: boolean) => {
+        if(result){
+            localStorage.setItem('screen','2');
+        }else {
+            localStorage.setItem('screen','1');
+        }
+
+        setLoginClick(result);
     }
 
 
@@ -89,8 +129,8 @@ function MyApp({Component, pageProps}: AppProps) {
                     </Sidebar> :
                     loginCLick? <Login setIsLogin={setLogin}
                                        setRole={setRole}
-                                       setLoginClick={setLoginClick}
-                    />: <Landing setLogin={setLoginClick}></Landing>
+                                       setLoginClick={_handleLoginClick}
+                    />: <Landing setLogin={_handleLoginClick}></Landing>
             }
 
             {/*<Landing/>*/}
