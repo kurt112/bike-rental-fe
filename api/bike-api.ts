@@ -304,6 +304,31 @@ export const handleTerminateBikeByCustomer = async (userId: string, bikeId: stri
         })
     });
 }
+
+export const updateBikeLocationByCustomer = async (lat:string,lng: string) => {
+    const token = localStorage.getItem('token')
+
+    console.log(token);
+    if(token === undefined || token === null    ) return;
+
+    const params = new URLSearchParams();
+    params.append("lat", lat);
+    params.append("lng", lng);
+    params.append("token", token);
+
+    console.log('adsfas')
+    await axiosCreate.post("bike/update/location", params).then(success => {
+        console.log(success)
+        Swal.fire({
+            title: 'Update Location sucess',
+            timer: 2000,
+            icon: 'success'
+        }).catch(error => {
+            console.log(error);
+        })
+    });
+}
+
 export const setRequestAndRentedToEmpty = () => {
     requested = [];
     rented = [];

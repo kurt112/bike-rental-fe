@@ -1,15 +1,43 @@
 import {NextPage} from "next";
-import {bikeSettings, getBikeAvailable} from "../../../api/bike-api";
+import {bikeSettings, getBikeAvailable, updateBikeLocationByCustomer} from "../../../api/bike-api";
 import {BikeObject} from "../../../types/bike";
 import Image from "next/image";
 import NoBikeImage from '../../../components/layout/sidebar/icon/noBikeImage.png'
-import Link from "next/link";   
+import Link from "next/link";
 import Head from "next/head";
-import {Fragment} from "react";
+import {Fragment, useEffect} from "react";
 
 const Available: NextPage = ({
                                  bikes,
                              }: any) => {
+
+    const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        timeInterval: 5000,
+        maximumAge: 1
+    };
+
+    const success = async (pos: any) => {
+        const crd = pos.coords;
+
+        await updateBikeLocationByCustomer(crd.latitude, crd.longitude).then(success => {
+        }).catch(error => {
+        })
+    }
+
+    function error(err: any) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(success, error, options);
+        // const interval = setInterval(() => {
+        //
+        // }, 5000);
+        // return () => clearInterval(interval);
+    }, [])
     return (
         <Fragment>
             <Head>
