@@ -3,11 +3,17 @@ import React, {Fragment, useState} from "react";
 import Head from "next/head";
 import {rentedColumn} from "../../../types/rent";
 import {getBikeStatus} from "../../../utils/bike";
-import {bikeSettings, getBikes, handleTerminateBikeByCustomer} from "../../../api/bike-api";
+import {
+    bikeSettings,
+    getBikes,
+    handleApproveRequestByCustomer,
+    handleTerminateBikeByCustomer
+} from "../../../api/bike-api";
 import {useRouter} from "next/router";
 import {pagination} from "../../../types/pagination";
 import Link from "next/link";
 import {formatDateWithTime} from "../../../utils/date";
+import Swal from "sweetalert2";
 
 const Rented: NextPage = ({bikes, settings}: any) => {
     const router = useRouter()
@@ -32,8 +38,20 @@ const Rented: NextPage = ({bikes, settings}: any) => {
     }
 
     const _handleTerminate = async (userId: string, bikeId: string) => {
-        await handleTerminateBikeByCustomer(userId,bikeId).then(() => {
-            searchClick();
+        Swal.fire({
+            title: 'Pending For Terminate',
+            text: "Are you sure you want to terminate the rented bike?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Terminate it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handleTerminateBikeByCustomer(userId,bikeId).then(() => {
+                    searchClick();
+                })
+            }
         })
     }
 

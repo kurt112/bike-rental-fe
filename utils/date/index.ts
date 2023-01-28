@@ -8,3 +8,7 @@ export const formatDate = (date:any) => {
 export const formatDateWithTime = (date:any) => {
     return moment(date).format('MMM. D, YYYY, h:mm a');
 }
+
+export const getFromNowDate = (created_at: any) => {
+    return moment(new Date(created_at)).fromNow();
+}

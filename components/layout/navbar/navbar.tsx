@@ -1,10 +1,14 @@
 import Image from "next/image";
+import {useState} from "react";
+import Notification from "../../notification";
 
 const Navbar = ({
                     handleSidebarStatus,
                     sidebarStatus
                 }: any) => {
     const user = JSON.parse(localStorage.getItem('user') ?? '{}');
+
+    const [notification, setNotification ] = useState(true);
 
     return <div
         className="flex flex-row justify-between bg-slate-50 pt-3 pb-3 border-b-4 border-indigo-500 pr-5 pl-5 place-items-center">
@@ -24,9 +28,11 @@ const Navbar = ({
             {/*       width='90'*/}
             {/*       height='100'*/}
             {/*/>*/}
-            <span className="ml-3">
+            <p className=" mr-3 font-medium capitalize">
                 {`${user.firstName} ${user.lastName}`}
-            </span>
+            </p>
+            <Notification/>
+
         </div>
 
     </div>

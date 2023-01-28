@@ -56,6 +56,9 @@ export const getBikeData = async (id: any) => {
                                 bikePictures{
                                     id,
                                     pictureName
+                                },
+                                parentBike{
+                                    id
                                 }
                              }
                         }`
