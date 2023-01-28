@@ -3,7 +3,7 @@ import {Fragment, useEffect, useState} from "react";
 import Head from "next/head";
 import {
     cancelRequestBikeByCustomer,
-    getBikeByCustomer,
+    getBikeByCustomer, handleApproveRequestByCustomer,
     rented,
     requested,
     setRequestAndRentedToEmpty
@@ -12,6 +12,7 @@ import {BikeObject} from "../../types/bike";
 import Image from "next/image";
 import NoBikeImage from "../../components/layout/sidebar/icon/noBikeImage.png";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 const BikeRequest: NextPage = () => {
 
@@ -32,16 +33,28 @@ const BikeRequest: NextPage = () => {
         if (bikeId === '') {
             return alert('No Id Found');
         }
-        let cancel = false;
-        await cancelRequestBikeByCustomer(bikeId).then(ignored => {
-            cancel = true;
+        Swal.fire({
+            title: 'Cancel this request?',
+            text: 'Are you sure you want to cancel this request?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, cancel it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let cancel = false;
+                cancelRequestBikeByCustomer(bikeId).then(ignored => {
+                    cancel = true;
+                }).then(ignored => {
+                    if (!cancel) return;
+                    setRequestAndRentedToEmpty();
+                    getBikeByCustomer('').then(ignored => {
+                        setBikes(requested)
+                    });
+                })
+            }
         })
-
-        if (!cancel) return;
-        setRequestAndRentedToEmpty();
-        await getBikeByCustomer('').then(ignored => {
-            setBikes(requested)
-        });
     }
 
     return <Fragment>
@@ -91,20 +104,17 @@ const BikeRequest: NextPage = () => {
                                         </p>
                                     </div>
                                     <div className="absolute bottom-0 left-0 right-0">
-                                        <Link href={`/bike/available/request?id=${bike.id}`}>
-                                            <button onClick={() => _handleCancel(bike.id ? bike.id : '')}
-                                                    className="w-full inline-flex place-content-center  py-2 px-3 text-sm font-medium  text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                                Cancel
-                                                <svg aria-hidden="true" className="ml-2 -mr-1 w-5 h-5"
-                                                     fill="currentColor" viewBox="0 0 20 20"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path fillRule="evenodd"
-                                                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                                          clipRule="evenodd"></path>
-                                                </svg>
-                                            </button>
-
-                                        </Link>
+                                        <button onClick={() => _handleCancel(bike.id ? bike.id : '')}
+                                                className="w-full inline-flex place-content-center  py-2 px-3 text-sm font-medium  text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                            Cancel
+                                            <svg aria-hidden="true" className="ml-2 -mr-1 w-5 h-5"
+                                                 fill="currentColor" viewBox="0 0 20 20"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd"
+                                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                      clipRule="evenodd"></path>
+                                            </svg>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
