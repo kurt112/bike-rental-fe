@@ -2,7 +2,7 @@ import {CircleF, GoogleMap, LoadScriptNext, MarkerF} from "@react-google-maps/ap
 import {Store} from "../../types/store";
 import {BikeObject} from "../../types/bike";
 import React, {Fragment} from "react";
-import marker from '../../_images/bikeMarker.png'
+import marker from '../../_images/bike-marker.png'
 export const StoreMap: any = (newStore: Store, bikes: [BikeObject] ) => {
     return (
         <LoadScriptNext googleMapsApiKey={"AIzaSyDemKVk7XsaxU-Vt2jmE1TcRv1rOlL_SNA"}>
