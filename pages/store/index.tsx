@@ -13,8 +13,11 @@ const EditStore: NextPage = () => {
     const [isEdit, setEdit] = useState(false);
     const [store, setStore] = useState<any>(null);
     const [bikes,setBikes] = useState<BikeObject>();
-
+    const [role,setRole] = useState<string>('NA');
     const handleEdit = () => {
+        if(role !== 'admin') {
+            return alert('To edit this you must be admin role')
+        }
         setEdit(!isEdit);
     }
 
@@ -35,6 +38,10 @@ const EditStore: NextPage = () => {
             });
 
         }
+
+        let user: any | null = localStorage.getItem('user');
+        user = JSON.parse(user);
+        setRole(user.userRole)
 
         // eslint-disable-next-line
     }, []);
