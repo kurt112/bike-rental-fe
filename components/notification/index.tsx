@@ -11,6 +11,7 @@ const Notification = () => {
 
     useEffect(() => {
         loadNotification();
+        // eslint-disable-next-line
     }, [])
 
     const loadNotification = () => {
@@ -57,7 +58,7 @@ const Notification = () => {
                              className="divide-y divide-gray-100 dark:divide-gray-700 max-h-96 overflow-y-auto z-50">
                             {
                                 notifications?.map((notification: NotificationType) => {
-                                    return <NotificationCard notification={notification}/>
+                                    return <NotificationCard key={notification.id} notification={notification}/>
                                 })
                             }
                         </div>
