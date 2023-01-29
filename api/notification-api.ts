@@ -1,7 +1,7 @@
 import {graphQl} from "../.config/api";
 
 export const getNotifications = async (page: any, size: any) => {
-    const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token')
     const query = () => {
         return {
             query: `query{
@@ -21,6 +21,5 @@ export const getNotifications = async (page: any, size: any) => {
     };
 
     const {data} = await graphQl.post('', query());
-
     return data.data.getNotifications;
 }

@@ -124,7 +124,8 @@ function MyApp({Component, pageProps}: AppProps) {
             {
                 isLogin ? <Sidebar sidebarStatus={showSidebar}
                                    handleSidebarStatus={(status) => _handleSidebarStatus(status)}
-                                   sidebars={sidebarItem}>
+                                   sidebars={sidebarItem}
+                    userRole={role}>
                         <Component {...pageProps} />
                     </Sidebar> :
                     loginCLick? <Login setIsLogin={setLogin}

@@ -5,12 +5,15 @@ import Link from "next/link";
 import logo from '../sidebar/icon/bikeLogo.jpg'
 import Swal from "sweetalert2";
 import {useRouter} from "next/router";
+import {updateBikeLocationByCustomer} from "../../../api/bike-api";
+import {useEffect} from "react";
 
 const Sidebar = ({
                      sidebars,
                      children,
                      sidebarStatus,
-                     handleSidebarStatus
+                     handleSidebarStatus,
+                     userRole
                  }: sidebarList) => {
 
     const Router = useRouter();
@@ -34,6 +37,36 @@ const Sidebar = ({
             }
         })
     }
+
+    const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        timeInterval: 5000,
+        maximumAge: 1
+    };
+
+    const success = async (pos: any) => {
+        const crd = pos.coords;
+
+        await updateBikeLocationByCustomer(crd.latitude, crd.longitude).then(ignored => {
+        }).catch(ignored => {
+            alert('Please turn on you gps')
+        })
+    }
+
+    function error(err: any) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+
+    useEffect(() => {
+        if(userRole !== 'customer') return;
+
+        const interval = setInterval(() => {
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, [])
 
     return (
         <div className="w-full h-full ">

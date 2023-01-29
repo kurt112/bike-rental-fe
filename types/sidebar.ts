@@ -8,5 +8,6 @@ export  interface sidebarList {
     sidebars: Array<sidebar>,
     children: any,
     sidebarStatus: boolean,
-    handleSidebarStatus(status: boolean): void
+    handleSidebarStatus(status: boolean): void,
+    userRole: string
 }

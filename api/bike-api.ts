@@ -319,17 +319,7 @@ export const updateBikeLocationByCustomer = async (lat:string,lng: string) => {
     params.append("lng", lng);
     params.append("token", token);
 
-    console.log('adsfas')
-    await axiosCreate.post("bike/update/location", params).then(success => {
-        console.log(success)
-        Swal.fire({
-            title: 'Update Location sucess',
-            timer: 2000,
-            icon: 'success'
-        }).catch(error => {
-            console.log(error);
-        })
-    });
+    await axiosCreate.post("bike/update/location", params).then(ignored => {});
 }
 
 export const setRequestAndRentedToEmpty = () => {
