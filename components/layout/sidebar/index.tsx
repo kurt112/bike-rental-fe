@@ -85,7 +85,7 @@ const Sidebar = ({
                                     sidebars.map((sidebar, i) => {
                                         return sidebar.icon ?
                                             <Link href={sidebar.link} key={i}>
-                                                <li className="flex w-full justify-between text-gray-300 cursor-pointer items-center pt-3 pb-3 hover:bg-sky-700"
+                                                <li className="pl-5 pr-5 flex w-full justify-between text-gray-300 cursor-pointer items-center pt-3 pb-3 hover:bg-sky-700"
                                                     onClick={() => handleSidebarStatus(false)}>
                                                     <Image
                                                         src={sidebar.icon.src}

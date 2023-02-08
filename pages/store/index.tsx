@@ -32,27 +32,23 @@ const EditStore: NextPage = () => {
             getStoreData(1).then(store => {
                 setStore(store);
             });
-
-            getBikes("all", 0, 0, getBikeStatus.RENTED).then(result => {
-                setBikes(result);
-            });
-
         }
 
         let user: any | null = localStorage.getItem('user');
         user = JSON.parse(user);
         setRole(user.userRole)
 
+        const interval = setInterval(() => {
+            getBikes("all", 0, 0, getBikeStatus.RENTED).then(result => {
+                setBikes(result);
+            });
+        }, 3000);
+        return () => clearInterval(interval);
+
         // eslint-disable-next-line
     }, []);
 
-    const successCallback = (position:any) => {
-        console.log(position);
-    };
 
-    const errorCallback = (error:any) => {
-        console.log(error);
-    };
 
     return <Fragment>
         <Head>

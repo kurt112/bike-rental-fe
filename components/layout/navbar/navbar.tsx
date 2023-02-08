@@ -1,16 +1,20 @@
-import Image from "next/image";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Notification from "../../notification";
 
 const Navbar = ({
                     handleSidebarStatus,
                     sidebarStatus
                 }: any) => {
-    const user = JSON.parse(localStorage.getItem('user') ?? '{}');
+
+    const [user,setUser] = useState<any>(null);
 
     const [notification, setNotification ] = useState(true);
 
-    return <div
+    useEffect(() => {
+        setUser(JSON.parse(localStorage.getItem('user') ?? '{}'));
+    }, [])
+
+    return user ? <div
         className="flex flex-row justify-between bg-slate-50 pt-3 pb-3 border-b-4 border-indigo-500 pr-5 pl-5 place-items-center">
         <svg className="w-7 h-7 cursor-pointer" fill="currentColor" viewBox="0 0 20 20"
              xmlns="http://www.w3.org/2000/svg" onClick={() => handleSidebarStatus(true)}>
@@ -35,7 +39,7 @@ const Navbar = ({
 
         </div>
 
-    </div>
+    </div>: null
 }
 
 export default Navbar

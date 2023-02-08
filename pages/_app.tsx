@@ -19,7 +19,7 @@ import SidebarItemEmployee from "../components/layout/sidebar/sidebar-item-emplo
 
 function MyApp({Component, pageProps}: AppProps) {
 
-    const [isLogin, setLogin] = useState(false);
+    const [isLogin, setLogin] = useState(true);
     const [role, setRole] = useState('');
     const [sidebarItem, setSidebarItem] = useState<Array<sidebar>>([])
     const [isLoading, setIsLoading] = useState(true);
@@ -39,7 +39,7 @@ function MyApp({Component, pageProps}: AppProps) {
         if (token === null || user == null) {
             localStorage.clear();
             setIsLoading(false);
-
+            setLogin(false);
             if (!screen) {
                 localStorage.setItem('screen','1');
             }else {
@@ -117,7 +117,9 @@ function MyApp({Component, pageProps}: AppProps) {
 
         {
             showSidebar ? <div onClick={() => _handleSidebarStatus(false)}
-                               className={'w-full z-40   h-screen fixed backdrop-filter backdrop-blur-sm backdrop-opacity-100'}></div>
+                               className={'w-full z-40   h-screen fixed backdrop-filter backdrop-blur-sm backdrop-opacity-100'}>
+
+                </div>
                 : null
         }
         <div className="h-screen h-full  flex items-center justify-center">
@@ -125,7 +127,7 @@ function MyApp({Component, pageProps}: AppProps) {
                 isLogin ? <Sidebar sidebarStatus={showSidebar}
                                    handleSidebarStatus={(status) => _handleSidebarStatus(status)}
                                    sidebars={sidebarItem}
-                    userRole={role}>
+                                   userRole={role}>
                         <Component {...pageProps} />
                     </Sidebar> :
                     loginCLick? <Login setIsLogin={setLogin}

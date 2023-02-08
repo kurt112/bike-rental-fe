@@ -128,14 +128,14 @@ const BikeRequest: NextPage = ({bike}: any) => {
 
 
                                         <div className="mx-auto">
-                                            <div className="text-black text-4xl pl-2">
+                                            <div className="text-black text-4xl pl-2 mb-10 mt-2">
                                                 Request Bike Date
                                             </div>
                                             <div className=" mx-auto bg-white rounded ">
 
                                                 <div className="px-8 mb-10">
-                                                    <div className="flex mb-4">
-                                                        <div className="w-1/2 mr-1">
+                                                    <div className="flex mb-4 flex-wrap">
+                                                        <div className="w-full mr-1">
                                                             <label
                                                                 className="block text-grey-darker text-sm font-bold mb-2"
                                                                 htmlFor="start_barrow">Start Barrow</label>
@@ -150,10 +150,10 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                                 onChange={(e) => changeBike(e.target.value, 'startBarrow')}
                                                             />
                                                         </div>
-                                                        <div className="w-1/2 ml-1">
+                                                        <div className="w-full ml-1">
                                                             <label
                                                                 className="block text-grey-darker text-sm font-bold mb-2"
-                                                                htmlFor="last_name">
+                                                                htmlFor="end_barrow">
                                                                 End Barrow
                                                             </label>
                                                             <input

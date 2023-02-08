@@ -31,7 +31,6 @@ const Notification = () => {
 
     }
 
-
     return (
         <Fragment>
             <button id="dropdownNotificationButton" onClick={() => setIsOpen(!isOpen)}
@@ -63,7 +62,7 @@ const Notification = () => {
                                     return <NotificationCard key={notification.id} notification={notification}/>
                                 }) : <div className="w-full pl-3">
                                     <div
-                                        className="text-gray-500 text-sm mb-1.5 dark:text-gray-400">
+                                        className="text-gray-500 text-sm mb-1.5 dark:text-gray-400 mr-5 ml-5 ">
                                         No Available Notification
                                     </div>
                                 </div>
