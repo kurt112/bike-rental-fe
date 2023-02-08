@@ -11,8 +11,11 @@ import Swal from "sweetalert2";
 const BikeRequest: NextPage = ({bike}: any) => {
 
     const [newBike, setNewBike] = useState<BikeObject>({...bike});
+    const [startBarrow, setStartBarrow] = useState<any>()
+    const [endBarrow, setEndBarrow] = useState<any>()
     const [today, setToday] = useState<any>();
     const [agreeToTermAndCondition, setAgreeToTermAndCondition] = useState<boolean>(false);
+    const [estimate,setEstimate] = useState<number>(0);
 
     useEffect(() => {
         const tempToday = moment().format('yyyy-MM-DDThh:mm');
@@ -25,6 +28,34 @@ const BikeRequest: NextPage = ({bike}: any) => {
         currentBike[target] = data;
         setNewBike(currentBike);
     }
+
+    const _handleChangeStartBarrow = (data: string) => {
+        changeBike(data, 'startBarrow');
+        setStartBarrow(moment(data).format('yyyy-MM-DDThh:mm'));
+        // setStartBarrow
+    }
+
+    const _handleEndBarrow = (data: string) => {
+        changeBike(data, 'endBarrow')
+        setEndBarrow(moment(data).format('yyyy-MM-DDThh:mm'));
+
+        if(startBarrow > endBarrow) {
+            return alert("Please end date should greater than to start date")
+        }
+    }
+
+    useEffect(() => {
+        const tempEndBarrow = moment(endBarrow);
+        const tempStartBarrow = moment(startBarrow);
+
+        const minutesDiff = tempEndBarrow.diff(tempStartBarrow, 'minutes');
+        let totalHour = Math.floor(minutesDiff / 60);
+        const excessMinutes = minutesDiff % 60 <= 0 ? 0: 1;
+
+        totalHour += excessMinutes;
+
+        setEstimate(totalHour * newBike.price)
+    }, [startBarrow,endBarrow])
 
     const viewTermAndCondition = () => {
         Swal.fire({
@@ -75,10 +106,10 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                             <span
                                                 className="mb-2 text-2xl font-medium tracking-tight text-gray-900 dark:text-white"> {`${newBike.name}`} ({newBike.brand})</span>
                                         </h5>
-                                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                        <p className="mb-3 font-medium text-gray-700 dark:text-gray-400">
                                             {newBike.description}
                                         </p>
-                                        <div className='flex flex-row justify-center'>
+                                        <div className='flex flex-row justify-center border-2    border-green-400'>
                                             <h5 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                                                 Price:
                                                 <span
@@ -96,13 +127,14 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                 <span
                                                     className={'mb-2 text-2xl font-medium tracking-tight text-gray-900 dark:text-white'}> {newBike.code}</span>
                                             </h5>
+                                            <h5 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white ml-3">
+                                                Stock:
+                                                <span
+                                                    className={'mb-2 text-2xl font-medium tracking-tight text-gray-900 dark:text-white'}> {newBike.quantity}</span>
+                                            </h5>
                                         </div>
 
-                                        <h5 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white ml-3">
-                                            Stock:
-                                            <span
-                                                className={'mb-2 text-2xl font-medium tracking-tight text-gray-900 dark:text-white'}> {newBike.quantity}</span>
-                                        </h5>
+
 
                                         <section className="overflow-hidden text-gray-700 ">
                                             <div className="container  mx-auto ">
@@ -126,13 +158,13 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                             </div>
                                         </section>
 
-
                                         <div className="mx-auto">
-                                            <div className="text-black text-4xl pl-2 mb-10 mt-2">
-                                                Request Bike Date
+                                            <div className="text-black text-4xl pl-2 mb-3 mt-5">
+                                                Request bike date and time
                                             </div>
+                                            <hr/>
+                                            <br/>
                                             <div className=" mx-auto bg-white rounded ">
-
                                                 <div className="px-8 mb-10">
                                                     <div className="flex mb-4 flex-wrap">
                                                         <div className="w-full mr-1">
@@ -147,7 +179,7 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                                 min={today}
                                                                 required={true}
                                                                 value={bike.startBarrow}
-                                                                onChange={(e) => changeBike(e.target.value, 'startBarrow')}
+                                                                onChange={(e) => _handleChangeStartBarrow(e.target.value)}
                                                             />
                                                         </div>
                                                         <div className="w-full ml-1">
@@ -161,15 +193,17 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                                 id="end_barrow"
                                                                 type="datetime-local"
                                                                 placeholder="End Model"
-                                                                min={today}
+                                                                min={startBarrow === undefined? today: startBarrow}
                                                                 required={true}
                                                                 value={bike.endBarrow}
-                                                                onChange={(e) => changeBike(e.target.value, 'endBarrow')}
+                                                                onChange={(e) => _handleEndBarrow(e.target.value)}
                                                             />
                                                         </div>
+
                                                     </div>
                                                     <div className="flex justify-center items-center mx-auto">
-                                                        <input checked={agreeToTermAndCondition} id="checked-checkbox" type="checkbox"
+
+                                                        <input checked={agreeToTermAndCondition} id="checked-checkbox" type="checkbox" readOnly
                                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300
                                                                rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800
                                                                focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -182,7 +216,11 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                         </span>
                                                         </label>
                                                     </div>
+                                                    <p className='mt-10 font-semibold'>Total Bill Estimate:
+                                                        <span className='font-normal ml-2'>₱{estimate}</span>
+                                                    </p>
                                                 </div>
+
                                                 <div className="px-8 mb-10">
                                                     <button
                                                         disabled={!agreeToTermAndCondition}
@@ -194,12 +232,12 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                 </div>
                                             </div>
 
+
                                         </div>
                                     </div>
                                 </div>
                                 <div className="py-4 px-8 mb-10">
                                     <div className="bg-grey-lightest">
-
                                     </div>
                                 </div>
                             </div>
