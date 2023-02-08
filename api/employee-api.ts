@@ -24,8 +24,6 @@ export const handlePatchEmployee = async (e:SyntheticEvent, employee:EmployeeCre
         employee.user.birthdate = employee.user.birthdate?moment(employee.user.birthdate): moment();
     }
 
-    console.log(employee);
-
     await axiosSubmit.patch(path.employee,employee).then(ignored => {
         Swal.fire(
             'Good Job!',
@@ -41,26 +39,33 @@ export const handlePatchEmployee = async (e:SyntheticEvent, employee:EmployeeCre
 
 export const handleDeleteEmployee = async (id: any) => {
 
-    const result = confirm("Are you sure you want to delete this employee?");
-
-    if(!result) return;
-
-    const params = new URLSearchParams();
-    params.append('id',id);
-
-    await axiosSubmit.delete(path.employee,{
-        params
-    }).then(ignored => {
-        Swal.fire(
-            'Good Job!',
-            'Delete Employee Success!',
-            'success'
-        ).then(() => {
-        })
-        history.back();
-    }).catch(error => {
-        console.log(error)
-    });
+    Swal.fire({
+        title: 'Are you sure you want to delete this employee?',
+        text: "this action is irreversible",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const params = new URLSearchParams();
+            params.append('id', id);
+            axiosSubmit.delete(path.employee,{
+                params
+            }).then(ignored => {
+                Swal.fire({
+                    title: 'Delete Success',
+                    timer: 2000,
+                    icon: 'success'
+                }).then((ignored) => {
+                    history.back();
+                })
+            }).catch(error => {
+                console.log(error)
+            });
+        }
+    })
 }
 
 export const getEmployeeData = async (id:any) => {

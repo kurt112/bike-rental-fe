@@ -17,7 +17,8 @@ export interface BikeObject{
     parentBike?:BikeObject,
     latitude?:string,
     longitude?:string,
-    assignedCustomer?: CustomerCreate
+    assignedCustomer?: CustomerCreate,
+    isAvailable: boolean
 }
 
 interface bikePictures{

@@ -53,6 +53,7 @@ export const getBikeData = async (id: any) => {
                                 id,
                                 description,
                                 code,
+                                available,
                                 bikePictures{
                                     id,
                                     pictureName
@@ -70,22 +71,34 @@ export const getBikeData = async (id: any) => {
 }
 
 export const handleDeleteBike = async (id: any) => {
+    Swal.fire({
+        title: 'Are you sure you want to delete this bike?',
+        text: "this action is irreversible",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const params = new URLSearchParams();
+            params.append('id', id);
+            axiosSubmit.delete('bike', {
+                params
+            }).then(ignored => {
+                Swal.fire({
+                    title: 'Delete Success',
+                    timer: 2000,
+                    icon: 'success'
+                }).then((ignored) => {
+                    history.back();
+                })
+            }).catch(error => {
+                console.log(error)
+            });
+        }
+    })
 
-    const result = confirm("Are you sure you want to delete this bike?");
-
-    if (!result) return;
-
-    const params = new URLSearchParams();
-    params.append('id', id);
-
-    await axiosSubmit.delete('bike', {
-        params
-    }).then(ignored => {
-        alert("Bike Delete Success");
-        history.back();
-    }).catch(error => {
-        console.log(error)
-    });
 }
 
 export const getBikes = async (search: any, page: any, size: any, status: any) => {

@@ -1,10 +1,8 @@
-import {SyntheticEvent} from "react";
 import {axiosGet, axiosSubmit, graphQl} from "../.config/api";
 import {CustomerCreate} from "../types/customer";
 import moment from "moment";
 import {path} from "../utils/api/endpoint";
 import Swal from "sweetalert2";
-import {handleUploadPhoto} from "./bike-api";
 import {UserValidationMessage} from "../types/user";
 
 export const handleSubmitCustomer = async (customer:CustomerCreate) => {
@@ -51,24 +49,43 @@ export const handlePatchCustomer = async (customer:CustomerCreate) => {
 
 export const handleDeleteCustomer = async (id: any) => {
 
-    const result = confirm("Are you sure you want to delete this customer?");
+    Swal.fire({
+        title: 'Are you sure you want to delete this customer?',
+        text: "this action is irreversible",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const params = new URLSearchParams();
+            params.append('id',id);
 
-    if(!result) return;
-
-    const params = new URLSearchParams();
-    params.append('id',id);
-
-    await axiosSubmit.delete(path.customer,{
-        params
-    }).then(ignored => {
-        alert("Customer Delete Success");
-        history.back();
-    }).catch(error => {
-        console.log(error)
-    });
+            axiosSubmit.delete(path.customer,{
+                params
+            }).then(ignored => {
+                Swal.fire({
+                    title: 'Delete Success',
+                    timer: 2000,
+                    icon: 'success'
+                }).then((ignored) => {
+                    history.back();
+                })
+            }).catch(error => {
+                Swal.fire({
+                    title: 'Error Found',
+                    icon: 'warning',
+                    text: error
+                }).then((ignored) => {
+                    history.back();
+                })
+            });
+        }
+    })
 }
 
-    export const handleApproveRequestByCustomer = async (userId:string, bikeId: string) => {
+export const handleApproveRequestByCustomer = async (userId:string, bikeId: string) => {
 
     const params = new URLSearchParams();
 

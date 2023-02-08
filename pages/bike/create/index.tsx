@@ -21,7 +21,8 @@ const CreateBike: NextPage = () => {
         quantity: 0,
         code: '',
         bikePictures: [],
-        status: 0
+        status: 0,
+        isAvailable: true
     });
     const [validation, setValidation] = useState<BikeValidationMessage>({...bikeInitValidation});
 
