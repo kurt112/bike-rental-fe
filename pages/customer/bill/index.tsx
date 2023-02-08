@@ -3,15 +3,12 @@ import parseJson from "parse-json";
 import {getCustomerBill} from "../../../api/customer-api";
 
 const CustomerBill = () => {
-    const currentUser:any = localStorage.getItem('user');
-    const[user, setUser] = useState<any>(parseJson(currentUser));
+    const[user, setUser] = useState<any>();
     const [bill,setBill] = useState<number>();
 
     useEffect(() => {
-
-
         getCustomerBill(user.id).then(data => {
-            console.log(data);
+            setUser(localStorage.getItem('user'));
             if(!data) setBill(0)
             setBill(data);
         })
