@@ -42,6 +42,7 @@ const EditStore: NextPage = () => {
             getBikes("all", 0, 0, getBikeStatus.RENTED).then(result => {
                 setBikes(result);
             });
+            console.log("Getting location");
         }, 3000);
         return () => clearInterval(interval);
 

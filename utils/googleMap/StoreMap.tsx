@@ -20,7 +20,6 @@ export const StoreMap: any = (newStore: Store, bikes: [BikeObject] ) => {
                         />
                         {
                             bikes?.map(bike => {
-                                console.log(bike);
                                 let name = 'No Customer Found';
                                 if(bike.assignedCustomer?.user != undefined){
                                     const {user} = bike.assignedCustomer;
