@@ -1,13 +1,12 @@
 import {NextPage} from "next";
-import {useEffect, useState} from "react";
-import {StoreMap} from "../../utils/googleMap/StoreMap";
+import React, {useEffect, useState} from "react";
 import {Store} from "../../types/store";
 import {getStoreData} from "../../api/store-api";
 import {BikeObject} from "../../types/bike";
 import {
-    getBikeByCustomerWithLocation, getBikes
+    getBikeByCustomerWithLocation
 } from "../../api/bike-api";
-import {getBikeStatus} from "../../utils/bike";
+import StoreMap from "../../utils/googleMap/StoreMap";
 
 const ClientMap:NextPage = () => {
     const [store, setStore] = useState<Store>({
@@ -20,7 +19,7 @@ const ClientMap:NextPage = () => {
         scopeEdgeColor: ''
     });
 
-    const [bikes, setBikes] = useState<Array<BikeObject>>([]);
+    const [bikes, setBikes] = useState<[BikeObject] | null>(null);
 
     useEffect(() => {
         if (store.id === '') {
@@ -30,6 +29,7 @@ const ClientMap:NextPage = () => {
         }
 
         const interval = setInterval(() => {
+            console.log('updating your location')
             getBikeByCustomerWithLocation('').then(bikeResult => {
                 setBikes(bikeResult);
             })
@@ -41,8 +41,11 @@ const ClientMap:NextPage = () => {
 
 
     return (
-        StoreMap(store, null, bikes)
+        <StoreMap newStore={store} clientBike={bikes} bikes={null}></StoreMap>
+
     )
 }
 
 export default ClientMap
+
+// (store, null, bikes)

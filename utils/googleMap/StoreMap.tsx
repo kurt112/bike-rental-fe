@@ -4,7 +4,18 @@ import {BikeObject} from "../../types/bike";
 import React, {Fragment} from "react";
 import marker from '../../_images/bike-marker.png'
 
-export const StoreMap: any = (newStore: Store, bikes: [BikeObject], clientBike: [BikeObject]) => {
+interface props {
+    newStore: Store,
+    bikes: [BikeObject] | null,
+    clientBike: [BikeObject] | null
+}
+
+const StoreMap = ({
+                      newStore,
+                      bikes,
+                      clientBike
+                  }: props) => {
+
     return newStore === null ? null :
         <LoadScriptNext googleMapsApiKey={process.env.mapKey ? process.env.mapKey : ''}>
             <div className="w-full h-screen">
@@ -63,3 +74,5 @@ export const StoreMap: any = (newStore: Store, bikes: [BikeObject], clientBike: 
             </div>
         </LoadScriptNext>
 }
+
+export default StoreMap

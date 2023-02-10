@@ -1,13 +1,13 @@
 import Head from "next/head";
 import Back from "../../components/layout/back";
-import {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {getStoreData, handleSubmit} from "../../api/store-api";
 import {NextPage} from "next";
-import {StoreMap} from "../../utils/googleMap/StoreMap";
 import {getBikes} from "../../api/bike-api";
 import {getBikeStatus} from "../../utils/bike";
 import {BikeObject} from "../../types/bike";
 import {Store} from "../../types/store";
+import StoreMap from "../../utils/googleMap/StoreMap";
 
 const EditStore: NextPage = () => {
 
@@ -21,7 +21,7 @@ const EditStore: NextPage = () => {
         scopeColor: '',
         scopeEdgeColor: ''
     });
-    const [bikes,setBikes] = useState<BikeObject>();
+    const [bikes,setBikes] = useState<[BikeObject] | null>(null);
     const [role,setRole] = useState<string>('NA');
     const handleEdit = () => {
         if(role !== 'admin') {
@@ -196,9 +196,7 @@ const EditStore: NextPage = () => {
                             </div>
 
                             <div className="flex mb-4">
-                                {
-                                    StoreMap(store,bikes)
-                                }
+                                <StoreMap bikes={bikes} newStore={store} clientBike={null}/>
                             </div>
                             {
                                 isEdit ? <button onClick={(e) => handleSubmit(e, store)} type="button"
