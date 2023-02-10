@@ -10,7 +10,6 @@ import Head from "next/head";
 import {useRouter} from "next/router";
 import Landing from "./landing/landing";
 import SidebarItemEmployee from "../components/layout/sidebar/sidebar-item-employee";
-
 // when we access the screen in landing we will get the data from local storage
 // the name of the data is screen
 // if the data is
@@ -78,7 +77,6 @@ function MyApp({Component, pageProps}: AppProps) {
             case 'customer':
                 setSidebarItem(SidebarItemClient);
                 if(!data) Router.push('/bike/available?search=&page=1&size=10&status=0').then(ignored => {});
-
                 break;
             case 'admin':
                 setSidebarItem(SidebarItemAdmin);
@@ -92,6 +90,7 @@ function MyApp({Component, pageProps}: AppProps) {
                 break;
         }
         setIsLoading(false);
+
 
     }, [role, isLogin])
 

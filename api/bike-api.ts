@@ -324,7 +324,6 @@ export const handleTerminateBikeByCustomer = async (userId: string, bikeId: stri
 export const updateBikeLocationByCustomer = async (lat:string,lng: string) => {
     const token = localStorage.getItem('token')
 
-    console.log(token);
     if(token === undefined || token === null    ) return;
 
     const params = new URLSearchParams();
@@ -339,3 +338,24 @@ export const setRequestAndRentedToEmpty = () => {
     requested = [];
     rented = [];
 }
+
+export const getBikeByCustomerWithLocation = async (search: any) => {
+    const token = localStorage.getItem('token')
+    const query = () => {
+        return {
+            query: `query{
+                        getBikeByCustomer(search:"${search}", token:"${token}") {  
+                                id,
+                                longitude,
+                                latitude
+                             }
+                        }`
+        }
+    };
+
+    const {data} = await graphQl.post('', query());
+
+
+    return data.data.getBikeByCustomer;
+}
+

@@ -3,9 +3,10 @@ import {Store} from "../../types/store";
 import {BikeObject} from "../../types/bike";
 import React, {Fragment} from "react";
 import marker from '../../_images/bike-marker.png'
-export const StoreMap: any = (newStore: Store, bikes: [BikeObject] ) => {
-    return (
-        <LoadScriptNext googleMapsApiKey={"AIzaSyDemKVk7XsaxU-Vt2jmE1TcRv1rOlL_SNA"}>
+
+export const StoreMap: any = (newStore: Store, bikes: [BikeObject], clientBike: [BikeObject]) => {
+    return newStore === null ? null :
+        <LoadScriptNext googleMapsApiKey={process.env.mapKey ? process.env.mapKey : ''}>
             <div className="w-full h-screen">
                 <GoogleMap
                     mapContainerStyle={{width: '100%', height: '100%'}}
@@ -21,14 +22,30 @@ export const StoreMap: any = (newStore: Store, bikes: [BikeObject] ) => {
                         {
                             bikes?.map(bike => {
                                 let name = 'No Customer Found';
-                                if(bike.assignedCustomer?.user != undefined){
+                                if (bike.assignedCustomer?.user != undefined) {
                                     const {user} = bike.assignedCustomer;
-                                    name = user.firstName + ' ' + user?.lastName ;
+                                    name = user.firstName + ' ' + user?.lastName;
                                 }
                                 return <MarkerF label={name} title={name}
                                                 key={bike.id}
                                                 icon={marker.src}
-                                                position={{lng: bike.longitude? +bike.longitude:1, lat: bike.latitude?+bike.latitude:2}}
+                                                position={{
+                                                    lng: bike.longitude ? +bike.longitude : 1,
+                                                    lat: bike.latitude ? +bike.latitude : 2
+                                                }}
+                                />
+                            })
+                        }
+                        {
+                            clientBike?.map(bike => {
+                                let name = 'You';
+                                return <MarkerF label={name} title={name}
+                                                key={bike.id}
+                                                icon={marker.src}
+                                                position={{
+                                                    lng: bike.longitude ? +bike.longitude : 1,
+                                                    lat: bike.latitude ? +bike.latitude : 2
+                                                }}
                                 />
                             })
                         }
@@ -45,6 +62,4 @@ export const StoreMap: any = (newStore: Store, bikes: [BikeObject] ) => {
                 </GoogleMap>
             </div>
         </LoadScriptNext>
-    )
-
 }
