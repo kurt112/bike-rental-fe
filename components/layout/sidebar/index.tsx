@@ -64,7 +64,6 @@ const Sidebar = ({
         if(userRole !== 'customer') return;
 
         const interval = setInterval(() => {
-            alert('wew');
             navigator.geolocation.getCurrentPosition(success, error, options);
         }, 5000);
         return () => clearInterval(interval);
