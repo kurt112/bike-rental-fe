@@ -36,6 +36,7 @@ const Login = ({
             setIsLogin(true);
             setRole(user.userRole);
             setError('');
+            console.log(user);
         }).catch(error => {
             const {data} = error.response;
             setError(data.message);

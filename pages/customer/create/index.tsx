@@ -23,7 +23,8 @@ const CreateCustomer: NextPage = () => {
         isAccountNotExpired: true,
         isAccountNotLocked: true,
         isCredentialNotExpired: true,
-        isEnabled: true
+        isEnabled: true,
+        isRenting: false
     });
 
     const [validation, setValidation] = useState<UserValidationMessage>({...userInitValidation});
@@ -54,14 +55,14 @@ const CreateCustomer: NextPage = () => {
         validateCustomer(tempValidation,customer,setValidation,reTypePassword);
 
         await handleSubmitCustomer(customer).then(ignored => {
-            router.reload();
+
         }).catch(error => {
             // validate in backend
             const backendValidation: UserValidationMessage = validateRegisterCustomerApi(tempValidation, error);
             setValidation(backendValidation);
         });
 
-
+        router.reload();
     }
 
 

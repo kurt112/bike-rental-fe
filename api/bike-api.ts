@@ -133,7 +133,8 @@ export const getBikes = async (search: any, page: any, size: any, status: any) =
 
     const {data} = await graphQl.post('', query());
 
-
+    console.log('the data');
+    console.log(data);
     return data.data.bikes;
 }
 

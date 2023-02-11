@@ -41,7 +41,7 @@ const ClientMap:NextPage = () => {
 
 
     return (
-        <StoreMap newStore={store} clientBike={bikes} bikes={null}></StoreMap>
+        <StoreMap newStore={store} clientBike={bikes} bikes={null}/>
 
     )
 }

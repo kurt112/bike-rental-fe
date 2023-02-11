@@ -5,8 +5,8 @@ import moment from "moment/moment";
 import {EmployeeCreate} from "../types/employee";
 import Swal from "sweetalert2";
 export const handleSubmitEmployee = async (employee:EmployeeCreate) => {
-    await axiosSubmit.post(path.employee,employee).then(ignored => {
-        Swal.fire(
+    return await axiosSubmit.post(path.employee,employee).then(ignored => {
+        return Swal.fire(
             'Good Job!',
             'Create Employee Success!',
             'success'
@@ -24,7 +24,7 @@ export const handlePatchEmployee = async (e:SyntheticEvent, employee:EmployeeCre
         employee.user.birthdate = employee.user.birthdate?moment(employee.user.birthdate): moment();
     }
 
-    await axiosSubmit.patch(path.employee,employee).then(ignored => {
+    return await axiosSubmit.patch(path.employee,employee).then(ignored => {
         Swal.fire(
             'Good Job!',
             'Update Employee Success!',

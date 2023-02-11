@@ -24,7 +24,8 @@ const CreateEmployee: NextPage = () => {
         isAccountNotExpired: true,
         isAccountNotLocked: true,
         isCredentialNotExpired: true,
-        isEnabled: true
+        isEnabled: true,
+        isRenting: false
     });
 
     const [reTypePassword, setReTypePassword] = useState('')
@@ -58,12 +59,14 @@ const CreateEmployee: NextPage = () => {
             tempValidation.password.exist = false;
         }
         await handleSubmitEmployee(employee).then(ignored => {
-            // router.reload();
+
         }).catch(error => {
             // validate in backend
             const backendValidation: UserValidationMessage = validateRegisterCustomerApi(tempValidation, error);
             setValidation(backendValidation);
         });
+
+        router.reload();
     }
 
     return (

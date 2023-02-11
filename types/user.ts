@@ -14,6 +14,7 @@ export interface UserCreate {
     isAccountNotLocked: true,
     isCredentialNotExpired: true,
     isEnabled:true
+    isRenting: false
 }
 
 export interface UserValidationMessage {

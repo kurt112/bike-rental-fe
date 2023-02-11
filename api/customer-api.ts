@@ -6,12 +6,14 @@ import Swal from "sweetalert2";
 import {UserValidationMessage} from "../types/user";
 
 export const handleSubmitCustomer = async (customer:CustomerCreate) => {
-    await axiosSubmit.post(path.customer,customer).then(ignored => {
-        Swal.fire(
+    return await axiosSubmit.post(path.customer,customer).then(ignored => {
+        return Swal.fire(
             'Good Job!',
             'Create Customer Success!',
             'success'
-        ).then(() => {})
+        ).then(() => {
+
+        })
     }).catch(error => {
         throw error.response.data;
     });

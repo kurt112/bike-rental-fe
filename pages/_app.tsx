@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import type {AppProps} from 'next/app'
 import Sidebar from "../components/layout/sidebar";
 import SidebarItemAdmin from "../components/layout/sidebar/sidebar-item-admin";
-import SidebarItemClient from "../components/layout/sidebar/sidebar-item-client";
+import {sidebarItemClientIsRenting, sidebarsItemClient} from "../components/layout/sidebar/sidebar-item-client";
 import Login from "../components/auth/login";
 import React, {Fragment, useEffect, useState} from "react";
 import {sidebar} from "../types/sidebar";
@@ -23,7 +23,8 @@ function MyApp({Component, pageProps}: AppProps) {
     const [sidebarItem, setSidebarItem] = useState<Array<sidebar>>([])
     const [isLoading, setIsLoading] = useState(true);
     const [showSidebar, setShowSideBar] = useState(false);
-     const [loginCLick,setLoginClick] = useState(false);
+    const [loginCLick,setLoginClick] = useState(false);
+    const [isRenting, setIsRenting] = useState(false);
 
     const Router = useRouter();
 
@@ -33,7 +34,6 @@ function MyApp({Component, pageProps}: AppProps) {
         const sidebarStatus: string | null = localStorage.getItem('sidebarStatus')
         let user: any | null = localStorage.getItem('user');
         let screen: any | null = localStorage.getItem('screen');
-
 
         if (token === null || user == null) {
             localStorage.clear();
@@ -67,6 +67,7 @@ function MyApp({Component, pageProps}: AppProps) {
         setLogin(true);
         setRole(user.userRole);
         setIsLoading(false);
+        setIsRenting(user.isRenting);
     }, []);
 
     useEffect(() => {
@@ -75,8 +76,17 @@ function MyApp({Component, pageProps}: AppProps) {
 
         switch (role) {
             case 'customer':
-                setSidebarItem(SidebarItemClient);
-                if(!data) Router.push('/bike/available?search=&page=1&size=10&status=0').then(ignored => {});
+                if(isRenting){
+                    setSidebarItem(sidebarItemClientIsRenting)
+                    Router.push('/map').then(ignored => {});
+                }
+                else {
+                    setSidebarItem(sidebarsItemClient);
+                    if(!data) Router.push('/bike/available?search=&page=1&size=10&status=0').then(ignored => {});
+                }
+
+
+
                 break;
             case 'admin':
                 setSidebarItem(SidebarItemAdmin);

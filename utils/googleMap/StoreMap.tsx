@@ -15,7 +15,8 @@ const StoreMap = ({
                       bikes,
                       clientBike
                   }: props) => {
-
+    console.log(bikes);
+    console.log(clientBike);
     return newStore === null ? null :
         <LoadScriptNext googleMapsApiKey={process.env.mapKey ? process.env.mapKey : ''}>
             <div className="w-full h-screen">
