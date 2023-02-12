@@ -10,6 +10,7 @@ import Head from "next/head";
 import {useRouter} from "next/router";
 import Landing from "./landing/landing";
 import SidebarItemEmployee from "../components/layout/sidebar/sidebar-item-employee";
+import {checkIfUserIsRenting} from "../api/customer-api";
 // when we access the screen in landing we will get the data from local storage
 // the name of the data is screen
 // if the data is
@@ -24,8 +25,6 @@ function MyApp({Component, pageProps}: AppProps) {
     const [isLoading, setIsLoading] = useState(true);
     const [showSidebar, setShowSideBar] = useState(false);
     const [loginCLick,setLoginClick] = useState(false);
-    const [isRenting, setIsRenting] = useState(false);
-
     const Router = useRouter();
 
     useEffect(() => {
@@ -67,7 +66,6 @@ function MyApp({Component, pageProps}: AppProps) {
         setLogin(true);
         setRole(user.userRole);
         setIsLoading(false);
-        setIsRenting(user.isRenting);
     }, []);
 
     useEffect(() => {
@@ -76,16 +74,17 @@ function MyApp({Component, pageProps}: AppProps) {
 
         switch (role) {
             case 'customer':
-                if(isRenting){
-                    setSidebarItem(sidebarItemClientIsRenting)
-                    Router.push('/map').then(ignored => {});
-                }
-                else {
-                    setSidebarItem(sidebarsItemClient);
-                    if(!data) Router.push('/bike/available?search=&page=1&size=10&status=0').then(ignored => {});
-                }
+                checkIfUserIsRenting().then(result => {
+                    if(result){
+                        setSidebarItem(sidebarItemClientIsRenting)
+                        Router.push('/map').then(ignored => {});
+                    }
+                    else {
+                        setSidebarItem(sidebarsItemClient);
+                        if(!data) Router.push('/bike/available?search=&page=1&size=10&status=0').then(ignored => {});
+                    }
 
-
+                });
 
                 break;
             case 'admin':

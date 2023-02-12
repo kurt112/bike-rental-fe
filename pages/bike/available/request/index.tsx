@@ -60,12 +60,12 @@ const BikeRequest: NextPage = ({bike}: any) => {
     const viewTermAndCondition = () => {
         Swal.fire({
             title: 'Term&lsquo;s and conditions',
-            text: "The website and the solutions are operated and managed by separate entities." +
-                " Refsnes Data offers the website (w3schools.com) including all its content, information, " +
-                "and related tools." +
-                " The solutions (Such as Spaces, Courses, and My learning) " +
-                "and billing system are operated by W3schools Network." +
-                " The two entities are separately responsible for the services that they provide, manage and operate.",
+            text: "Wherever used herein, the term “equipment” shall include any equipment rented from Erik’s Bike Shop. " +
+                " Erik’s Bike Shop, and its employees shall not be responsible for personal injuries or property damage, " +
+                "loss or delay incurred by any person arising out of negligence of any direct or supplemental carrier or other person rendering any of the services or " +
+                "products being offered in these rentals; nor shall Erik’s Bike Shop be responsible for any injuries, death, damage, " +
+                "loss or delay in any means of transportation or by reasons of any event beyond the actual control of Erik’s Bike Shop. ",
+
             showDenyButton: true,
             showCancelButton: true,
             denyButtonText: `Don&lsquo;t Agree`,

@@ -215,3 +215,16 @@ export const validateCustomer = (validation: UserValidationMessage, customer: Cu
         tempValidation.password.exist = false;
     }
 }
+
+export const checkIfUserIsRenting = async () => {
+    const token = localStorage.getItem('token')
+
+    const {data} = await axiosSubmit.get(path.customer+'/'+token+'/isRenting').then(data => {
+        if(!data.data) return 0;
+        return data.data;
+    }).catch(error => {
+        console.log(error)
+    });
+
+    return data;
+}
