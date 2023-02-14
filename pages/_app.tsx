@@ -11,11 +11,13 @@ import {useRouter} from "next/router";
 import Landing from "./landing/landing";
 import SidebarItemEmployee from "../components/layout/sidebar/sidebar-item-employee";
 import {checkIfUserIsRenting} from "../api/customer-api";
+import Register from "../components/auth/register";
 // when we access the screen in landing we will get the data from local storage
 // the name of the data is screen
 // if the data is
 // 1 -> landing
 // 2 -> login
+// 3 -> register
 
 function MyApp({Component, pageProps}: AppProps) {
 
@@ -24,7 +26,8 @@ function MyApp({Component, pageProps}: AppProps) {
     const [sidebarItem, setSidebarItem] = useState<Array<sidebar>>([])
     const [isLoading, setIsLoading] = useState(true);
     const [showSidebar, setShowSideBar] = useState(false);
-    const [loginCLick,setLoginClick] = useState(false);
+    const [loginCLick, setLoginClick] = useState(false);
+    const [registerClick, setRegisterClick] = useState(false);
     const Router = useRouter();
 
     useEffect(() => {
@@ -39,16 +42,22 @@ function MyApp({Component, pageProps}: AppProps) {
             setIsLoading(false);
             setLogin(false);
             if (!screen) {
-                localStorage.setItem('screen','1');
-            }else {
-                switch (screen){
+                localStorage.setItem('screen', '1');
+            } else {
+                switch (screen) {
                     case '1':
                         setLoginClick(false);
+                        setRegisterClick(false);
                         break;
                     case '2':
+                        setRegisterClick(false)
                         setLoginClick(true);
                         break;
+                    case '3':
+                        setRegisterClick(true);
+                        setLoginClick(false);
                     default:
+                        setRegisterClick(false);
                         setLogin(false);
                         break;
                 }
@@ -75,13 +84,14 @@ function MyApp({Component, pageProps}: AppProps) {
         switch (role) {
             case 'customer':
                 checkIfUserIsRenting().then(result => {
-                    if(result){
+                    if (result) {
                         setSidebarItem(sidebarItemClientIsRenting)
-                        Router.push('/map').then(ignored => {});
-                    }
-                    else {
+                        Router.push('/map').then(ignored => {
+                        });
+                    } else {
                         setSidebarItem(sidebarsItemClient);
-                        if(!data) Router.push('/bike/available?search=&page=1&size=10&status=0').then(ignored => {});
+                        if (!data) Router.push('/bike/available?search=&page=1&size=10&status=0').then(ignored => {
+                        });
                     }
 
                 });
@@ -89,11 +99,13 @@ function MyApp({Component, pageProps}: AppProps) {
                 break;
             case 'admin':
                 setSidebarItem(SidebarItemAdmin);
-                if(!data) Router.push('/bike?search=&page=1&size=10&status=0').then(ignored => {});
+                if (!data) Router.push('/bike?search=&page=1&size=10&status=0').then(ignored => {
+                });
                 break;
             case 'employee':
                 setSidebarItem(SidebarItemEmployee)
-                if(!data) Router.push('/bike?search=&page=1&size=10&status=0').then(ignored => {});
+                if (!data) Router.push('/bike?search=&page=1&size=10&status=0').then(ignored => {
+                });
                 break;
             default:
                 break;
@@ -108,10 +120,10 @@ function MyApp({Component, pageProps}: AppProps) {
     }
 
     const _handleLoginClick = (result: boolean) => {
-        if(result){
-            localStorage.setItem('screen','2');
-        }else {
-            localStorage.setItem('screen','1');
+        if (result) {
+            localStorage.setItem('screen', '2');
+        } else {
+            localStorage.setItem('screen', '1');
         }
 
         setLoginClick(result);
@@ -138,10 +150,14 @@ function MyApp({Component, pageProps}: AppProps) {
                                    userRole={role}>
                         <Component {...pageProps} />
                     </Sidebar> :
-                    loginCLick? <Login setIsLogin={setLogin}
-                                       setRole={setRole}
-                                       setLoginClick={_handleLoginClick}
-                    />: <Landing setLogin={_handleLoginClick}></Landing>
+                    registerClick ? <Register setRegisterClick={setRegisterClick}/> :
+                        loginCLick ?
+                            <Login setIsLogin={setLogin}
+                                   setRole={setRole}
+                                   setLoginClick={_handleLoginClick}
+                                   setRegisterClick={setRegisterClick}
+                            /> :
+                            <Landing setLogin={_handleLoginClick} setRegisterClick={setRegisterClick}></Landing>
             }
 
             {/*<Landing/>*/}

@@ -6,19 +6,11 @@ import mtb3 from '../../_images/landing/MTB3.jpg'
 import mtb4 from '../../_images/landing/MTB4.jpg'
 import mtb5 from '../../_images/landing/MTB5.jpg'
 import bmx1 from '../../_images/landing/BMX1.jpg'
-import Swal from "sweetalert2";
 
 const Landing = ({
-                     setLogin
+                     setLogin,
+                     setRegisterClick
                  }: any) => {
-
-    const _handleMember = () => {
-        Swal.fire({
-            title: 'Membership!',
-            text: 'Go to our nearest shop and register with the help of our staff',
-            icon:'info'
-        }).then(ignored => {})
-    }
 
     return (
         <div className='w-full h-screen'>
@@ -42,7 +34,7 @@ const Landing = ({
                                 </button>
                             </li>
                             <li>
-                                <button onClick={() => setLogin(true)}
+                                <button onClick={() => setRegisterClick(true)}
                                         className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
                                         aria-current="page">Register
                                 </button>
@@ -69,7 +61,7 @@ const Landing = ({
                             <h4 className="font-semibold text-xl mb-6">Best bike rental in town</h4>
                             <button
                                 className="inline-block px-7 py-3 mb-1 border-2 border-gray-200 text-gray-200 font-medium text-sm leading-snug uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
-                                onClick={_handleMember}
+                                onClick={() => setRegisterClick(true)}
                                 role="button"
                                 data-mdb-ripple="true"
                                 data-mdb-ripple-color="light"

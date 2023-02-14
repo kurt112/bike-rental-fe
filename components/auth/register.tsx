@@ -1,121 +1,250 @@
-import {Fragment} from "react";
-import Image from "next/image";
-import Link from "next/link";
+import React, {Fragment, SyntheticEvent, useState} from "react";
+import {UserCreate, userInitValidation, UserValidationMessage} from "../../types/user";
+import {CustomerCreate} from "../../types/customer";
+import {handleSubmitCustomer, validateCustomer, validateRegisterCustomerApi} from "../../api/customer-api";
 
-const Register = () => {
+const Register = ({
+                      setRegisterClick
+                  }: any) => {
+    const [user, setUser] = useState<UserCreate>({
+        email: "",
+        firstName: "",
+        lastName: "",
+        middleName: "",
+        gender: "Male",
+        password: "",
+        birthdate: "",
+        cellphone: "",
+        userRole: "customer",
+        isAccountNotExpired: true,
+        isAccountNotLocked: true,
+        isCredentialNotExpired: true,
+        isEnabled: true,
+        isRenting: false
+    });
+
+    const [validation, setValidation] = useState<UserValidationMessage>({...userInitValidation});
+
+    const [reTypePassword, setReTypePassword] = useState('')
+
+    const [customer, setCustomer] = useState<CustomerCreate>({
+        user: user,
+        toPay: 0,
+        isMember: true,
+        isActive: true
+    });
+
+    const changeUser = (data: string, target: string) => {
+        const currentUser: any = {...user}
+        currentUser[target] = data;
+        setUser(currentUser);
+        const currentCustomer: CustomerCreate = {...customer};
+        currentCustomer.user = currentUser;
+        setCustomer(currentCustomer);
+    }
+
+    const _handleSubmitCustomer = async (e: SyntheticEvent) => {
+        e.preventDefault();
+        const tempValidation: UserValidationMessage = {...validation}
+
+        validateCustomer(tempValidation, customer, setValidation, reTypePassword);
+
+        await handleSubmitCustomer(customer).then(ignored => {
+
+        }).catch(error => {
+            // validate in backend
+            const backendValidation: UserValidationMessage = validateRegisterCustomerApi(tempValidation, error);
+            setValidation(backendValidation);
+        });
+
+        alert('Register Success')
+
+        location.reload();
+    }
+
+    const _handleGoBack = () => {
+        setRegisterClick(false);
+    }
+
     return (
         <Fragment>
-            <div className="container mx-auto px-4 h-full">
-                <div className="flex content-center items-center justify-center h-full">
-                    <div className="w-full lg:w-6/12 px-4">
+            <section className="h-fit w-full flex justify-center item items-center">
+                <div className="h-full w-full">
+                    <div
+                        className="bg-white min-h-screen  flex justify-center items-center bg-gradient-to-tl from-green-400 via-neutral-200 to-green-400">
                         <div
-                            className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
-                            <div className="rounded-t mb-0 px-6 py-6">
-                                <div className="text-center mb-3">
-                                    <h6 className="text-blueGray-500 text-sm font-bold">
-                                        Sign up with
-                                    </h6>
-                                </div>
-                                <div className="btn-wrapper text-center">
-                                    <button
-                                        className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
-                                        type="button"
-                                    >
-                                        <Image alt="..." className="w-5 mr-1" src="/img/github.svg"/>
-                                        Github
-                                    </button>
-                                    <button
-                                        className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
-                                        type="button"
-                                    >
-                                        <Image alt="No Image Found" height='90' width='90' className="w-5 mr-1"
-                                               src="/img/google.svg"/>
-                                        Google
-                                    </button>
-                                </div>
-                                <hr className="mt-6 border-b-1 border-blueGray-300"/>
-                            </div>
-                            <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                                <div className="text-blueGray-400 text-center mb-3 font-bold">
-                                    <small>Or sign up with credentials</small>
-                                </div>
-                                <form>
-                                    <div className="relative w-full mb-3">
-                                        <label
-                                            className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                            htmlFor="grid-password"
-                                        >
-                                            Name
-                                        </label>
-                                        <input
-                                            type="email"
-                                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            placeholder="Name"
-                                        />
-                                    </div>
-
-                                    <div className="relative w-full mb-3">
-                                        <label
-                                            className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                            htmlFor="grid-password"
-                                        >
-                                            Email
-                                        </label>
-                                        <input
-                                            type="email"
-                                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            placeholder="Email"
-                                        />
-                                    </div>
-
-                                    <div className="relative w-full mb-3">
-                                        <label
-                                            className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                            htmlFor="grid-password"
-                                        >
-                                            Password
-                                        </label>
-                                        <input
-                                            type="password"
-                                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            placeholder="Password"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="inline-flex items-center cursor-pointer">
+                            className='shadow-2xl w-10/12 md:w-1/2 flex justify-center items-center text-gray-800 bg-white'>
+                            <div className="w-full  pb-10 pt-10 text-center">
+                                <p className='font-semibold text-3xl'> Register now!</p>
+                                <form onSubmit={(e) => _handleSubmitCustomer(e)}>
+                                    <div className="py-4 px-8 mb-10">
+                                        <div className="w-full mb-4">
                                             <input
-                                                id="customCheckLogin"
-                                                type="checkbox"
-                                                className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
+                                                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                                id="first_name"
+                                                type="text"
+                                                placeholder="First Name"
+                                                value={user.firstName}
+                                                onChange={(e) => changeUser(e.target.value, 'firstName')}
+                                                required
                                             />
-                                            <span className="ml-2 text-sm font-semibold text-blueGray-600">
-                        I agree with the{" "}
-                                                <Link
-                                                    href="#pablo"
-                                                    className="text-lightBlue-500"
-                                                    onClick={(e) => e.preventDefault()}
-                                                >
-                                                    <div>Privacy Policy</div>
-                        </Link>
-                      </span>
-                                        </label>
-                                    </div>
+                                            {
+                                                userInitValidation.firstName.exist ?
+                                                    <span className="text-sm text-red-600">
+                                                   {validation.firstName.message}
+                                               </span> : null
+                                            }
+                                        </div>
+                                        <div className="w-full mb-4">
+                                            <input
+                                                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                                id="middle-name"
+                                                type="text"
+                                                placeholder="Middle Name"
+                                                value={user.middleName}
+                                                onChange={(e) => changeUser(e.target.value, 'middleName')}
+                                            />
+                                            {
+                                                userInitValidation.middleName.exist ?
+                                                    <span className="text-sm text-red-600">
+                                                   {validation.lastName.message}
+                                               </span> : null
+                                            }
+                                        </div>
+                                        <div className="w-full mb-4">
+                                            <input
+                                                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                                id="last_name"
+                                                type="text"
+                                                placeholder="Last Name"
+                                                value={user.lastName}
+                                                onChange={(e) => changeUser(e.target.value, 'lastName')}
+                                                required
+                                            />
+                                            {
+                                                userInitValidation.lastName.exist ?
+                                                    <span className="text-sm text-red-600">
+                                                   {validation.lastName.message}
+                                               </span> : null
+                                            }
+                                        </div>
 
-                                    <div className="text-center mt-6">
-                                        <button
-                                            className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                                            type="button"
-                                        >
-                                            Create Account
-                                        </button>
+                                        <div className="w-full mr-1 mb-4">
+                                            <input
+                                                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                                type="email"
+                                                placeholder="Enter Your email"
+                                                value={user.email}
+                                                onChange={(e) => changeUser(e.target.value, 'email')}
+                                                required
+                                            />
+                                            {
+                                                userInitValidation.email.exist ?
+                                                    <span className="text-sm text-red-600">
+                                                   {validation.email.message}
+                                               </span> : null
+                                            }
+                                        </div>
+                                        <div className="w-full mb-4">
+                                            <input
+                                                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                                type="password"
+                                                placeholder="Password"
+                                                value={user.password}
+                                                onChange={(e) => changeUser(e.target.value, 'password')}
+                                                required
+                                            />
+                                            {
+                                                userInitValidation.password.exist ?
+                                                    <span className="text-sm text-red-600">
+                                                   {validation.password.message}
+                                               </span> : null
+                                            }
+                                        </div>
+                                        <div className="w-full mb-4">
+                                            <input
+                                                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                                type="password"
+                                                placeholder="Retype Password"
+                                                value={reTypePassword}
+                                                onChange={(e) => setReTypePassword(e.target.value)}
+                                                required
+                                            />
+                                            {
+                                                userInitValidation.password.exist ?
+                                                    <span className="text-sm text-red-600">
+                                                   {validation.password.message}
+                                               </span> : null
+                                            }
+                                        </div>
+
+                                        <div className="w-full mb-4">
+                                            <select id="gender"
+                                                    value={user.gender}
+                                                    onChange={(e) => changeUser(e.target.value, 'gender')}
+                                                    className="bg-white-50 border border-black-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-black-700 dark:border-black-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                            {
+                                                userInitValidation.gender.exist ?
+                                                    <span className="text-sm text-red-600">
+                                                   {validation.gender.message}
+                                               </span> : null
+                                            }
+                                        </div>
+                                        <div className="w-full mb-4">
+                                            <input
+                                                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                                type="date"
+                                                value={user.birthdate}
+                                                onChange={(e) => changeUser(e.target.value, 'birthdate')}
+                                                required
+                                            />
+                                            {
+                                                userInitValidation.birthdate.exist ?
+                                                    <span className="text-sm text-red-600">
+                                                   {validation.birthdate.message}
+                                               </span> : null
+                                            }
+                                        </div>
+                                        <div className="w-full mb-4">
+                                            <input
+                                                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                                id="cellphone"
+                                                type="text"
+                                                placeholder="Cellphone"
+                                                value={user.cellphone}
+                                                onChange={(e) => changeUser(e.target.value, 'cellphone')}
+                                                required
+                                            />
+                                            {
+                                                userInitValidation.cellphone.exist ?
+                                                    <span className="text-sm text-red-600">
+                                                   {validation.cellphone.message}
+                                               </span> : null
+                                            }
+                                        </div>
+                                        <div className={'flex justify-between'}>
+                                            <a
+                                                onClick={_handleGoBack}
+                                                className="pr-20 pl-20 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800">
+                                                Go Back
+                                            </a>
+                                            <button
+                                                type={'submit'}
+                                                className="pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+                                                Submit
+                                            </button>
+                                        </div>
+
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </Fragment>
     )
 }
