@@ -310,9 +310,25 @@ export const handleTerminateBikeByCustomer = async (userId: string, bikeId: stri
     params.append("userId", userId);
     params.append("bikeId", bikeId);
 
-    await axiosCreate.post("bike/request/rejected", params).then(ignored => {
+    await axiosCreate.post("bike/terminate", params).then(ignored => {
         Swal.fire({
             title: 'Terminate',
+            timer: 2000,
+            icon: 'success'
+        }).then((ignored) => {
+
+        })
+    });
+}
+
+export const handleRejectBikeRequestBYCustomer = async (userId: string, bikeId: string) => {
+    const params = new URLSearchParams();
+    params.append("userId", userId);
+    params.append("bikeId", bikeId);
+
+    await axiosCreate.post("bike/request/rejected", params).then(ignored => {
+        Swal.fire({
+            title: 'Rejected',
             timer: 2000,
             icon: 'success'
         }).then((ignored) => {

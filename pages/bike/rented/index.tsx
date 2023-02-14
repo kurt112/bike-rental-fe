@@ -6,7 +6,6 @@ import {getBikeStatus} from "../../../utils/bike";
 import {
     bikeSettings,
     getBikes,
-    handleApproveRequestByCustomer,
     handleTerminateBikeByCustomer
 } from "../../../api/bike-api";
 import {useRouter} from "next/router";

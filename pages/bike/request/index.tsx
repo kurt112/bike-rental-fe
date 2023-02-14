@@ -6,7 +6,7 @@ import {getBikeStatus} from "../../../utils/bike";
 import {
     bikeSettings,
     getBikes,
-    handleApproveRequestByCustomer,
+    handleApproveRequestByCustomer, handleRejectBikeRequestBYCustomer,
     handleTerminateBikeByCustomer
 } from "../../../api/bike-api";
 import {useRouter} from "next/router";
@@ -66,7 +66,7 @@ const Requested: NextPage = ({bikes, settings}: any) => {
             confirmButtonText: 'Yes, Reject it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                handleTerminateBikeByCustomer(userId,bikeId).then(ignored => {
+                handleRejectBikeRequestBYCustomer(userId,bikeId).then(ignored => {
                     searchClick();
                 })
             }
