@@ -51,8 +51,8 @@ const CreateBike: NextPage = () => {
     const _handleCreateBike = async (e: SyntheticEvent) => {
         e.preventDefault();
        return  await handleSubmit(bike, imageFile).then(ignored => {
-             router.reload();
-        })
+           router.reload();
+       })
     }
 
     return (

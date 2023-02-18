@@ -18,26 +18,21 @@ export const handleSubmit = async (bike: BikeObject, images: any) => {
     }
 
     // the one is the store id
-    await axiosSubmit.post(`bike/${1}`, bike).then(result => {
-        const newBike = result.data.data;
-        Swal.fire(
+    return await axiosSubmit.post(`bike/${1}`, bike).then(result => {
+        return Swal.fire(
             'Good Job!',
             'Create Bike Success!',
             'success'
         ).then(() => {
             const {data} = result.data;
-
-            // getting the bike id
-            images.forEach((image: any) => {
-                uploadToS3(image, data).then(ignored => {
-                })
-                // location.reload();
-            });
+            for (const image of images){
+                uploadToS3(image, data).then(ignored => {})
+            }
         })
 
     }).catch(error => {
         console.log(error)
-    });
+    })
 };
 
 export const getBikeData = async (id: any) => {
