@@ -1,13 +1,12 @@
 import {NextPage} from "next";
 import Head from "next/head";
-import React, {Fragment, useState} from "react";
+import React, {Fragment} from "react";
 import {graphQl} from "../../.config/api";
 import {useRouter} from "next/router";
-import {pagination} from "../../types/pagination";
 import Link from "next/link";
 import {receiptColumn} from "../../types/receipt";
-import {formatDate, formatDateWithTime} from "../../utils/date";
-import {customerReceiptSettings, customerSettings, getCustomers} from "../../api/customer-api";
+import {formatDateWithTime, getFromNowDate} from "../../utils/date";
+import {customerReceiptSettings} from "../../api/customer-api";
 
 const Receipt: NextPage = ({
                                customerReceipts,
@@ -16,10 +15,6 @@ const Receipt: NextPage = ({
 
     const router = useRouter()
     const {search, page, size, status}:any = router.query
-
-    const [Pagination, SetPagination] = useState<pagination>({search, page, size, status})
-
-    console.log(settings);
 
     return (
         <Fragment>
@@ -70,9 +65,8 @@ const Receipt: NextPage = ({
                                     </th>
                                     <th scope="row"
                                         className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {formatDateWithTime(receipt.createdAt)}
+                                        {getFromNowDate(receipt.createdAt)}
                                     </th>
-
 
                                     <td className="py-4 px-6">
                                         <a target="_blank" rel="noopener noreferrer"

@@ -5,7 +5,7 @@ import Image from "next/image";
 import NoBikeImage from '../../../components/layout/sidebar/icon/noBikeImage.png'
 import Link from "next/link";
 import Head from "next/head";
-import {Fragment, useEffect} from "react";
+import {Fragment} from "react";
 
 const Available: NextPage = ({
                                  bikes,

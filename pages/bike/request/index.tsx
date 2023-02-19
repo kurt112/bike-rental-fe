@@ -1,13 +1,13 @@
 import {NextPage} from "next";
 import React, {Fragment, useState} from "react";
 import Head from "next/head";
-import {rentedColumn, requestedColumn} from "../../../types/rent";
+import {requestedColumn} from "../../../types/rent";
 import {getBikeStatus} from "../../../utils/bike";
 import {
     bikeSettings,
     getBikes,
-    handleApproveRequestByCustomer, handleRejectBikeRequestBYCustomer,
-    handleTerminateBikeByCustomer
+    handleApproveRequestByCustomer,
+    handleRejectBikeRequestBYCustomer
 } from "../../../api/bike-api";
 import {useRouter} from "next/router";
 import {pagination} from "../../../types/pagination";
@@ -156,13 +156,22 @@ const Requested: NextPage = ({bikes, settings}: any) => {
                                     {bike.price}
                                 </td>
                                 <td className="py-4 px-6">
-                                    <a target="_blank" rel="noopener noreferrer"
-                                       // href={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${receipt.picture}`
-                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                            View Receipt
-                                        </span>
-                                    </a>
+                                    {
+                                        bike.customerReceipt === null ?
+                                            <span
+                                                className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                                                No Receipt Attached
+                                            </span>
+                                            :
+                                            <a target="_blank" rel="noopener noreferrer"
+                                               href={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${bike.customerReceipt.picture}`}>
+                                                <span
+                                                    className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                                                    View Receipt
+                                                </span>
+                                            </a>
+                                    }
+
                                 </td>
                                 <td className="py-4 px-6">
                                     <button onClick={() => _handleApprove(user.id, bike.id)}

@@ -92,20 +92,30 @@ const BikeRequest: NextPage = ({bike}: any) => {
     }
 
     const _handleRequestBikeByCustomer = async (newBike:any) => {
+
+        let success = false;
+
         await requestBikeByCustomer(newBike).then(ignored => {
+            success = true
+       }).catch(error => {
+            Swal.fire(
+                'Error Requesting Bike!',
+                'Please cancel other request',
+                'error'
+            ).then(() => {
 
-       })
+            })
+        })
 
-        if(receipt !== ''){
-            console.log(receipt);
+        if(success && receipt !== ''){
             await uploadToS3(receipt,null).then(name => {
-                handleUploadReceiptCustomer(name).then(data => {
-                    console.log(data);
+                handleUploadReceiptCustomer(name).then(ignored => {
+                    router.back();
                 })
             })
+        }else if (success) {
+            router.back();
         }
-
-      // router.reload();
     }
 
     return (

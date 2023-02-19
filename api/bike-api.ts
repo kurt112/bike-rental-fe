@@ -120,6 +120,9 @@ export const getBikes = async (search: any, page: any, size: any, status: any) =
                                        cellphone,
                                        email
                                     }
+                                },
+                                customerReceipt{
+                                    picture
                                 }
                              }
                         }`
@@ -183,6 +186,9 @@ export const getBikeByCustomer = async (search: any) => {
                                         id,
                                         pictureName
                                      },
+                                },
+                                customerReceipt{ 
+                                    picture
                                 }
                              }
                         }`
