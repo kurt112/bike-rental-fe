@@ -49,6 +49,21 @@ export const handlePatchCustomer = async (customer:CustomerCreate) => {
     });
 }
 
+export const handleUploadReceiptCustomer = async (picture: any) => {
+    const token = localStorage.getItem('token');
+    const params = new URLSearchParams();
+
+    params.append('token',""+token);
+    params.append('picture',picture);
+
+
+    return await axiosSubmit.post(path.customer+ '/receipt',params).then(data => {
+        return data;
+    }).catch(error => {
+        console.log(error)
+    });
+}
+
 export const handleDeleteCustomer = async (id: any) => {
 
     Swal.fire({
@@ -93,8 +108,6 @@ export const handleApproveRequestByCustomer = async (userId:string, bikeId: stri
 
     params.append('userId',userId);
     params.append('bikeId',bikeId);
-
-    console.log(params);
 
     await axiosSubmit.post(`${path.bike}/request/approved`,params).then(ignored => {
         Swal.fire(
@@ -176,6 +189,10 @@ export const getCustomers = async (search:any, page:any, size:any, status:any) =
 
 export const customerSettings = async () => {
     return await axiosGet.get('customer/settings').then(result => result.data.data)
+}
+
+export const customerReceiptSettings = async () => {
+    return await axiosGet.get('customer/receipt/settings').then(result => result.data.data);
 }
 
 export const validateRegisterCustomerApi  = (validation:UserValidationMessage, error: any): UserValidationMessage =>  {

@@ -1,21 +1,25 @@
 import {NextPage} from "next";
 import Head from "next/head";
 import Back from "../../../../components/layout/back";
-import {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import moment from "moment";
 import {getBikeData, requestBikeByCustomer} from "../../../../api/bike-api";
 import Image from "next/image";
 import {BikeObject} from "../../../../types/bike";
 import Swal from "sweetalert2";
+import {useRouter} from "next/router";
+import {uploadToS3} from "../../../../api/aws/s3";
+import {handleUploadReceiptCustomer} from "../../../../api/customer-api";
 
 const BikeRequest: NextPage = ({bike}: any) => {
-
+    const router = useRouter();
     const [newBike, setNewBike] = useState<BikeObject>({...bike});
     const [startBarrow, setStartBarrow] = useState<any>()
     const [endBarrow, setEndBarrow] = useState<any>()
     const [today, setToday] = useState<any>();
     const [agreeToTermAndCondition, setAgreeToTermAndCondition] = useState<boolean>(false);
-    const [estimate,setEstimate] = useState<number>(0);
+    const [estimate, setEstimate] = useState<number>(0);
+    const [receipt,setReceipt] =  useState<any>('');
 
     useEffect(() => {
         const tempToday = moment().format('yyyy-MM-DDThh:mm');
@@ -39,7 +43,7 @@ const BikeRequest: NextPage = ({bike}: any) => {
         changeBike(data, 'endBarrow')
         setEndBarrow(moment(data).format('yyyy-MM-DDThh:mm'));
 
-        if(startBarrow > endBarrow) {
+        if (startBarrow > endBarrow) {
             return alert("Please end date should greater than to start date")
         }
     }
@@ -50,12 +54,12 @@ const BikeRequest: NextPage = ({bike}: any) => {
 
         const minutesDiff = tempEndBarrow.diff(tempStartBarrow, 'minutes');
         let totalHour = Math.floor(minutesDiff / 60);
-        const excessMinutes = minutesDiff % 60 <= 0 ? 0: 1;
+        const excessMinutes = minutesDiff % 60 <= 0 ? 0 : 1;
 
         totalHour += excessMinutes;
 
         setEstimate(totalHour * newBike.price)
-    }, [startBarrow,endBarrow])
+    }, [startBarrow, endBarrow])
 
     const viewTermAndCondition = () => {
         Swal.fire({
@@ -76,10 +80,32 @@ const BikeRequest: NextPage = ({bike}: any) => {
         }).then((result) => {
             if (result.isConfirmed) {
                 setAgreeToTermAndCondition(true);
-            }else if (result.isDenied) {
+            } else if (result.isDenied) {
                 setAgreeToTermAndCondition(false);
             }
         })
+    }
+
+    const _handleUploadReceipt = (e:any) => {
+        const {files} = e.target;
+        setReceipt(files[0]);
+    }
+
+    const _handleRequestBikeByCustomer = async (newBike:any) => {
+        await requestBikeByCustomer(newBike).then(ignored => {
+
+       })
+
+        if(receipt !== ''){
+            console.log(receipt);
+            await uploadToS3(receipt,null).then(name => {
+                handleUploadReceiptCustomer(name).then(data => {
+                    console.log(data);
+                })
+            })
+        }
+
+      // router.reload();
     }
 
     return (
@@ -133,7 +159,6 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                     className={'mb-2 text-2xl font-medium tracking-tight text-gray-900 dark:text-white'}> {newBike.quantity}</span>
                                             </h5>
                                         </div>
-
 
 
                                         <section className="overflow-hidden text-gray-700 ">
@@ -193,7 +218,7 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                                 id="end_barrow"
                                                                 type="datetime-local"
                                                                 placeholder="End Model"
-                                                                min={startBarrow === undefined? today: startBarrow}
+                                                                min={startBarrow === undefined ? today : startBarrow}
                                                                 required={true}
                                                                 value={bike.endBarrow}
                                                                 onChange={(e) => _handleEndBarrow(e.target.value)}
@@ -203,7 +228,8 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                     </div>
                                                     <div className="flex justify-center items-center mx-auto">
 
-                                                        <input checked={agreeToTermAndCondition} id="checked-checkbox" type="checkbox" readOnly
+                                                        <input checked={agreeToTermAndCondition} id="checked-checkbox"
+                                                               type="checkbox" readOnly
                                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300
                                                                rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800
                                                                focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -211,7 +237,9 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                         <label htmlFor="checked-checkbox"
                                                                className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                                                             I Agree to these
-                                                            <span className='ml-1 font-semibold text-blue-600 underline cursor-pointer' onClick={viewTermAndCondition}>
+                                                            <span
+                                                                className='ml-1 font-semibold text-blue-600 underline cursor-pointer'
+                                                                onClick={viewTermAndCondition}>
                                                             terms and conditions
                                                         </span>
                                                         </label>
@@ -219,12 +247,17 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                     <p className='mt-10 font-semibold'>Total Bill Estimate:
                                                         <span className='font-normal ml-2'>₱{estimate}</span>
                                                     </p>
+                                                    <input id="dropzone-file" type="file"
+                                                           onChange={(e) => _handleUploadReceipt(e)}
+                                                           className="disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+                                                    />
+
                                                 </div>
 
                                                 <div className="px-8 mb-10">
                                                     <button
                                                         disabled={!agreeToTermAndCondition}
-                                                        onClick={() => requestBikeByCustomer(newBike)}
+                                                        onClick={() => _handleRequestBikeByCustomer(newBike)}
                                                         type="button"
                                                         className="disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
                                                         Request Bike

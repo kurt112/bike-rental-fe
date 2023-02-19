@@ -249,13 +249,13 @@ export const requestBikeByCustomer = async (bike: BikeObject) => {
     const startDate = new Date(bike.startBarrow);
     const endDate = new Date(bike.endBarrow);
 
-    await axiosCreate.post("bike/request/" + token + "/" + bike.id + '/' + startDate + '/' + endDate, bike).then(ignored => {
+    return await axiosCreate.post("bike/request/" + token + "/" + bike.id + '/' + startDate + '/' + endDate, bike).then(ignored => {
         Swal.fire(
             'Good Job!',
             'Request Bike Success!',
             'success'
         ).then(() => {
-            location.reload();
+
         })
     });
 }

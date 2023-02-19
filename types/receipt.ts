@@ -1,1 +1,1 @@
-export const recieptColumn:Array<string> = ['First Name', 'Last Name','Bike Code', 'Date Submitted', 'Bike Type', 'Action'];
+export const receiptColumn:Array<string> = ['First Name', 'Last Name','Bike Code', 'Bike Type', 'Date Submitted', 'Action'];

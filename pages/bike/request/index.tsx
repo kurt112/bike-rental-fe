@@ -1,7 +1,7 @@
 import {NextPage} from "next";
 import React, {Fragment, useState} from "react";
 import Head from "next/head";
-import {rentedColumn} from "../../../types/rent";
+import {rentedColumn, requestedColumn} from "../../../types/rent";
 import {getBikeStatus} from "../../../utils/bike";
 import {
     bikeSettings,
@@ -48,9 +48,9 @@ const Requested: NextPage = ({bikes, settings}: any) => {
             confirmButtonText: 'Yes, approve it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                 handleApproveRequestByCustomer(userId,bikeId).then(ignored => {
-                     searchClick();
-                 })
+                handleApproveRequestByCustomer(userId, bikeId).then(ignored => {
+                    searchClick();
+                })
             }
         })
     }
@@ -66,7 +66,7 @@ const Requested: NextPage = ({bikes, settings}: any) => {
             confirmButtonText: 'Yes, Reject it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                handleRejectBikeRequestBYCustomer(userId,bikeId).then(ignored => {
+                handleRejectBikeRequestBYCustomer(userId, bikeId).then(ignored => {
                     searchClick();
                 })
             }
@@ -110,7 +110,7 @@ const Requested: NextPage = ({bikes, settings}: any) => {
                     className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     {
-                        rentedColumn ? rentedColumn.map((column, key) => {
+                        requestedColumn ? requestedColumn.map((column, key) => {
                             return (
                                 <th scope="col" className="py-3 px-6 text-center" key={key}>
                                     {column}
@@ -156,9 +156,18 @@ const Requested: NextPage = ({bikes, settings}: any) => {
                                     {bike.price}
                                 </td>
                                 <td className="py-4 px-6">
-                                    <button onClick={() => _handleApprove(user.id,bike.id)}
-                                        type="button"
-                                        className="mr-5 text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800">
+                                    <a target="_blank" rel="noopener noreferrer"
+                                       // href={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${receipt.picture}`
+                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                            View Receipt
+                                        </span>
+                                    </a>
+                                </td>
+                                <td className="py-4 px-6">
+                                    <button onClick={() => _handleApprove(user.id, bike.id)}
+                                            type="button"
+                                            className="mr-5 text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800">
                                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                                              xmlns="http://www.w3.org/2000/svg">
                                             <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
@@ -169,7 +178,7 @@ const Requested: NextPage = ({bikes, settings}: any) => {
                                         <span className="sr-only">Icon description</span>
                                     </button>
 
-                                    <button onClick={() => _handleReject(user.id,bike.id)}
+                                    <button onClick={() => _handleReject(user.id, bike.id)}
                                             type="button"
                                             className="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">
                                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"

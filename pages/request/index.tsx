@@ -3,8 +3,7 @@ import {Fragment, useEffect, useState} from "react";
 import Head from "next/head";
 import {
     cancelRequestBikeByCustomer,
-    getBikeByCustomer, handleApproveRequestByCustomer,
-    rented,
+    getBikeByCustomer, rented,
     requested,
     setRequestAndRentedToEmpty
 } from "../../api/bike-api";
@@ -104,6 +103,17 @@ const BikeRequest: NextPage = () => {
                                         </p>
                                     </div>
                                     <div className="absolute bottom-0 left-0 right-0">
+                                        <button onClick={() => _handleCancel(bike.id ? bike.id : '')}
+                                                className="w-full inline-flex place-content-center  py-2 px-3 text-sm font-medium  text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                            Vie Receipt
+                                            <svg aria-hidden="true" className="ml-2 -mr-1 w-5 h-5"
+                                                 fill="currentColor" viewBox="0 0 20 20"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd"
+                                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                      clipRule="evenodd"></path>
+                                            </svg>
+                                        </button>
                                         <button onClick={() => _handleCancel(bike.id ? bike.id : '')}
                                                 className="w-full inline-flex place-content-center  py-2 px-3 text-sm font-medium  text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                             Cancel

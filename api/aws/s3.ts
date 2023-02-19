@@ -18,8 +18,9 @@ const s3 = new AWS.S3();
 
 export const uploadToS3 = async (image: any, bike: any) => {
 
+    console.log('the image')
+    console.log(image);
     const extension = image.name.split('.').pop();
-    const name =extension;
     const type = image.type
     const imageName = `${uuidv4()}.${extension}`;
     await s3.putObject({
@@ -30,13 +31,15 @@ export const uploadToS3 = async (image: any, bike: any) => {
         ContentType: type
     }).promise()
         .then(ignored => {
-            axiosSubmit.post(`bike/${bike.id}/photo/${imageName}`)
+            if(bike !== null){
+                axiosSubmit.post(`bike/${bike.id}/photo/${imageName}`)
+            }
         }).catch(error => {
             console.log(error)
         });
 
 
-    return name
+    return imageName
 }
 
 export const deleteToS3 = async (key: string) => {
