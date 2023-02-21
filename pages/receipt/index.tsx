@@ -57,11 +57,11 @@ const Receipt: NextPage = ({
                                     </th>
                                     <th scope="row"
                                         className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {bike.code}
+                                        {bike === null? 'Not Found': bike.code}
                                     </th>
                                     <th scope="row"
                                         className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {bike.name}
+                                        {bike===null ? 'Not Found': bike.name}
                                     </th>
                                     <th scope="row"
                                         className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
