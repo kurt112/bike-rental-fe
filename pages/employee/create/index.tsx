@@ -49,6 +49,7 @@ const CreateEmployee: NextPage = () => {
         const tempValidation: UserValidationMessage = {...validation}
         e.preventDefault();
 
+
         // ui validation
         if (employee.user?.password !== reTypePassword) {
             tempValidation.password.exist = true;
@@ -58,15 +59,15 @@ const CreateEmployee: NextPage = () => {
         }else {
             tempValidation.password.exist = false;
         }
-        await handleSubmitEmployee(employee).then(ignored => {
 
-        }).catch(error => {
+        await handleSubmitEmployee(employee).then(ignored => {}).catch(error => {
+            console.log(error);
             // validate in backend
             const backendValidation: UserValidationMessage = validateRegisterCustomerApi(tempValidation, error);
             setValidation(backendValidation);
         });
 
-        router.reload();
+        // router.reload();
     }
 
     return (

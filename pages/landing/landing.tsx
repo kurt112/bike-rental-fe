@@ -13,7 +13,7 @@ const Landing = ({
                  }: any) => {
 
     return (
-        <div className='w-full h-screen'>
+        <div className='w-full h-screen '>
             <nav className="w-full bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
                 <div className="container flex flex-wrap items-center justify-between mx-auto">
                     <a href="#" className="flex items-center">
@@ -80,7 +80,7 @@ const Landing = ({
 
             </div>
 
-            <div className={'h-full text-center w-full m-auto bg-white h-96 pt-5'} style={{height: '100%'}}>
+            <div className={'h-full text-center w-full m-auto bg-white h-96 pt-5'} style={{height: '100vh'}}>
                 <h2 className="text-center font-semibold text-4xl mb-4">Erick Bike Shop</h2>
                 <span className={'text-xl'}>
                      The business started selling way back in 2006 when it
@@ -90,75 +90,147 @@ const Landing = ({
                     which made it look brand new, then started to sell MTB and BMX later on.
                 </span>
 
-                <section className="overflow-hidden text-gray-700 ">
-                    <div className="container px-5 py-2 mx-auto lg:pt-12 lg:px-32">
-                        <div className="flex flex-wrap -m-1 md:-m-2">
-                            <div className="flex flex-wrap w-1/3">
-                                <div className="w-full p-1 md:p-2">
-                                    <Image
-                                        alt="mtb 3"
-                                        className="block object-cover object-center w-full h-full rounded-lg"
-                                        width="100%"
-                                        height="100"
-                                        layout="responsive"
-                                        objectFit="contain"
-                                        src={mtb5}
-                                    />
+                <section className="h-full text-gray-700">
+                    <div className="h-full px-5 py-2 mx-auto">
+                        <div className="flex flex-wrap -m-1 md:-m-2 justify-content-evenly flex-row ">
+                            <div
+                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                                <Image
+                                    alt="mtb 3"
+                                    className="block object-cover object-center w-full h-full rounded-lg"
+                                    width="100%"
+                                    height="100"
+                                    layout="responsive"
+                                    objectFit="contain"
+                                    src={mtb1}
+                                />
+                                <div className="p-5">
+                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                        Mountain Bike Red Black
+                                    </h5>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
+                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
+                                    </p>
                                 </div>
                             </div>
-                            <div className="flex flex-wrap w-1/3">
-                                <div className="w-full p-1 md:p-2">
-                                    <Image src={mtb2} className="h-6 mr-6 sm:h-9"
-                                           width="100"
-                                           height="100"
-                                           layout="responsive"
-                                           objectFit="contain"
-                                           alt="Bike Shop logo"
-                                    />
+                            <div
+                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                                <Image
+                                    alt="mtb 3"
+                                    className="block object-cover object-center w-full h-full rounded-lg"
+                                    width="100%"
+                                    height="100"
+                                    layout="responsive"
+                                    objectFit="contain"
+                                    src={mtb2}
+                                />
+                                <div className="p-5">
+                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                        Mountain Bike Blue White
+                                    </h5>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
+                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
+                                    </p>
                                 </div>
                             </div>
-                            <div className="flex flex-wrap w-1/3">
-                                <div className="w-full p-1 md:p-2">
-                                    <Image src={mtb4} className="h-6 mr-6 sm:h-9"
-                                           width="100%"
-                                           height="100"
-                                           layout="responsive"
-                                           objectFit="contain"
-                                           alt="Bike Shop logo"
-                                    />
+                            <div
+                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                                <Image
+                                    alt="mtb 3"
+                                    className="block object-cover object-center w-full h-full rounded-lg"
+                                    width="100%"
+                                    height="100"
+                                    layout="responsive"
+                                    objectFit="contain"
+                                    src={mtb3}
+                                />
+                                <div className="p-5">
+                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                        Mountain Bike Red White
+                                    </h5>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
+                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
+                                    </p>
                                 </div>
                             </div>
-                            <div className="flex flex-wrap w-1/3">
-                                <div className="w-full p-1 md:p-2">
-                                    <Image src={mtb3} className="h-6 mr-6 sm:h-9"
-                                           width="100%"
-                                           height="100"
-                                           layout="responsive"
-                                           objectFit="contain"
-                                           alt="Bike Shop logo"
-                                    />
+                            <div
+                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                                <Image
+                                    alt="mtb 3"
+                                    className="block object-cover object-center w-full h-full rounded-lg"
+                                    width="100%"
+                                    height="100"
+                                    layout="responsive"
+                                    objectFit="contain"
+                                    src={bmx1}
+                                />
+                                <div className="p-5">
+                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                        Mountain Bike Pure White
+                                    </h5>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
+                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
+                                    </p>
                                 </div>
                             </div>
-                            <div className="flex flex-wrap w-1/3">
-                                <div className="w-full p-1 md:p-2">
-                                    <Image src={mtb1} className="h-6 mr-6 sm:h-9"
-                                           width="100%"
-                                           height="100"
-                                           layout="responsive"
-                                           objectFit="contain"
-                                           alt="Bike Shop logo"
-                                    />
+                            <div
+                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                                <Image
+                                    alt="mtb 3"
+                                    className="block object-cover object-center w-full h-full rounded-lg"
+                                    width="100%"
+                                    height="100"
+                                    layout="responsive"
+                                    objectFit="contain"
+                                    src={mtb5}
+                                />
+                                <div className="p-5">
+                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                        Mountain Bike Pure White
+                                    </h5>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
+                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
+                                    </p>
                                 </div>
                             </div>
-                            <div className="flex flex-wrap w-1/3">
-                                <div className="w-full p-1 md:p-2">
-                                    <Image src={bmx1} className="h-6 mr-6 sm:h-9"
-                                           width="100%"
-                                           height="100"
-                                           layout="responsive"
-                                           objectFit="contain"
-                                           alt="Bike Shop logo"
-                                    />
+                            <div
+                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                                <Image
+                                    alt="mtb 3"
+                                    className="block object-cover object-center w-full h-full rounded-lg"
+                                    width="100%"
+                                    height="100"
+                                    layout="responsive"
+                                    objectFit="contain"
+                                    src={mtb5}
+                                />
+                                <div className="p-5">
+                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                        Mountain Bike Pure White
+                                    </h5>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
+                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                                <Image
+                                    alt="mtb 3"
+                                    className="block object-cover object-center w-full h-full rounded-lg"
+                                    width="100%"
+                                    height="100"
+                                    layout="responsive"
+                                    objectFit="contain"
+                                    src={mtb4}
+                                />
+                                <div className="p-5">
+                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                        Mountain Bike Pure White
+                                    </h5>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
+                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -166,28 +238,6 @@ const Landing = ({
                 </section>
             </div>
 
-
-            <footer
-                className="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
-                <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022
-                    <a href="#" className="hover:underline">Erick Bike shop™</a>.
-                    All Rights Reserved.
-                </span>
-                {/*<ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">*/}
-                {/*    <li>*/}
-                {/*        <a href="#" className="mr-4 hover:underline md:mr-6 ">About</a>*/}
-                {/*    </li>*/}
-                {/*    <li>*/}
-                {/*        <a href="#" className="mr-4 hover:underline md:mr-6">Privacy Policy</a>*/}
-                {/*    </li>*/}
-                {/*    <li>*/}
-                {/*        <a href="#" className="mr-4 hover:underline md:mr-6">Licensing</a>*/}
-                {/*    </li>*/}
-                {/*    <li>*/}
-                {/*        <a href="#" className="hover:underline">Contact</a>*/}
-                {/*    </li>*/}
-                {/*</ul>*/}
-            </footer>
 
         </div>
 

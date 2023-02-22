@@ -5,7 +5,7 @@ import {graphQl} from "../../.config/api";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import {receiptColumn} from "../../types/receipt";
-import {formatDateWithTime, getFromNowDate} from "../../utils/date";
+import {getFromNowDate} from "../../utils/date";
 import {customerReceiptSettings} from "../../api/customer-api";
 
 const Receipt: NextPage = ({
@@ -14,7 +14,7 @@ const Receipt: NextPage = ({
                            }: any) => {
 
     const router = useRouter()
-    const {search, page, size, status}:any = router.query
+    const {search, page, size, status}: any = router.query
 
     return (
         <Fragment>
@@ -57,23 +57,24 @@ const Receipt: NextPage = ({
                                     </th>
                                     <th scope="row"
                                         className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {bike === null? 'Not Found': bike.code}
+                                        {bike === null ? 'Not Found' : bike.code}
                                     </th>
                                     <th scope="row"
                                         className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {bike===null ? 'Not Found': bike.name}
+                                        {bike === null ? 'Not Found' : bike.name}
                                     </th>
                                     <th scope="row"
-                                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white capitalize">
                                         {getFromNowDate(receipt.createdAt)}
                                     </th>
 
                                     <td className="py-4 px-6">
                                         <a target="_blank" rel="noopener noreferrer"
                                            href={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${receipt.picture}`}>
-                                            <div
-                                                className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">View
-                                            </div>
+                                           <span
+                                               className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                                               View Receipt
+                                           </span>
                                         </a>
                                     </td>
                                 </tr>
@@ -110,9 +111,11 @@ const Receipt: NextPage = ({
                             Array.from(Array(settings.totalPages).keys()).map((page) => {
                                 return (
                                     <li key={page} className={'cursor-pointer'}>
-                                        <Link href={`/receipt?search=${search}&page=${page+1}&size=${size}&status=${status}`}>
-                                            <div className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                                {page+1}
+                                        <Link
+                                            href={`/receipt?search=${search}&page=${page + 1}&size=${size}&status=${status}`}>
+                                            <div
+                                                className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                                {page + 1}
                                             </div>
                                         </Link>
                                     </li>
@@ -125,7 +128,8 @@ const Receipt: NextPage = ({
                                 <Link
                                     href={`/receipt?search=${search}&page=${parseInt(page) + 1}&size=${size}&status=${status}`}>
                                     <li className='cursor-pointer'>
-                                        <div className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <div
+                                            className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                             <span className="sr-only">Next</span>
                                             <svg className="w-5 h-5" aria-hidden="true" fill="currentColor"
                                                  viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

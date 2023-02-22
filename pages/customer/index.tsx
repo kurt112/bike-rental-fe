@@ -124,9 +124,9 @@ const Customer:NextPage = ({customers,settings}: any) => {
                                     <td className="py-4 px-6">
                                         {customer.lastBilled?formatDateWithTime(customer.lastBilled) : 'NA'}
                                     </td>
-                                    <td className="py-4 px-6">
-                                        {customer.nextBilled?formatDateWithTime(customer.nextBilled) : 'NA'}
-                                    </td>
+                                    {/*<td className="py-4 px-6">*/}
+                                    {/*    {customer.nextBilled?formatDateWithTime(customer.nextBilled) : 'NA'}*/}
+                                    {/*</td>*/}
                                     <td className="py-4 px-6">
                                         {customer.toPay}
                                     </td>
