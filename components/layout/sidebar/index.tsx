@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import {useRouter} from "next/router";
 import {updateBikeLocationByCustomer} from "../../../api/bike-api";
 import {useEffect} from "react";
-
+import customer from './icon/customer.svg';
 const Sidebar = ({
                      sidebars,
                      children,
@@ -109,6 +109,27 @@ const Sidebar = ({
                                             : null
                                     })
                                 }
+                                <Link href={'/profile'} >
+                                    <li className="pl-5 pr-5 flex w-full justify-between text-gray-300 cursor-pointer items-center pt-3 pb-3 hover:bg-sky-700"
+                                        onClick={() => handleSidebarStatus(false)}>
+                                        <Image
+                                            src={customer}
+                                            loading="eager"
+                                            layout={'fixed'}
+                                            height={25}
+                                            width={25}
+                                            style={{filter: 'invert(0.8  )'}}
+                                            alt={'profile'}
+                                        />
+                                        <span className="text-sm ml-2">{'Profile'}</span>
+                                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd"
+                                                  d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                                                  clipRule="evenodd"></path>
+                                        </svg>
+                                    </li>
+                                </Link>
                             </ul>
                             <button onClick={_handleLogout}
                                 className="w-full text-lg bg-transparent hover:bg-red-500 text-white font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent ">

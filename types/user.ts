@@ -1,6 +1,7 @@
 import {Validation} from "./validation";
 
 export interface UserCreate {
+    id?: number
     email: string,
     firstName: string,
     lastName: string,
@@ -8,13 +9,14 @@ export interface UserCreate {
     gender: string,
     password?: string,
     birthdate: any,
-    userRole: string,
+    userRole?: string,
     cellphone: string,
     isAccountNotExpired: true,
     isAccountNotLocked: true,
     isCredentialNotExpired: true,
-    isEnabled:true
-    isRenting: false
+    isEnabled:true,
+    isRenting: false,
+    validIdPhoto?: string
 }
 
 export interface UserValidationMessage {

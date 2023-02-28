@@ -18,8 +18,6 @@ const s3 = new AWS.S3();
 
 export const uploadToS3 = async (image: any, bike: any) => {
 
-    console.log('the image')
-    console.log(image);
     const extension = image.name.split('.').pop();
     const type = image.type
     const imageName = `${uuidv4()}.${extension}`;

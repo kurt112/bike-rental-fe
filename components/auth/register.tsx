@@ -2,6 +2,9 @@ import React, {Fragment, SyntheticEvent, useState} from "react";
 import {UserCreate, userInitValidation, UserValidationMessage} from "../../types/user";
 import {CustomerCreate} from "../../types/customer";
 import {handleSubmitCustomer, validateCustomer, validateRegisterCustomerApi} from "../../api/customer-api";
+import Swal from "sweetalert2";
+import {handleUploadValidIdUser} from "../../api/user -api";
+import {uploadToS3} from "../../api/aws/s3";
 
 const Register = ({
                       setRegisterClick
@@ -22,6 +25,8 @@ const Register = ({
         isEnabled: true,
         isRenting: false
     });
+
+    const [validId, setValidId] = useState('');
 
     const [validation, setValidation] = useState<UserValidationMessage>({...userInitValidation});
 
@@ -45,27 +50,66 @@ const Register = ({
 
     const _handleSubmitCustomer = async (e: SyntheticEvent) => {
         e.preventDefault();
+        let userId = -1;
         const tempValidation: UserValidationMessage = {...validation}
 
         validateCustomer(tempValidation, customer, setValidation, reTypePassword);
 
-        await handleSubmitCustomer(customer).then(ignored => {
+        if(validation.password.exist){return;}
 
+        await handleSubmitCustomer(customer).then(result => {
+            const {data} = result;
+            userId = data.userId;
+            setUser({
+                email: "",
+                firstName: "",
+                lastName: "",
+                middleName: "",
+                gender: "Male",
+                password: "",
+                birthdate: "",
+                cellphone: "",
+                userRole: "customer",
+                isAccountNotExpired: true,
+                isAccountNotLocked: true,
+                isCredentialNotExpired: true,
+                isEnabled: true,
+                isRenting: false
+            })
+            //  Swal.fire(
+            //     'Good Job!',
+            //     'Create Customer Success!',
+            //     'success'
+            // ).then(() => {
+            //
+            // })
         }).catch(error => {
             // validate in backend
             const backendValidation: UserValidationMessage = validateRegisterCustomerApi(tempValidation, error);
             setValidation(backendValidation);
         });
 
-        alert('Register Success')
+        if(userId !== -1 && validId.length !==0){
+            await uploadToS3(validId, null).then(image => {
+                alert(image);
+                handleUploadValidIdUser(""+userId, image).then(result => {
+                    console.log(result);
+                })
+            })
+            // handleUploadValidIdUser(userId)
+        }
 
-        location.reload();
+
+        // location.reload();
     }
 
     const _handleGoBack = () => {
         setRegisterClick(false);
     }
-
+    const _handleUploadValidId = (e:any) => {
+        const {files} = e.target;
+        setValidId(files[0]);
+    }
     return (
         <Fragment>
             <section className="h-fit w-full flex justify-center item items-center">
@@ -225,6 +269,12 @@ const Register = ({
                                                </span> : null
                                             }
                                         </div>
+                                        <div className="w-full mb-4">
+                                            <input id="dropzone-file" type="file"
+                                                onChange={(e) => _handleUploadValidId(e)}
+                                                   className="disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none pr-20 pl-20 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+                                            />
+                                        </div>
                                         <div className={'flex justify-between'}>
                                             <a
                                                 onClick={_handleGoBack}
@@ -240,10 +290,14 @@ const Register = ({
 
                                     </div>
                                 </form>
+
                             </div>
+
                         </div>
                     </div>
+
                 </div>
+
             </section>
         </Fragment>
     )

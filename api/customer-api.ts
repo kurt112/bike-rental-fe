@@ -6,14 +6,8 @@ import Swal from "sweetalert2";
 import {UserValidationMessage} from "../types/user";
 
 export const handleSubmitCustomer = async (customer:CustomerCreate) => {
-    return await axiosSubmit.post(path.customer,customer).then(ignored => {
-        return Swal.fire(
-            'Good Job!',
-            'Create Customer Success!',
-            'success'
-        ).then(() => {
-
-        })
+    return await axiosSubmit.post(path.customer,customer).then(result => {
+        return result;
     }).catch(error => {
         throw error.response.data;
     });
@@ -220,6 +214,9 @@ export const validateRegisterCustomerClient  = (validation:UserValidationMessage
 }
 
 export const validateCustomer = (validation: UserValidationMessage, customer: CustomerCreate, setValidation: any, reTypePassword: string) => {
+
+    let validated = false;
+
     const tempValidation: UserValidationMessage = {...validation}
 
     // ui validation
@@ -227,10 +224,13 @@ export const validateCustomer = (validation: UserValidationMessage, customer: Cu
         tempValidation.password.exist = true;
         tempValidation.password.message = "Password do not match";
         setValidation(tempValidation);
-        return;
+        validated = false;
     }else {
+        validated = true;
         tempValidation.password.exist = false;
     }
+
+    return validated;
 }
 
 export const checkIfUserIsRenting = async () => {

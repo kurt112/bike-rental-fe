@@ -3,6 +3,7 @@ export const path = {
     bike: 'bike',
     customer: 'customer',
     store: 'store',
-    auth: 'auth'
+    auth: 'auth',
+    user: 'user'
 }
 

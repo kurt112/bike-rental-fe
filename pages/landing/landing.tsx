@@ -22,7 +22,7 @@ const Landing = ({
                                height={60}
                                alt="Bike Shop logo"/>
                         <span
-                            className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Erick Bike Shop</span>
+                            className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Erik&lsquo;s Bike Shop</span>
                     </a>
 
                     <div className="hidden w-full md:block md:w-auto" id="navbar-default">
@@ -57,7 +57,7 @@ const Landing = ({
                 >
                     <div className="flex justify-center items-center h-full">
                         <div className="text-white">
-                            <h2 className="font-semibold text-4xl mb-4">Erick Bike Shop</h2>
+                            <h2 className="font-semibold text-4xl mb-4">Erik&lsquo;s         Bike Shop</h2>
                             <h4 className="font-semibold text-xl mb-6">Best bike rental in town</h4>
                             <button
                                 className="inline-block px-7 py-3 mb-1 border-2 border-gray-200 text-gray-200 font-medium text-sm leading-snug uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
@@ -93,145 +93,60 @@ const Landing = ({
                 <section className="h-full text-gray-700">
                     <div className="h-full px-5 py-2 mx-auto">
                         <div className="flex flex-wrap -m-1 md:-m-2 justify-content-evenly flex-row ">
-                            <div
-                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                            <div className="w-1/4 h-full mt-5">
                                 <Image
-                                    alt="mtb 3"
+                                    alt="mtb 1"
                                     className="block object-cover object-center w-full h-full rounded-lg"
-                                    width="100%"
+                                    width="100"
                                     height="100"
                                     layout="responsive"
                                     objectFit="contain"
                                     src={mtb1}
                                 />
-                                <div className="p-5">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                        Mountain Bike Red Black
-                                    </h5>
-                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
-                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
-                                    </p>
-                                </div>
                             </div>
-                            <div
-                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                            <div className="w-1/4 h-full mt-5">
                                 <Image
-                                    alt="mtb 3"
+                                    alt="mtb 2"
                                     className="block object-cover object-center w-full h-full rounded-lg"
-                                    width="100%"
+                                    width="100"
                                     height="100"
                                     layout="responsive"
                                     objectFit="contain"
                                     src={mtb2}
                                 />
-                                <div className="p-5">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                        Mountain Bike Blue White
-                                    </h5>
-                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
-                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
-                                    </p>
-                                </div>
                             </div>
-                            <div
-                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                            <div className="w-1/4 h-full mt-5">
                                 <Image
                                     alt="mtb 3"
                                     className="block object-cover object-center w-full h-full rounded-lg"
-                                    width="100%"
+                                    width="100"
                                     height="100"
                                     layout="responsive"
                                     objectFit="contain"
                                     src={mtb3}
                                 />
-                                <div className="p-5">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                        Mountain Bike Red White
-                                    </h5>
-                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
-                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
-                                    </p>
-                                </div>
                             </div>
-                            <div
-                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
+                            <div className="w-1/4 h-full mt-5">
                                 <Image
-                                    alt="mtb 3"
+                                    alt="mtb 4"
                                     className="block object-cover object-center w-full h-full rounded-lg"
-                                    width="100%"
-                                    height="100"
-                                    layout="responsive"
-                                    objectFit="contain"
-                                    src={bmx1}
-                                />
-                                <div className="p-5">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                        Mountain Bike Pure White
-                                    </h5>
-                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
-                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
-                                <Image
-                                    alt="mtb 3"
-                                    className="block object-cover object-center w-full h-full rounded-lg"
-                                    width="100%"
-                                    height="100"
-                                    layout="responsive"
-                                    objectFit="contain"
-                                    src={mtb5}
-                                />
-                                <div className="p-5">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                        Mountain Bike Pure White
-                                    </h5>
-                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
-                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
-                                <Image
-                                    alt="mtb 3"
-                                    className="block object-cover object-center w-full h-full rounded-lg"
-                                    width="100%"
-                                    height="100"
-                                    layout="responsive"
-                                    objectFit="contain"
-                                    src={mtb5}
-                                />
-                                <div className="p-5">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                        Mountain Bike Pure White
-                                    </h5>
-                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
-                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
-                                <Image
-                                    alt="mtb 3"
-                                    className="block object-cover object-center w-full h-full rounded-lg"
-                                    width="100%"
+                                    width="100"
                                     height="100"
                                     layout="responsive"
                                     objectFit="contain"
                                     src={mtb4}
                                 />
-                                <div className="p-5">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                        Mountain Bike Pure White
-                                    </h5>
-                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest
-                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poino using
-                                    </p>
-                                </div>
+                            </div>
+                            <div className="w-1/4 h-full mt-5">
+                                <Image
+                                    alt="mtb 5"
+                                    className="block object-cover object-center w-full h-full rounded-lg"
+                                    width="100"
+                                    height="100"
+                                    layout="responsive"
+                                    objectFit="contain"
+                                    src={mtb5}
+                                />
                             </div>
                         </div>
                     </div>
