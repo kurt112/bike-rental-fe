@@ -14,8 +14,6 @@ const EditEmployee:NextPage = ({currentEmployee}: any) => {
 
     const [user,setUser] = useState<UserCreate>({...currentEmployee.user});
 
-    const [reTypePassword, setReTypePassword] = useState(user.password)
-
     const [employee, setEmployee] = useState<EmployeeCreate>({...currentEmployee});
     const [validation, setValidation] = useState<UserValidationMessage>({...userInitValidation});
 
@@ -150,33 +148,6 @@ const EditEmployee:NextPage = ({currentEmployee}: any) => {
                                                 onChange={(e) => changeUser(e.target.value, 'email')}
                                             />
                                         </div>
-                                        <div className="w-1/3 ml-1">
-                                            <label className="block text-grey-darker text-sm font-bold mb-2"
-                                                   htmlFor="last_name">Password</label>
-                                            <input
-                                                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                type="password"
-                                                disabled={!isEdit}
-                                                placeholder="Password"
-                                                value={user.password?user.password:''}
-                                                onChange={(e) => changeUser(e.target.value, 'password')}
-                                            />
-                                        </div>
-                                        <div className="w-1/3 ml-1">
-                                            <label className="block text-grey-darker text-sm font-bold mb-2"
-                                                   htmlFor="password">Retype Password</label>
-                                            <input
-                                                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                type="password"
-                                                disabled={!isEdit}
-                                                placeholder="Retype Password"
-                                                value={reTypePassword}
-                                                onChange={(e) => setReTypePassword(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="flex mb-4">
                                         <div className="w-1/3 mr-1">
                                             <label className="block text-grey-darker text-sm font-bold mb-2"
                                                    htmlFor="gender">Gender</label>
@@ -200,6 +171,9 @@ const EditEmployee:NextPage = ({currentEmployee}: any) => {
                                                 onChange={(e) => changeUser(e.target.value, 'birthdate')}
                                             />
                                         </div>
+                                    </div>
+
+                                    <div className="flex mb-4">
                                         <div className="w-1/3 ml-1">
                                             <label className="block text-grey-darker text-sm font-bold mb-2"
                                                    htmlFor="cellphone">
