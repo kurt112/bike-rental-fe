@@ -6,6 +6,9 @@ import {getBikeData, handleDeleteBike, handleSubmit} from "../../../api/bike-api
 import Back from "../../../components/layout/back";
 import Image from "next/image";
 import {useRouter} from "next/router";
+import {uploadToS3} from "../../../api/aws/s3";
+import {axiosSubmit} from "../../../.config/api";
+import Swal from "sweetalert2";
 
 const EditBike: NextPage = ({bike}: any) => {
 
@@ -25,7 +28,7 @@ const EditBike: NextPage = ({bike}: any) => {
     }
 
     const changeBike = (data: string, target: string) => {
-        const currentBike: any = {...bike}
+        const currentBike: any = {...newBike}
         currentBike[target] = data;
         setNewBike(currentBike);
     }
@@ -45,8 +48,32 @@ const EditBike: NextPage = ({bike}: any) => {
 
     const _handleEditBike = async (e: SyntheticEvent) => {
         e.preventDefault();
-        await handleSubmit(newBike, imageFile).then((ignored) => {
-            router.reload();
+        if(!imageFile && newBike.bikePictures.length ===0){
+            return Swal.fire(
+                'Photo Not Found',
+                'Please upload at least one photo!',
+                'error'
+            ).then((ignored) => {
+                throw ('No Photo Found')
+            })
+        }
+
+        await handleSubmit(newBike, imageFile, true).then((ignored) => {
+
+        })
+
+        if(!imageFile){
+            for(const pic of newBike.bikePictures){
+                await axiosSubmit.post(`bike/${newBike.id}/photo/${pic.pictureName}`)
+            }
+        }
+
+        Swal.fire(
+            'Edit Bike!',
+            'Please reload this page to see the new data',
+            'success'
+        ).then(() => {
+
         })
     }
 
@@ -154,7 +181,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                                 id="code"
                                                 type="text"
                                                 placeholder="Bike Code"
-                                                value={bike.code}
+                                                value={newBike.code}
                                                 onChange={(e) => changeBike(e.target.value, 'code')}
                                                 required
                                                 disabled={!isEdit}
@@ -300,8 +327,7 @@ const EditBike: NextPage = ({bike}: any) => {
                                                                 return <div className="flex flex-wrap" key={index}>
                                                                     <div className="w-64 p-1 md:p-2">
                                                                         <Image alt={'bike images'}
-                                                                               key={index}
-                                                                               src={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${picture.pictureName}`}
+                                                                               src={picture}
                                                                                width="100%"
                                                                                height="100"
                                                                                layout="responsive"

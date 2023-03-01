@@ -6,32 +6,36 @@ import {uploadToS3} from "./aws/s3";
 
 export let requested: Array<BikeObject> = [];
 export let rented: Array<BikeObject> = [];
-export const handleSubmit = async (bike: BikeObject, images: any) => {
+export const handleSubmit = async (bike: BikeObject, images: any, isUpdate: boolean) => {
 
-    if (!images) {
+    if (!images && !isUpdate) {
         return Swal.fire(
             'Photo Not Found',
             'Please upload at least one photo!',
             'error'
         ).then((ignored) => {
+            throw ('No Photo Found')
         })
     }
 
     // the one is the store id
     return await axiosSubmit.post(`bike/${1}`, bike).then(result => {
-        return Swal.fire(
-            'Good Job!',
-            'Create Bike Success!',
-            'success'
-        ).then(() => {
+        if(images){
             const {data} = result.data;
             for (const image of images){
                 uploadToS3(image, data).then(ignored => {})
             }
-        })
-
+        }
+        if(!isUpdate){
+            return Swal.fire(
+                'Good Job!',
+                'Create Bike Success!',
+                'success'
+            ).then(() => {
+            })
+        }
     }).catch(error => {
-        console.log(error)
+        throw error
     })
 };
 
@@ -40,6 +44,7 @@ export const getBikeData = async (id: any) => {
         return {
             query: `query{
                         bikeById(id:"${id}") {  
+                                id,
                                 size,
                                 brand,
                                 price,
