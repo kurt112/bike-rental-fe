@@ -39,7 +39,8 @@ export const getUserData = async () => {
                                 isEnabled,
                                 validIdPhoto,
                                 password,
-                                userRole   
+                                userRole,
+                                isRenting   
                            }
                         }`
         }
@@ -52,6 +53,21 @@ export const getUserData = async () => {
 
 export const handlePatchUser = async (user:UserCreate) => {
     return await axiosSubmit.patch(path.user,user).then(result => {
+        return result;
+    }).catch(error => {
+        throw error.response.data;
+    });
+}
+
+export const handlePatchPassword = async (newPassword: string, currentPassword: string) => {
+    const token = localStorage.getItem('token')
+
+    const params = new URLSearchParams();
+
+    params.append('newPass',newPassword);
+    params.append('currentPass',currentPassword);
+
+    return await axiosSubmit.patch(`${path.user}/password/${token}`,params).then(result => {
         return result;
     }).catch(error => {
         throw error.response.data;

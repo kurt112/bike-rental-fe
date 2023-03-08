@@ -5,7 +5,8 @@ import mtb2 from '../../_images/landing/MTB2.jpg'
 import mtb3 from '../../_images/landing/MTB3.jpg'
 import mtb4 from '../../_images/landing/MTB4.jpg'
 import mtb5 from '../../_images/landing/MTB5.jpg'
-import bmx1 from '../../_images/landing/BMX1.jpg'
+import mtb6 from '../../_images/landing/MTB6.jpeg'
+import mtb7 from '../../_images/landing/MTB7.jpeg'
 
 const Landing = ({
                      setLogin,
@@ -57,7 +58,7 @@ const Landing = ({
                 >
                     <div className="flex justify-center items-center h-full">
                         <div className="text-white">
-                            <h2 className="font-semibold text-4xl mb-4">Erik&lsquo;s         Bike Shop</h2>
+                            <h2 className="font-semibold text-4xl mb-4">Erik&lsquo;s Bike Shop</h2>
                             <h4 className="font-semibold text-xl mb-6">Best bike rental in town</h4>
                             <button
                                 className="inline-block px-7 py-3 mb-1 border-2 border-gray-200 text-gray-200 font-medium text-sm leading-snug uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
@@ -80,11 +81,11 @@ const Landing = ({
 
             </div>
 
-            <div className={'h-full text-center w-full m-auto bg-white h-96 pt-5'} style={{height: '100vh'}}>
-                <h2 className="text-center font-semibold text-4xl mb-4">Erick Bike Shop</h2>
+            <div className={'h-full text-center w-full m-auto bg-white pt-5'} style={{height: '100vh'}}>
+                <h2 className="text-center font-semibold text-4xl mb-4">Erik&lsquo;s Bike Shop</h2>
                 <span className={'text-xl'}>
                      The business started selling way back in 2006 when it
-                    was firstly named Rik&sbquo;s Enterprises where they sold Japan
+                    was firstly named Erik&lsquo;s Enterprises where they sold Japan
                     <br/>
                     Bikes before by repairing and at the same time repainting it
                     which made it look brand new, then started to sell MTB and BMX later on.
@@ -92,7 +93,7 @@ const Landing = ({
 
                 <section className="h-full text-gray-700">
                     <div className="h-full px-5 py-2 mx-auto">
-                        <div className="flex flex-wrap -m-1 md:-m-2 justify-content-evenly flex-row ">
+                        <div className="flex flex-wrap -m-1 md:-m-2 justify-content-evenly flex-row pb-5">
                             <div className="w-1/4 h-full mt-5">
                                 <Image
                                     alt="mtb 1"
@@ -146,6 +147,28 @@ const Landing = ({
                                     layout="responsive"
                                     objectFit="contain"
                                     src={mtb5}
+                                />
+                            </div>
+                            <div className="w-1/4 h-full mt-5">
+                                <Image
+                                    alt="mtb 5"
+                                    className="block object-cover object-center w-full h-full rounded-lg"
+                                    width="100"
+                                    height="100"
+                                    layout="responsive"
+                                    objectFit="contain"
+                                    src={mtb6}
+                                />
+                            </div>
+                            <div className="w-1/4 h-full mt-5">
+                                <Image
+                                    alt="mtb 5"
+                                    className="block object-cover object-center w-full h-full rounded-lg"
+                                    width="100"
+                                    height="100"
+                                    layout="responsive"
+                                    objectFit="contain"
+                                    src={mtb7}
                                 />
                             </div>
                         </div>
