@@ -164,7 +164,7 @@ const Requested: NextPage = ({bikes, settings}: any) => {
                                             </span>
                                             :
                                             <a target="_blank" rel="noopener noreferrer"
-                                               href={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${bike.customerReceipt.picture}`}>
+                                               href={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${validIdPhoto}`}>
                                                 <span
                                                     className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
                                                     View ID

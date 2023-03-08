@@ -107,7 +107,7 @@ const Rented: NextPage = ({bikes, settings}: any) => {
                     bikes ? bikes.map((bike: any, i: number) => {
                         const {assignedCustomer} = bike;
                         const {user} = assignedCustomer;
-                        const {firstName, lastName} = user
+                        const {firstName, lastName,validIdPhoto} = user
                         return (
                             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                 key={i}>
@@ -134,6 +134,23 @@ const Rented: NextPage = ({bikes, settings}: any) => {
                                 </td>
                                 <td className="py-4 px-6">
                                     {bike.price}
+                                </td>
+                                <td className="py-4 px-6">
+                                    {
+                                        validIdPhoto === null || validIdPhoto === '' ?
+                                            <span
+                                                className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                                                No ID Attached !
+                                            </span>
+                                            :
+                                            <a target="_blank" rel="noopener noreferrer"
+                                               href={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${validIdPhoto}`}>
+                                                <span
+                                                    className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                                                    View ID
+                                                </span>
+                                            </a>
+                                    }
                                 </td>
                                 <td className="py-4 px-6">
                                     <button onClick={() => _handleTerminate(user.id,bike.id)}
