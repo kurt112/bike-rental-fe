@@ -28,7 +28,12 @@ export const getStoreData = async (id:any) => {
                                 latitude,
                                 radius,
                                 scopeColor,
-                                scopeEdgeColor
+                                scopeEdgeColor,
+                                paymaya,
+                                gcash,
+                                bdo,
+                                bpi,
+                                securityBank
                              }
                         }`
         }

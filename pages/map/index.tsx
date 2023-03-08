@@ -16,15 +16,25 @@ const ClientMap:NextPage = () => {
         longitude: '',
         radius: '',
         scopeColor: '',
-        scopeEdgeColor: ''
+        scopeEdgeColor: '',
+        bpi: '',
+        gcash: '',
+        paymaya: '',
+        bdo: '',
+        securityBank:''
     });
 
     const [bikes, setBikes] = useState<[BikeObject] | null>(null);
 
     useEffect(() => {
         if (store.id === '') {
-            getStoreData(1).then(store => {
+            getStoreData(1).then((store:Store) => {
                 setStore(store);
+                localStorage.setItem('bpi',store.bpi);
+                localStorage.setItem('gcash',store.gcash);
+                localStorage.setItem('paymaya',store.paymaya);
+                localStorage.setItem('bdo',store.bdo);
+                localStorage.setItem('securityBank',store.securityBank);
             });
         }
 

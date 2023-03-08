@@ -5,5 +5,10 @@ export interface Store {
     latitude: string,
     radius: string,
     scopeEdgeColor: string,
-    scopeColor: string
+    scopeColor: string,
+    paymaya: string,
+    gcash: string,
+    bdo: string,
+    bpi: string,
+    securityBank:string
 }

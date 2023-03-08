@@ -19,7 +19,12 @@ const EditStore: NextPage = () => {
         longitude: '',
         radius: '',
         scopeColor: '',
-        scopeEdgeColor: ''
+        scopeEdgeColor: '',
+        bpi: '',
+        gcash: '',
+        paymaya: '',
+        bdo: '',
+        securityBank:''
     });
     const [bikes,setBikes] = useState<[BikeObject] | null>(null);
     const [role,setRole] = useState<string>('NA');
@@ -184,17 +189,88 @@ const EditStore: NextPage = () => {
                             <div className="flex mb-4">
                                 <div className="w-full mr-1">
                                     <label className="block text-grey-darker text-sm font-bold mb-2"
-                                           htmlFor="first_name">Radius</label>
+                                           htmlFor="radius">Radius</label>
                                     <input
                                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                        id="first_name"
+                                        id="radius"
                                         type="text"
-                                        placeholder="Store Name"
+                                        placeholder="Radius"
                                         disabled={!isEdit}
                                         value={store.radius}
                                         onChange={(e) => changeStore(e.target.value, 'radius')}
                                     />
                                 </div>
+                            </div>
+
+                            <div className="flex mb-4">
+                                <div className="w-1.3 mr-1">
+                                    <label className="block text-grey-darker text-sm font-bold mb-2"
+                                           htmlFor="paymaya">Paymaya</label>
+                                    <input
+                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                        id="paymaya"
+                                        type="number"
+                                        placeholder="Pay maya number"
+                                        disabled={!isEdit}
+                                        value={store.paymaya}
+                                        onChange={(e) => changeStore(e.target.value, 'paymaya')}
+                                    />
+                                </div>
+
+                                <div className="w-1.3 mr-1">
+                                    <label className="block text-grey-darker text-sm font-bold mb-2"
+                                           htmlFor="gcash">GCash</label>
+                                    <input
+                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                        id="gcash"
+                                        type="number"
+                                        placeholder="GCash number"
+                                        disabled={!isEdit}
+                                        value={store.gcash}
+                                        onChange={(e) => changeStore(e.target.value, 'gcash')}
+                                    />
+                                </div>
+                                <div className="w-1.3 mr-1">
+                                    <label className="block text-grey-darker text-sm font-bold mb-2"
+                                           htmlFor="bdo">BDO</label>
+                                    <input
+                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                        id="bdo"
+                                        type="number"
+                                        placeholder="BDO number"
+                                        disabled={!isEdit}
+                                        value={store.bdo}
+                                        onChange={(e) => changeStore(e.target.value, 'bdo')}
+                                    />
+                                </div>
+                                <div className="w-1.3 mr-1">
+                                    <label className="block text-grey-darker text-sm font-bold mb-2"
+                                           htmlFor="bdo">BPI</label>
+                                    <input
+                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                        id="bpi"
+                                        type="number"
+                                        placeholder="BPI number"
+                                        disabled={!isEdit}
+                                        value={store.bpi}
+                                        onChange={(e) => changeStore(e.target.value, 'bpi')}
+                                    />
+                                </div>
+
+                                <div className="w-1.3 mr-1">
+                                    <label className="block text-grey-darker text-sm font-bold mb-2"
+                                           htmlFor="securityBank">Security Bank</label>
+                                    <input
+                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                        id="securityBank"
+                                        type="number"
+                                        placeholder="Security Bank number"
+                                        disabled={!isEdit}
+                                        value={store.securityBank}
+                                            onChange={(e) => changeStore(e.target.value, 'securityBank')}
+                                    />
+                                </div>
+
                             </div>
 
                             <div className="flex mb-4">
