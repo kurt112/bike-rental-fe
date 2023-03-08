@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 export const handleSubmitEmployee = async (employee:EmployeeCreate) => {
     return await axiosSubmit.post(path.employee,employee).then(ignored => {
         return Swal.fire(
-            'Good Job!',
+            'Created!',
             'Create Employee Success!',
             'success'
         ).then(() => {
@@ -26,7 +26,7 @@ export const handlePatchEmployee = async (e:SyntheticEvent, employee:EmployeeCre
 
     return await axiosSubmit.patch(path.employee,employee).then(ignored => {
         Swal.fire(
-            'Good Job!',
+            'Updated!',
             'Update Employee Success!',
             'success'
         ).then(() => {

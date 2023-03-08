@@ -34,7 +34,7 @@ export const handlePatchCustomer = async (customer:CustomerCreate) => {
 
     await axiosSubmit.patch(path.customer,customer).then(ignored => {
         Swal.fire(
-            'Good Job!',
+            'Updated!',
             'Update Customer Success!',
             'success'
         ).then(() => {})

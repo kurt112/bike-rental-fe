@@ -28,7 +28,7 @@ export const handleSubmit = async (bike: BikeObject, images: any, isUpdate: bool
         }
         if(!isUpdate){
             return Swal.fire(
-                'Good Job!',
+                'Created!',
                 'Create Bike Success!',
                 'success'
             ).then(() => {
@@ -262,7 +262,7 @@ export const requestBikeByCustomer = async (bike: BikeObject) => {
 
     return await axiosCreate.post("bike/request/" + token + "/" + bike.id + '/' + startDate + '/' + endDate, bike).then(ignored => {
         Swal.fire(
-            'Good Job!',
+            'Requested!',
             'Request Bike Success!',
             'success'
         ).then(() => {
@@ -286,7 +286,7 @@ export const cancelRequestBikeByCustomer = async (bikeId: string) => {
 
     await axiosCreate.post("bike/cancel", params).then(ignored => {
         Swal.fire(
-            'Good Job!',
+            'Canceled!',
             'Cancel Bike Success!',
             'success'
         ).then(() => {
