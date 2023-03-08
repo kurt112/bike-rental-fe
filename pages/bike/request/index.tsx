@@ -127,7 +127,7 @@ const Requested: NextPage = ({bikes, settings}: any) => {
                     bikes ? bikes.map((bike: any, i: number) => {
                         const {assignedCustomer} = bike;
                         const {user} = assignedCustomer;
-                        const {firstName, lastName} = user
+                        const {firstName, lastName, validIdPhoto} = user
                         return (
                             <tr className="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                 key={i}>
@@ -157,6 +157,24 @@ const Requested: NextPage = ({bikes, settings}: any) => {
                                 </td>
                                 <td className="py-4 px-6">
                                     {
+                                        validIdPhoto === null || validIdPhoto === '' ?
+                                            <span
+                                                className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                                                No ID Attached !
+                                            </span>
+                                            :
+                                            <a target="_blank" rel="noopener noreferrer"
+                                               href={`https://bike-rental-file.s3.ap-southeast-1.amazonaws.com/${bike.customerReceipt.picture}`}>
+                                                <span
+                                                    className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                                                    View ID
+                                                </span>
+                                            </a>
+                                    }
+
+                                </td>
+                                <td className="py-4 px-6">
+                                    {
                                         bike.customerReceipt === null ?
                                             <span
                                                 className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
@@ -174,19 +192,22 @@ const Requested: NextPage = ({bikes, settings}: any) => {
 
                                 </td>
                                 <td className="py-4 px-6">
-                                    <button onClick={() => _handleApprove(user.id, bike.id)}
-                                            type="button"
-                                            className="mr-5 text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800">
-                                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
-                                            <path fillRule="evenodd"
-                                                  d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                  clipRule="evenodd"></path>
-                                        </svg>
-                                        <span className="sr-only">Icon description</span>
-                                    </button>
-
+                                    {
+                                        validIdPhoto === null || validIdPhoto === '' ?
+                                            null :
+                                            <button onClick={() => _handleApprove(user.id, bike.id)}
+                                                    type="button"
+                                                    className="mr-5 text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800">
+                                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                                                    <path fillRule="evenodd"
+                                                          d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                          clipRule="evenodd"></path>
+                                                </svg>
+                                                <span className="sr-only">Icon description</span>
+                                            </button>
+                                    }
                                     <button onClick={() => _handleReject(user.id, bike.id)}
                                             type="button"
                                             className="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">

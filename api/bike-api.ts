@@ -123,7 +123,8 @@ export const getBikes = async (search: any, page: any, size: any, status: any) =
                                        firstName,
                                        lastName,
                                        cellphone,
-                                       email
+                                       email,
+                                       validIdPhoto
                                     }
                                 },
                                 customerReceipt{
