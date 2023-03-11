@@ -36,17 +36,12 @@ const BikeRequest: NextPage = ({bike}: any) => {
     const _handleChangeStartBarrow = (data: string) => {
         changeBike(data, 'startBarrow');
         setStartBarrow(moment(data).format('yyyy-MM-DDThh:mm'));
-        setEndBarrow(moment(data).format('yyyy-MM-DDThh:mm'));
-        // setStartBarrow
+        _handleEndBarrow(data);
     }
 
     const _handleEndBarrow = (data: string) => {
         changeBike(data, 'endBarrow')
         setEndBarrow(moment(data).format('yyyy-MM-DDThh:mm'));
-
-        if (startBarrow > endBarrow) {
-            return alert("Please end date should greater than to start date")
-        }
     }
 
     useEffect(() => {
@@ -54,6 +49,7 @@ const BikeRequest: NextPage = ({bike}: any) => {
         const tempStartBarrow = moment(startBarrow);
 
         const minutesDiff = tempEndBarrow.diff(tempStartBarrow, 'minutes');
+        console.log(minutesDiff);
         let totalHour = Math.floor(minutesDiff / 60);
         const excessMinutes = minutesDiff % 60 <= 0 ? 0 : 1;
 
@@ -233,7 +229,7 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                                 placeholder="Start Barrow"
                                                                 min={today}
                                                                 required={true}
-                                                                value={bike.startBarrow}
+                                                                defaultValue={startBarrow}
                                                                 onChange={(e) => _handleChangeStartBarrow(e.target.value)}
                                                             />
                                                         </div>
@@ -247,10 +243,10 @@ const BikeRequest: NextPage = ({bike}: any) => {
                                                                 className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                                                 id="end_barrow"
                                                                 type="datetime-local"
-                                                                placeholder="End Model"
+                                                                placeholder="End Barrow"
                                                                 min={startBarrow === undefined ? today : startBarrow}
                                                                 required={true}
-                                                                value={bike.endBarrow}
+                                                                defaultValue={endBarrow}
                                                                 onChange={(e) => _handleEndBarrow(e.target.value)}
                                                             />
                                                         </div>
