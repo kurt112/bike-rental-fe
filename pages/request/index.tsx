@@ -122,6 +122,13 @@ const BikeRequest: NextPage = () => {
                     })
                 }
             </div>
+            {
+               bikes === undefined || bikes.length <= 0 ?<div className='w-full text-center mt-20'>
+                    <p className={'text-5xl text-gray-500'}>
+                        No Bike Found
+                    </p>
+                </div>:null
+            }
         </div>
 
     </Fragment>

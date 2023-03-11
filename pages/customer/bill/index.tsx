@@ -6,6 +6,8 @@ import bdo from "../../../_images/billing/bdo.png";
 import bpi from "../../../_images/billing/bpi.svg";
 import securityBank from "../../../_images/billing/securityBank.jpg";
 import Image from "next/image";
+import {getStoreData} from "../../../api/store-api";
+import {Store} from "../../../types/store";
 
 const CustomerBill = () => {
     const [bill,setBill] = useState<number>(0);
@@ -29,8 +31,14 @@ const CustomerBill = () => {
             if(!data) setBill(0)
             setBill(data);
         })
+        getStoreData(1).then((store:Store) => {
+            if(store.securityBank !== null) localStorage.setItem('securityBank',store.securityBank);
+            if(store.bpi !== null) localStorage.setItem('bpi',store.bpi);
+            if(store.bdo !== null) localStorage.setItem('bdo',store.bdo);
+            if(store.paymaya !== null) localStorage.setItem('paymaya',store.paymaya);
+            if(store.gcash !== null) localStorage.setItem('gcash',store.gcash);
+        });
     },[]);
-
     return (
       <Fragment>
 

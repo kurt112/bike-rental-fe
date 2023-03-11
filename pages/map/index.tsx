@@ -30,11 +30,11 @@ const ClientMap:NextPage = () => {
         if (store.id === '') {
             getStoreData(1).then((store:Store) => {
                 setStore(store);
-                localStorage.setItem('bpi',store.bpi);
-                localStorage.setItem('gcash',store.gcash);
-                localStorage.setItem('paymaya',store.paymaya);
-                localStorage.setItem('bdo',store.bdo);
-                localStorage.setItem('securityBank',store.securityBank);
+                if(store.securityBank !== null) localStorage.setItem('securityBank',store.securityBank);
+                if(store.bpi !== null) localStorage.setItem('bpi',store.bpi);
+                if(store.bdo !== null) localStorage.setItem('bdo',store.bdo);
+                if(store.paymaya !== null) localStorage.setItem('paymaya',store.paymaya);
+                if(store.gcash !== null) localStorage.setItem('gcash',store.gcash);
             });
         }
 

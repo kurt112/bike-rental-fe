@@ -206,7 +206,7 @@ export const getBikeByCustomer = async (search: any) => {
     data.data.getBikeByCustomer.forEach((bike: BikeObject) => {
         if (bike.status === getBikeStatus.FOR_REQUEST) {
             requested.push(bike);
-        } else if (bike.status === getBikeStatus.RENTED) {
+        } else if (bike.status === getBikeStatus.NOT_AVAILABLE) {
             rented.push(bike);
         }
 

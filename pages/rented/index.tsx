@@ -23,7 +23,7 @@ const Rented: NextPage = () => {
 
     return <Fragment>
         <Head>
-            <title>Bike Rented</title>
+            <title>Rent History</title>
             <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
         </Head>
 
@@ -72,6 +72,13 @@ const Rented: NextPage = () => {
                     })
                 }
             </div>
+            {
+                bikes === undefined || bikes.length <= 0 ?<div className='w-full text-center mt-20'>
+                    <p className={'text-5xl text-gray-500'}>
+                        No Bike Found
+                    </p>
+                </div>:null
+            }
         </div>
 
     </Fragment>
