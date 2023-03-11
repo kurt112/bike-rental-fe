@@ -6,6 +6,7 @@ import Back from "../../../components/layout/back";
 import {UserCreate, userInitValidation, UserValidationMessage} from "../../../types/user";
 import {handleSubmitCustomer, validateCustomer, validateRegisterCustomerApi} from "../../../api/customer-api";
 import {useRouter} from "next/router";
+import Swal from "sweetalert2";
 
 const CreateCustomer: NextPage = () => {
     const router = useRouter();
@@ -55,14 +56,18 @@ const CreateCustomer: NextPage = () => {
         validateCustomer(tempValidation,customer,setValidation,reTypePassword);
 
         await handleSubmitCustomer(customer).then(ignored => {
-
+            Swal.fire(
+                'Created!',
+                'Create Customer Success!',
+                'success'
+            ).then(() => {
+                router.reload();
+            })
         }).catch(error => {
             // validate in backend
             const backendValidation: UserValidationMessage = validateRegisterCustomerApi(tempValidation, error);
             setValidation(backendValidation);
         });
-
-        router.reload();
     }
 
 

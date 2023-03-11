@@ -53,7 +53,7 @@ export const getBikeData = async (id: any) => {
                                 id,
                                 description,
                                 code,
-                                available,
+                                isAvailable,
                                 bikePictures{
                                     id,
                                     pictureName

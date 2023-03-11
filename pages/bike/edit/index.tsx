@@ -12,6 +12,8 @@ import Swal from "sweetalert2";
 
 const EditBike: NextPage = ({bike}: any) => {
 
+    console.log(bike);
+
     const router = useRouter();
 
     const [newBike, setNewBike] = useState<BikeObject>({...bike});
