@@ -60,7 +60,7 @@ const Available: NextPage = ({
                                             <Link href={`/bike/available/request?id=${bike.id}`}>
                                                 <button
                                                     className="opacity-200 z-50 w-full inline-flex place-content-center  py-2 px-3 text-sm font-medium  text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                                    Request
+                                                    Rent Now
                                                     <svg aria-hidden="true" className="ml-2 -mr-1 w-4 h-4"
                                                          fill="currentColor"
                                                          viewBox="0 0 20 20"
