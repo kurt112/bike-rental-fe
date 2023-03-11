@@ -36,6 +36,7 @@ const BikeRequest: NextPage = ({bike}: any) => {
     const _handleChangeStartBarrow = (data: string) => {
         changeBike(data, 'startBarrow');
         setStartBarrow(moment(data).format('yyyy-MM-DDThh:mm'));
+        setEndBarrow(moment(data).format('yyyy-MM-DDThh:mm'));
         // setStartBarrow
     }
 
@@ -64,19 +65,38 @@ const BikeRequest: NextPage = ({bike}: any) => {
     const viewTermAndCondition = () => {
         Swal.fire({
             title: 'Term&lsquo;s and conditions',
-            text: "Wherever used herein, the term “equipment” shall include any equipment rented from Erik’s Bike Shop. " +
-                " Erik’s Bike Shop, and its employees shall not be responsible for personal injuries or property damage, " +
-                "loss or delay incurred by any person arising out of negligence of any direct or supplemental carrier or other person rendering any of the services or " +
-                "products being offered in these rentals; nor shall Erik’s Bike Shop be responsible for any injuries, death, damage, " +
-                "loss or delay in any means of transportation or by reasons of any event beyond the actual control of Erik’s Bike Shop. ",
-
+            html:
+                'Wherever used herein, the term “equipment” shall include any equipment rented from Erik’s Bike Shop. ' +
+                'Erik’s Bike Shop, and its employees shall not be responsible for personal injuries or property damage, ' +
+                'loss or delay incurred by any person arising out of negligence of any direct or supplemental carrier or other person rendering any of the services or' +
+                'products being offered in these rentals; nor shall Erik’s Bike Shop be responsible for any injuries, death, damage,' +
+                'loss or delay in any means of transportation or by reasons of any event beyond the actual control of Erik’s Bike Shop.<br><br/><hr/><br>' +
+                '<ol style="text-align: left; font-weight: normal;">' +
+                '<li><b>1. <b/>Renters follow any suggested route at their own risk and agree not to hold Erik’s Bike Shop responsible for injury or death resulting from accidents.</li>' +
+                '<li><b>2. <b/>We strongly recommend the use of approved helmets whenever mounted on a bicycle.</li>' +
+                '<li><b>3. <b/>The bicycles provided for use are in satisfactory operating condition and participants agree to use them at their own risk or call fault to the attention of a company representative. </li>' +
+                '<li><b>4. <b/>Individual bike specifications are subject to change based on availability of replacement components.</li>' +
+                '<li><b>5. <b/>Instruction in the use, assembly and maintenance of bicycles will not be provided and participants affirm that they are competent and familiar with the use of a multi-speed bicycle.</li>' +
+                '</ol>' +
+                '<br><br/><hr/><br>' +
+                '<h1>MAINTENANCE, TUNING AND RESPONSIBILITY</h1><br/>' +
+                'While all our bikes are professionally serviced before dispatch, bicycles may need tuning or maintenance during the rental period; such maintenance will be carried out at the renter\'s expense.  Erik’s Bike Shop will cover the cost of damages due to equipment failures beyond the renters control, i.e., damage occurred during transport or worn parts.  <br/><br/>' +
+                '<ol style="text-align: left; font-weight: normal;">' +
+                '<l1 ><b>1. </b>Any faults must be communicated to Erik’s Bike Shop within 24 hours of receipt of the equipment. </l1><br/>' +
+                '<l1><b>2. </b>To be eligible for a refund on such parts and service, you must provide Erik’s Bike Shop with a photo of the damaged or worn parts and an invoice for new parts or services. </l1><br/>' +
+                '<l1><b>3. </b>Erik’s Bike Shop is responsible for structural faults such as damaged frames, worn bottom brackets, suspension, and wheel hubs. </l1><br/>' +
+                '<l1><b>4. </b>Erik’s Bike Shop is not responsible for the following occurrences during bike rental:  gear tune ups / punctures / broken spokes / broken chains / broken derailleurs / broken drop - outs / wheel rim damage / torn saddles / stripped threads on pedal crank / damage beyond the control of Erik’s Bike Shop and resultant of rider use or misuse.</l1><br/>' +
+                '<l1><b>5. </b>If you are undertaking an unassisted bicycle tour, we strongly recommend that you have some basic bicycle maintenance knowledge.  A list of the closest bike shops can be provided on request.</l1><br/>' +
+                '</ol>' +
+                '<h1>RESPONSIBILITY FOR DAMAGE OR LOSS</h1><br/>' +
+                'Customer agrees he/she will return the bike and equipment in the same good condition as when received, ordinary wear and tear accepted, and to repair and replace lost or stolen, damaged or broken bicycles or parts or to reimburse Erik’s Bike Shop for said equipment. Therefore, regardless of the party at fault, customer understands and agrees to be responsible for the theft or damage to said equipment.',
             showDenyButton: true,
             showCancelButton: true,
             denyButtonText: `Don&lsquo;t Agree`,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, I agree',
-            width: '80%'
+            width: '80%',
         }).then((result) => {
             if (result.isConfirmed) {
                 setAgreeToTermAndCondition(true);
