@@ -239,16 +239,17 @@ export const bikeSettings = async () => {
     return await axiosGet.get('bike/settings').then(result => result.data.data);
 }
 
-export const requestBikeByCustomer = async (bike: BikeObject) => {
+export const requestBikeByCustomer = async (bike: BikeObject,startBarrow:any, endBarrow:any) => {
 
     const token = localStorage.getItem('token');
 
-    if (!bike.endBarrow) {
+
+    if (!endBarrow) {
         alert('need date for end barrow')
         return;
     }
 
-    if (!bike.startBarrow) {
+    if (!startBarrow) {
         alert('need date for end barrow')
         return;
     }
@@ -258,8 +259,8 @@ export const requestBikeByCustomer = async (bike: BikeObject) => {
         return;
     }
 
-    const startDate = new Date(bike.startBarrow);
-    const endDate = new Date(bike.endBarrow);
+    const startDate = new Date(startBarrow);
+    const endDate = new Date(endBarrow);
 
     return await axiosCreate.post("bike/request/" + token + "/" + bike.id + '/' + startDate + '/' + endDate, bike).then(ignored => {
         Swal.fire(

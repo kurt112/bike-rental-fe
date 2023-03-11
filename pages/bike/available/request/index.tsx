@@ -111,7 +111,8 @@ const BikeRequest: NextPage = ({bike}: any) => {
 
         let success = false;
 
-        await requestBikeByCustomer(newBike).then(ignored => {
+
+        await requestBikeByCustomer(newBike, startBarrow, endBarrow).then(ignored => {
             success = true
        }).catch(error => {
             Swal.fire(
