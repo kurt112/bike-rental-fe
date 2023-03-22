@@ -14,7 +14,6 @@ export const handleSubmitCustomer = async (customer:CustomerCreate) => {
 }
 
 export const getCustomerBill = async (userId: any) => {
-
     const {data} = await axiosSubmit.get(path.customer+'/'+userId).then(data => {
         console.log(data);
 
@@ -43,20 +42,20 @@ export const handlePatchCustomer = async (customer:CustomerCreate) => {
     });
 }
 
-export const handleUploadReceiptCustomer = async (picture: any) => {
-    const token = localStorage.getItem('token');
-    const params = new URLSearchParams();
+    export const handleUploadReceiptCustomer = async (picture: any) => {
+        const token = localStorage.getItem('token');
+        const params = new URLSearchParams();
 
-    params.append('token',""+token);
-    params.append('picture',picture);
+        params.append('token',""+token);
+        params.append('picture',picture);
 
 
-    return await axiosSubmit.post(path.customer+ '/receipt',params).then(data => {
-        return data;
-    }).catch(error => {
-        console.log(error)
-    });
-}
+        return await axiosSubmit.post(path.customer+ '/receipt',params).then(data => {
+            return data;
+        }).catch(error => {
+            console.log(error)
+        });
+    }
 
 export const handleDeleteCustomer = async (id: any) => {
 
@@ -183,6 +182,16 @@ export const getCustomers = async (search:any, page:any, size:any, status:any) =
 
 export const customerSettings = async () => {
     return await axiosGet.get('customer/settings').then(result => result.data.data)
+}
+
+export const customerPayment = async (email: string, payment: string) => {
+    const params = new URLSearchParams();
+    const token = localStorage.getItem('token')
+
+    params.append('email',email);
+    params.append('payment',payment);
+    params.append('token', token)
+    return await axiosGet.post('customer/payment', params).then(result => result.data.data);
 }
 
 export const customerReceiptSettings = async () => {
