@@ -67,6 +67,8 @@ const Customer: NextPage = ({ customers, settings }: any) => {
                     title: 'Payment Success',
                     showConfirmButton: false,
                     timer: 1500
+                  }).then(() => {
+                    router.push(`/customer?search=${pagination.search}&page=${1}&size=${size}&status=${status}`)
                   })
             }).catch(error => {
                 Swal.fire(error.response.data.data);
