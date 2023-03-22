@@ -190,7 +190,7 @@ export const customerPayment = async (email: string, payment: string) => {
 
     params.append('email',email);
     params.append('payment',payment);
-    params.append('token', token)
+    params.append('token',""+token);
     return await axiosGet.post('customer/payment', params).then(result => result.data.data);
 }
 
