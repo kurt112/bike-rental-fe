@@ -7,6 +7,7 @@ import {
     getBikeByCustomerWithLocation
 } from "../../api/bike-api";
 import StoreMap from "../../utils/googleMap/StoreMap";
+import { computeDistanceBetween } from "spherical-geometry-js";
 
 const ClientMap:NextPage = () => {
     const [store, setStore] = useState<Store>({
@@ -26,6 +27,19 @@ const ClientMap:NextPage = () => {
 
     const [bikes, setBikes] = useState<[BikeObject] | null>(null);
 
+    const alertIfNotInside = (bike: [BikeObject]) => {
+        if(bike == null) return;
+        const currentBike = bike[0];
+        console.log(currentBike); 
+        if(currentBike === null || currentBike === undefined) return;
+        console.log('The number');
+        console.log(computeDistanceBetween(
+            [currentBike.latitude?+currentBike.latitude:0,currentBike.longitude?+currentBike.longitude: 0],
+            [+store.latitude, +store.longitude],
+            +store.radius));
+    }
+
+
     useEffect(() => {
         if (store.id === '') {
             getStoreData(1).then((store:Store) => {
@@ -35,14 +49,16 @@ const ClientMap:NextPage = () => {
                 if(store.bdo !== null) localStorage.setItem('bdo',store.bdo);
                 if(store.paymaya !== null) localStorage.setItem('paymaya',store.paymaya);
                 if(store.gcash !== null) localStorage.setItem('gcash',store.gcash);
-            });
+            }); 
         }
 
         const interval = setInterval(() => {
-            console.log('updating your location')
             getBikeByCustomerWithLocation('').then(bikeResult => {
                 setBikes(bikeResult);
-            })
+                console.log('wew');
+                
+                alertIfNotInside(bikeResult)
+            });
         }, 3000);
         return () => clearInterval(interval);
 

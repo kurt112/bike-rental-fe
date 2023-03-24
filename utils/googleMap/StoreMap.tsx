@@ -1,8 +1,9 @@
 import {CircleF, GoogleMap, LoadScriptNext, MarkerF} from "@react-google-maps/api";
 import {Store} from "../../types/store";
 import {BikeObject} from "../../types/bike";
-import React, {Fragment} from "react";
+import React, {Fragment, useEffect} from "react";
 import marker from '../../_images/bike-marker.png'
+import { computeDistanceBetween } from "spherical-geometry-js";
 
 interface props {
     newStore: Store,
@@ -15,8 +16,6 @@ const StoreMap = ({
                       bikes,
                       clientBike
                   }: props) => {
-    console.log(bikes);
-    console.log(clientBike);
     return newStore === null ? null :
         <LoadScriptNext googleMapsApiKey={process.env.mapKey ? process.env.mapKey : ''}>
             <div className="w-full h-screen">

@@ -68,8 +68,7 @@ const Landing = ({
                                 data-mdb-ripple-color="light"
                             >
                                 Become a member now&#x21;
-                            </button
-                            >
+                            </button>
                             <h2 className="mt-10 font-semibold text-2xl mb-4">Contact us: </h2>
                             <h2 className="font-semibold text-1xl mb-4">09391455383</h2>
 

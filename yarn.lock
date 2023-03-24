@@ -4682,6 +4682,11 @@
   "resolved" "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz"
   "version" "0.6.1"
 
+"spherical-geometry-js@^3.0.0":
+  "integrity" "sha512-PvfGTBRSyoAr3KGk/pTkqA7vCMO0lXilnmh6DfiTrO4RhRz++RTbMbUXKcmkmw8olh2wWVVY2qx8sl5hJ+JpVg=="
+  "resolved" "https://registry.npmjs.org/spherical-geometry-js/-/spherical-geometry-js-3.0.0.tgz"
+  "version" "3.0.0"
+
 "stable@^0.1.8":
   "integrity" "sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w=="
   "resolved" "https://registry.yarnpkg.com/stable/-/stable-0.1.8.tgz"

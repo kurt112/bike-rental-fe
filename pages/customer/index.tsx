@@ -45,9 +45,11 @@ const Customer: NextPage = ({ customers, settings }: any) => {
               '<input type="number" id="payment" placeholder="Input Customer Payment" class="swal2-input">',
             focusConfirm: false,
             preConfirm: () => {
+                const email = (document.getElementById('customer-email') as HTMLInputElement);
+                const payment = (document.getElementById('payment') as HTMLInputElement); 
               return [
-                document.getElementById('customer-email').value,
-                document.getElementById('payment').value
+                email === null ? 0: email.value,
+                payment === null ? 0: email.value,
               ]
             }
           })
@@ -60,7 +62,7 @@ const Customer: NextPage = ({ customers, settings }: any) => {
                 return Swal.fire("Payment Should greater than zero");
             }
 
-            await customerPayment(customerEmail, payment).then(result => {
+            await customerPayment(""+customerEmail, ""+payment).then(result => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
