@@ -55,8 +55,6 @@ const ClientMap:NextPage = () => {
         const interval = setInterval(() => {
             getBikeByCustomerWithLocation('').then(bikeResult => {
                 setBikes(bikeResult);
-                console.log('wew');
-                
                 alertIfNotInside(bikeResult)
             });
         }, 3000);

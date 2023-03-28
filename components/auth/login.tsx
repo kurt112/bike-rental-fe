@@ -31,6 +31,9 @@ const Login = ({
         await axiosSubmit.post(`${path.auth}/login`, cred).then(result => {
             const {data} = result;
             const {token, user} = data;
+            console.log('the result');
+            
+            console.log(result);
             delete user.password;
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user))
