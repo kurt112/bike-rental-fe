@@ -181,7 +181,7 @@ const Customer: NextPage = ({ customers, settings }: any) => {
                                         {/*    {customer.nextBilled?formatDateWithTime(customer.nextBilled) : 'NA'}*/}
                                         {/*</td>*/}
                                         <td className="py-4 px-6">
-                                            {customer.toPay}
+                                            {+customer.toPay > 0? customer.toPay: 0}
                                         </td>
                                         <td className="py-4 px-6">
                                             <Link href={`/customer/edit?id=${customer.id}`}>

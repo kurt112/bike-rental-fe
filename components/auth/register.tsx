@@ -39,7 +39,7 @@ const Register = ({
         currentUser[target] = data;
         setUser(currentUser);
         const currentCustomer: CustomerCreate = {...customer};
-        currentCustomer.user = currentUser;
+        currentCustomer.user = currentUser; 
         setCustomer(currentCustomer);
     }
 
