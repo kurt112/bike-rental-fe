@@ -8,6 +8,7 @@ import { customerPayment, customerSettings, getCustomers } from "../../api/custo
 import { customerColumns } from "../../types/customer";
 import { formatDate, formatDateWithTime } from "../../utils/date";
 import Swal from 'sweetalert2'
+import { log } from "console";
 
 const Customer: NextPage = ({ customers, settings }: any) => {
     const router = useRouter()
@@ -49,15 +50,14 @@ const Customer: NextPage = ({ customers, settings }: any) => {
                 const payment = (document.getElementById('payment') as HTMLInputElement); 
               return [
                 email === null ? 0: email.value,
-                payment === null ? 0: email.value,
+                payment === null ? 0: payment.value,
               ]
             }
           })
           
           if (formValues) {
             const customerEmail = formValues[0];
-            const payment = formValues[1];
-
+            const payment:number = +formValues[1];
             if(!payment && payment <=0){
                 return Swal.fire("Payment Should greater than zero");
             }
@@ -73,6 +73,7 @@ const Customer: NextPage = ({ customers, settings }: any) => {
                     router.push(`/customer?search=${pagination.search}&page=${1}&size=${size}&status=${status}`)
                   })
             }).catch(error => {
+                console.log('the error' + error);
                 Swal.fire(error.response.data.data);
             });
           }
