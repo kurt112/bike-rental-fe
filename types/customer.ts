@@ -7,5 +7,5 @@ export interface CustomerCreate {
     isActive: boolean
 }
 
-// 'Next Billed',
-export const customerColumns:string[] = ['First Name', 'Last Name', 'Email', 'Cellphone','Birthdate', 'Gender', 'Last Billed', 'To Pay', 'Profile'];
+
+export const customerColumns:string[] = ['First Name', 'Last Name', 'Email', 'Cellphone','Birthdate', 'Gender', 'Last Billed','Next Billed', 'To Pay', 'Profile'];

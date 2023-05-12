@@ -1,6 +1,6 @@
     import axios from "axios";
     // https://bike-rental.herokuapp.com/
-export const host_url = process.env.NODE_ENV === 'development'? 'http://localhost:5000':'https://bike-rental.herokuapp.com';
+export const host_url = process.env.NODE_ENV === 'development'? 'https://bike-rental.herokuapp.com':'https://bike-rental.herokuapp.com';
 export const host_url_graphQl = `${host_url}/data`
 export const graphQl = axios.create({
     headers: {
